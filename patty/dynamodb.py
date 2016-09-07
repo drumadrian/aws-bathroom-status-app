@@ -1,177 +1,232 @@
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
+from boto3.dynamodb.conditions import Key
 import sys
-import urllib2
-from urllib2 import Request, urlopen, URLError, HTTPError, build_opener
-import json
-import time
-from datetime import date, datetime
-import string
-import os, time
+import datetime
+import os
 
-#timezone changes
+# timezone changes
 os.environ['TZ'] = 'America/Los_Angeles'
 
-#global variables
-enphase_api_key = ""
-enphase_userid = "" #https://developer.enphase.com/docs/quickstart.html
-enphase_api_url = "https://api.enphaseenergy.com/api/v2"
-enphase_system_id = ""
+# today's date
+today=datetime.date(2016, 9, 3)
 
-today = date.today()
+# DynamoDB table name
+table_name = "solar_data"
 
-table_name = "smylee_solar"
+# AWS Client
 client = boto3.client('dynamodb')
+
+# DynamoDB resource
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
 
-#############creates and checks the dynamodbtable exists
+# payload
+SOLAR_DATA_PAYLOAD = {
+    "current_power": 3322,
+    "energy_lifetime": 19050353,
+    "energy_today": 25639,
+    "last_interval_end_at": 1380632400,
+    "last_report_at": 1380632791,
+    "modules": 31,
+    "operational_at": 1201362300,
+    "size_w": 5250,
+    "source": "microinverters",
+    "status": "normal",
+    "summary_date": today,
+    "system_id": 123
+}
+
 def createDynamoDBTable():
-	try:
-		#skip creating table if it already exists
-		response = client.describe_table(
-			TableName=table_name
-		)
-		print "Table %s found"%(table_name)
-	except:
-		print "Table %s not found...creating now"%(table_name)
-		try:
-			#table was not found create
-			response = client.create_table(
-				TableName=table_name,
-				AttributeDefinitions=[
-					{
-						'AttributeName': 'date',
-						'AttributeType': 'S'
-					},
-					{
-						'AttributeName': 'type',
-						'AttributeType': 'S'
-					},
-				],
-				KeySchema=[
-					{
-						'AttributeName': 'type',
-						'KeyType': 'HASH'
-					},
-					{
-						'AttributeName': 'date',
-						'KeyType': 'RANGE'
-					}
-				],
-				ProvisionedThroughput={
-					'ReadCapacityUnits': 1,
-					'WriteCapacityUnits': 1
-				}
-			)
-			try:
-				#wait until the table is finished being created before continuing
-				waiter = client.get_waiter('table_exists')
-				waiter.wait(
-					TableName=table_name
-				)
-				print "Table %s created"%(table_name)
-			except Exception as err:
-				print ("Error creating table")
-				sys.exit()
-		except Exception as err:
-			print("Error occurred:", err)
-			sys.exit()
+    """
+    Checks if the DynamoDB table exists. Otherwise, it will create
+    a table and wait for it to complete creation before continuing
+    with the rest of the script.
+    """
+    try:
+        # skip creating table if it already exists
+        response = client.describe_table(
+            TableName=table_name
+        )
+        print "Table %s found" % (table_name)
+    except:
+        print "Table %s not found...creating now" % (table_name)
+        try:
+            # table was not found create
+            response = client.create_table(
+                TableName=table_name,
+                AttributeDefinitions=[
+                    {
+                        'AttributeName': 'date',
+                        'AttributeType': 'S'
+                    },
+                    {
+                        'AttributeName': 'type',
+                        'AttributeType': 'S'
+                    },
+                ],
+                KeySchema=[
+                    {
+                        'AttributeName': 'type',
+                        'KeyType': 'HASH'
+                    },
+                    {
+                        'AttributeName': 'date',
+                        'KeyType': 'RANGE'
+                    }
+                ],
+                ProvisionedThroughput={
+                    'ReadCapacityUnits': 1,
+                    'WriteCapacityUnits': 1
+                }
+            )
+            try:
+                # wait until the table is finished being created before continuing
+                waiter = client.get_waiter('table_exists')
+                waiter.wait(
+                    TableName=table_name
+                )
+                print "Table %s created" % (table_name)
+            except Exception as err:
+                print ("Error creating table")
+                sys.exit()
+        except Exception as err:
+            print("Error occurred:", err)
+            sys.exit()
 
 
-#############connect to enphase and get the data
-def getEnphaseSolar():
-	try:
-		api_url = "%s/systems/%s/summary?summary_date=%s&key=%s&user_id=%s"%(enphase_api_url, enphase_system_id, today, enphase_api_key, enphase_userid)
-		req = urllib2.Request(api_url)
-		response = urlopen(req)
-		solar_data = json.loads(response.read())
+def getSolarData():
+    """
+    Connect to solar provider and get the data about the
+    energy generated by the solar panels.
+    :return: data from solar panels
+    :rtype: json
+    """
+    try:
+        return SOLAR_DATA_PAYLOAD
 
-		return solar_data
-
-	except Exception as err:
-		print("Error occurred:", err)
-		sys.exit()
+    except Exception as err:
+        print("Error occurred:", err)
+        sys.exit()
 
 
-#############adds values to dynamodb
 def addDynamoDBData(summary_date, summary_type, summary_generated):
-	try:
-		#add the data to the dynamodb
-		response = table.put_item(
-			Item={
-				'date': summary_date,
-				'type': summary_type,
-				'generated': summary_generated
-			}
-		)
-		# return response
-		print "Added %s %s data to DynamoDB"%(summary_date, summary_type)
+    """
+    Puts the payload from the solar panels into a DynamoDB
 
-	except Exception as err:
-		print("Error occurred:", err)
-		sys.exit()
+    :param: summary_date: date data in the format: YYYY, YYYY-MM, YYYY-MM-DD
+    :type: summary_date: string
+    :param: summary_type: the date is one of: Year, Month, Day
+    :type: summary_type: string
+    :param: summary_generated: how much energy was generated for the type that Year/Month/Day
+    :type: summary_generated: float
+    """
+    try:
+        # add the data to the dynamodb
+        response = table.put_item(
+            Item={
+                'date': summary_date,
+                'type': summary_type,
+                'generated': summary_generated
+            }
+        )
+        # print response
+        print "Added %s %s data to DynamoDB" % (summary_date, summary_type)
+
+    except Exception as err:
+        print("Error occurred:", err)
+        sys.exit()
 
 
-#############add the day value
 def addDay(solar_data):
+    """
+    Gets the day data from the solar data payload and sends it to the database.
 
-	summary_type = "day"
-	energy_today = (str)((int)(solar_data['energy_today']) * .001)
-	summary_date = (str)(solar_data['summary_date'])
+    :param solar_data: data about the energy generated by the solar panels
+    :type solar_data: json
+    """
+    summary_type = "day"
+    energy_today = (str)((int)(solar_data['energy_today']) * .001)
+    summary_date = (str)(solar_data['summary_date'])
 
-	addDynamoDBData(summary_date, summary_type, energy_today)
+    addDynamoDBData(summary_date, summary_type, energy_today)
 
-#############add the month value
+
 def addMonth():
+    """
+    Get the month data from the current day just entered in the database
+    OR you can send the solar_data payload and get the month data from there.
+    Gets the current month total from the DynamoDB.
+    Calculates the new current month total and sends it to the database.
 
-	summary_type = "month"
-	total_month = 0
-	this_month = today.strftime("%Y-%m")
+    :param solar_data: data about the energy generated by the solar panels
+    :type solar_data: json
+    """
+    print "add month"
+    summary_type = "month"
+    total_month = 0
+    this_month = today.strftime("%Y-%m")
 
-	try:
-		#get all the values in the table for the current year & month
-		record_exist = table.query(
-			KeyConditionExpression=Key('type').eq('day') & Key('date').begins_with(this_month)
-		)
+    try:
+        # get all the values in the table for the current year & month
+        record_exist = table.query(
+            KeyConditionExpression=Key('type').eq('day') & Key('date').begins_with(this_month)
+        )
+        print record_exist
+        if record_exist['Count'] != 0:
+            for items in record_exist['Items']:
+                total_month += (float)(items['generated'])
 
-		if record_exist['Count'] != 0:
-			for items in record_exist['Items']:
-				total_month += (float)(items['generated'])
+        addDynamoDBData(this_month, summary_type, (str)(total_month))
 
-			addDynamoDBData(this_month, summary_type, (str)(total_month))		
+    except Exception as err:
+        print("Error occurred:", err)
+        sys.exit()
 
-	except Exception as err:
-		print("Error occurred:", err)
-		sys.exit()
 
-#############add the year value
 def addYear():
+    """
+    Get the year data from the current month just entered in the database
+    Gets the current year total from the DynamoDB.
+    Calculates the new current year total and sends it to the database.
 
-	summary_type = "year"
-	total_year = 0
-	this_year = today.strftime("%Y")
-	try:
-		#get all the values in the table for the current year
-		record_exist = table.query(
-			KeyConditionExpression=Key('type').eq('month') & Key('date').begins_with(this_year)
-		)
+    :param solar_data: data about the energy generated by the solar panels
+    :type solar_data: json
+    """
+    summary_type = "year"
+    total_year = 0
+    this_year = today.strftime("%Y")
+    try:
+        # get all the values in the table for the current year
+        record_exist = table.query(
+            KeyConditionExpression=Key('type').eq('month') & Key('date').begins_with(this_year)
+        )
 
-		if record_exist['Count'] != 0:
-			for items in record_exist['Items']:
-				total_year += (float)(items['generated'])
-			
-			addDynamoDBData(this_year, summary_type, (str)(total_year))			
+        if record_exist['Count'] != 0:
+            for items in record_exist['Items']:
+                total_year += (float)(items['generated'])
 
-	except Exception as err:
-		print("Error occurred:", err)
-		sys.exit()
+        addDynamoDBData(this_year, summary_type, (str)(total_year))
+
+    except Exception as err:
+        print("Error occurred:", err)
+        sys.exit()
 
 
 def lambda_handler(event, context):
-	#run the program
-	createDynamoDBTable()
-	solar_data = getEnphaseSolar()
-	addDay(solar_data)
-	addMonth()
-	addYear()
+    """
+    Create the DynamoDB table, get the solar data, add the day, month and year totals and store in DynamoDB.
+
+    :param event: The payload sent to the lambda functions endpoint
+    :type event: dict|list|str|int|float|NoneType
+    :param context: Runtime information
+    :type context: LambdaContext
+    """
+    # run the program
+    print "BEGIN: solar_data lambda run"
+    createDynamoDBTable()
+    solar_data = getSolarData()
+    addDay(solar_data)
+    addMonth()
+    addYear()
+    print "STOPPED: solar_data lambda run"
+    return "Solar Data DynamoDB Table Complete"
