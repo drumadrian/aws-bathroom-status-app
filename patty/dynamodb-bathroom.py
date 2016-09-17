@@ -153,7 +153,7 @@ def createDynamoDBTable():
                     },
                     {
                         'AttributeName': 'timestamp',
-                        'AttributeType': 'N'
+                        'AttributeType': 'S'
                     }
                 ],
                 KeySchema=[
