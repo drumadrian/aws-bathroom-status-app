@@ -10,13 +10,14 @@ os.environ['TZ'] = 'America/Los_Angeles'
 # today's date
 # today = date.today()
 today=datetime.date(2016, 9, 3)
-# DynamoDB table name
-table_name = "study-guru-bathroom"
 
-# AWS Client
+# DynamoDB table name (What is a collection of bathrooms called?)
+table_name = "study-guru-bathrooms"
+
+# AWS Client - Raw Low Level client
 client = boto3.client('dynamodb')
 
-# DynamoDB resource
+# DynamoDB resource - High Level (Object Oriented)
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
 
@@ -123,7 +124,7 @@ def createDynamoDBTable():
     except:
         print "Table %s not found...creating now" % (table_name)
         try:
-            # table was not found create
+            # table was not found, create the table
             response = client.create_table(
                 TableName=table_name,
                 AttributeDefinitions=[
@@ -244,14 +245,18 @@ def createDynamoDBTable():
 
 def addDynamoDBData(gender, stall, status, bathroom, timestamp):
     """
-    Puts the payload from the solar panels into a DynamoDB
+    Puts the payload from the script into a DynamoDB table
 
-    :param: summary_date: date data in the format: YYYY, YYYY-MM, YYYY-MM-DD
+    :param: gender: M or F
     :type: summary_date: string
-    :param: summary_type: the date is one of: Year, Month, Day
-    :type: summary_type: string
-    :param: summary_generated: how much energy was generated for the type that Year/Month/Day
-    :type: summary_generated: float
+    :param: stall: the stall number
+    :type: summary_type: int
+    :param: status: 0=occupied, 1=vacant
+    :type: summary_generated: int
+    :param: bathroom: the bathroom identifier (bathrooms contain stalls)
+    :type: summary_generated: string
+    :param: timestamp: the time that the stall was last marked occupied or vacant
+    :type: summary_generated: int
     """
     try:
         # add the data to the dynamodb
@@ -269,12 +274,13 @@ def addDynamoDBData(gender, stall, status, bathroom, timestamp):
         print "Added {0} {1} {2} {3} data to DynamoDB".format(gender, str(stall), str(status), bathroom)
 
     except Exception as err:
+        print("Error occurred while adding data to the new DynamoDB table")
         print("Error occurred:", err)
         sys.exit()
 
 def lambda_handler(event, context):
     """
-    Create the DynamoDB table, get the solar data, add the day, month and year totals and store in DynamoDB.
+    Create the DynamoDB table, load the initial Payload data,
 
     :param event: The payload sent to the lambda functions endpoint
     :type event: dict|list|str|int|float|NoneType
