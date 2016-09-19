@@ -13,7 +13,7 @@ os.environ['TZ'] = 'America/Los_Angeles'
 #global variables
 today = date.today()
 
-table_name = "study-guru-bathroom"
+table_name = "study-guru-bathrooms"
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
 
