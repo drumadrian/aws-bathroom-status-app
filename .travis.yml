@@ -1,4 +1,6 @@
 notifications:
   slack: aws-study-gurus:xtwiPAeu8VwM1HaPb28Fo9og
 
-script: ./travis-test.sh 
+language: bash
+before_script: bash pre-travis-test.sh
+script: bash travis-test.sh 
