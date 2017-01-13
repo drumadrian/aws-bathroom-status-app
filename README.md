@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/drumadrian/aws-bathroom-status-app.svg?branch=master)](https://travis-ci.org/drumadrian/aws-bathroom-status-app)
+
 # AWS bathroom-status-app
 Use in AWS to update the status of the restroom stalls. 
 
