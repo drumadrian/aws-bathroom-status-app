@@ -1,49 +1,120 @@
 import boto3
-from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.conditions import Key, Attr
 import sys
 import datetime
 import os
-
-
-
-#ToDo:  Update this file to use boto3(the AWS Python SDK to provision and setup the DynamoDB)
-
-#This Comment was made to be pushed and trigger Travis CI
-#Try to trigger a build again 
-
-
 
 # timezone changes
 os.environ['TZ'] = 'America/Los_Angeles'
 
 # today's date
-today=datetime.date(2016, 9, 3)
+# today = date.today()
+# today=datetime.date(2016, 9, 3)
 
-# DynamoDB table name
-table_name = "solar_data"
+# DynamoDB table name (What is a collection of bathrooms called?)
+table_name = "study-guru-bathrooms"
 
-# AWS Client
+# AWS Client - Raw Low Level client
 client = boto3.client('dynamodb')
 
-# DynamoDB resource
+# DynamoDB resource - High Level (Object Oriented)
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(table_name)
 
-# Initial Bathroom App Entry for each bathroom payload
-SOLAR_DATA_PAYLOAD = {
-    "stall_number": 19050353,
-    "stall_gender": 25639,
-    "stall_status": 1380632400,
-    "bathroom_number": 3322,
-    "time_of_last_status": 1380632791,
-    "name": 31
-}
+# payload
+PAYLOAD = [
+    {
+    "stall": 1,
+    "gender": 'M',
+    "status": 0,
+    "bathroom": 1,
+    "timestamp": '1245678930'
+    },
+    {
+    "stall": 2,
+    "gender": 'M',
+    "status": 0,
+    "bathroom": 1,
+    "timestamp": '1245678920'
+    },
+    {
+    "stall": 3,
+    "gender": 'M',
+    "status": 0,
+    "bathroom": 1,
+    "timestamp": '1245678910'
+    },
+    {
+    "stall": 4,
+    "gender": 'M',
+    "status": 0,
+    "bathroom": 2,
+    "timestamp": '1245678909'
+    },
+    {
+    "stall": 5,
+    "gender": 'M',
+    "status": 1,
+    "bathroom": 2,
+    "timestamp": '1245678908'
+    },
+    {
+    "stall": 6,
+    "gender": 'M',
+    "status": 1,
+    "bathroom": 2,
+    "timestamp": '1245678907'
+    },
+    {
+    "stall": 7,
+    "gender": 'F',
+    "status": 0,
+    "bathroom": 1,
+    "timestamp": '1245678906'
+    },
+    {
+    "stall": 8,
+    "gender": 'F',
+    "status": 1,
+    "bathroom": 1,
+    "timestamp": '1245678905'
+    },
+    {
+    "stall": 9,
+    "gender": 'F',
+    "status": 0,
+    "bathroom": 1,
+    "timestamp": '1245678904'
+    },
+    {
+    "stall": 10,
+    "gender": 'F',
+    "status": 1,
+    "bathroom": 2,
+    "timestamp": '1245678903'
+    },
+    {
+    "stall": 11,
+    "gender": 'F',
+    "status": 0,
+    "bathroom": 2,
+    "timestamp": '1245678902'
+    },
+    {
+    "stall": 12,
+    "gender": 'F',
+    "status": 1,
+    "bathroom": 2,
+    "timestamp": '1245678901'
+    }
+]
 
 def createDynamoDBTable():
     """
     Checks if the DynamoDB table exists. Otherwise, it will create
     a table and wait for it to complete creation before continuing
     with the rest of the script.
+    Adrian Alternative database fields:  Bathroom ID, Stall ID, Gender, Status, Time of Last Status, Stall Name
     """
     try:
         # skip creating table if it already exists
@@ -54,29 +125,105 @@ def createDynamoDBTable():
     except:
         print "Table %s not found...creating now" % (table_name)
         try:
-            # table was not found create
+            # table was not found, create the table
             response = client.create_table(
                 TableName=table_name,
                 AttributeDefinitions=[
                     {
-                        'AttributeName': 'date',
+                        'AttributeName': 'unique_id',
                         'AttributeType': 'S'
                     },
-                    {
-                        'AttributeName': 'type',
-                        'AttributeType': 'S'
-                    },
+                    # {
+                    #     'AttributeName': 'gender',
+                    #     'AttributeType': 'S'
+                    # },
+                    # {
+                    #     'AttributeName': 'building',
+                    #     'AttributeType': 'S'
+                    # },
+                    # {
+                    #     'AttributeName': 'floor',
+                    #     'AttributeType': 'S'
+                    # },
+                    # {
+                    #     'AttributeName': 'bathroom',
+                    #     'AttributeType': 'N'
+                    # },
+                    # {
+                    #     'AttributeName': 'status',
+                    #     'AttributeType': 'N'
+                    # },
+                    # {
+                    #     'AttributeName': 'timestamp',
+                    #     'AttributeType': 'S'
+                    # }
                 ],
                 KeySchema=[
                     {
-                        'AttributeName': 'type',
-                        'KeyType': 'HASH'
+                        'AttributeName': 'unique_id',                #concatenation_of_stall_bathroom_and_building
+                        'KeyType': 'HASH'                           #AWS calls this a Partition Key
                     },
-                    {
-                        'AttributeName': 'date',
-                        'KeyType': 'RANGE'
-                    }
+                    # {
+                    #     'AttributeName': 'gender',
+                    #     'KeyType': 'RANGE'                          #AWS calls this a Sort Key
+                    # }
                 ],
+                # LocalSecondaryIndexes=[
+                #     {
+                #         'IndexName': 'stall_status',
+                #         'KeySchema': [
+                #             {
+                #                 'AttributeName': 'stall',
+                #                 'KeyType': 'HASH'
+                #             },
+                #             {
+                #                 'AttributeName': 'status',
+                #                 'KeyType': 'RANGE'
+                #             }
+                #         ],
+                #         'Projection':{
+                #             'ProjectionType': 'ALL'
+                #         },
+                #     },
+                #     {
+                #         'IndexName': 'stall_bathroom',
+                #         'KeySchema': [
+                #             {
+                #                 'AttributeName': 'stall',
+                #                 'KeyType': 'HASH'
+                #             },
+                #             {
+                #                 'AttributeName': 'bathroom',
+                #                 'KeyType': 'RANGE'
+                #             }
+                #         ],
+                #         'Projection':{
+                #             'ProjectionType': 'ALL'
+                #         },
+                #     }
+                # ],
+                # GlobalSecondaryIndexes=[
+                #     {
+                #         'IndexName': 'global_testing',
+                #         'KeySchema': [
+                #             {
+                #                 'AttributeName': 'bathroom',
+                #                 'KeyType': 'HASH'
+                #             },
+                #             {
+                #                 'AttributeName': 'timestamp',
+                #                 'KeyType': 'RANGE'
+                #             }
+                #         ],
+                #         'Projection':{
+                #             'ProjectionType': 'ALL'
+                #         },
+                #         'ProvisionedThroughput': {
+                #             'ReadCapacityUnits': 1,
+                #             'WriteCapacityUnits': 1
+                #         }
+                #     }
+                # ],
                 ProvisionedThroughput={
                     'ReadCapacityUnits': 1,
                     'WriteCapacityUnits': 1
@@ -97,139 +244,62 @@ def createDynamoDBTable():
             sys.exit()
 
 
-def getSolarData():
+def addDynamoDBData(unique_id, gender, stall, status, bathroom, timestamp):
     """
-    Connect to solar provider and get the data about the
-    energy generated by the solar panels.
-    :return: data from solar panels
-    :rtype: json
-    """
-    try:
-        return SOLAR_DATA_PAYLOAD
+    Puts the payload from the script into a DynamoDB table
 
-    except Exception as err:
-        print("Error occurred:", err)
-        sys.exit()
-
-
-def addDynamoDBData(summary_date, summary_type, summary_generated):
-    """
-    Puts the payload from the solar panels into a DynamoDB
-
-    :param: summary_date: date data in the format: YYYY, YYYY-MM, YYYY-MM-DD
-    :type: summary_date: string
-    :param: summary_type: the date is one of: Year, Month, Day
-    :type: summary_type: string
-    :param: summary_generated: how much energy was generated for the type that Year/Month/Day
-    :type: summary_generated: float
+    :param gender: M or F
+    :type summary_date: string
+    :param stall: the stall number
+    :type summary_type: int
+    :param status: 0=occupied, 1=vacant
+    :type summary_generated: int
+    :param bathroom: the bathroom identifier (bathrooms contain stalls)
+    :type summary_generated: string
+    :param timestamp: the time that the stall was last marked occupied or vacant
+    :type summary_generated: int
     """
     try:
         # add the data to the dynamodb
         response = table.put_item(
             Item={
-                'date': summary_date,
-                'type': summary_type,
-                'generated': summary_generated
+                'gender': gender,
+                'unique_id': unique_id,
+                'stall': stall,
+                'status': status,
+                'bathroom': bathroom,
+                'timestamp': timestamp
             }
+
         )
         # print response
-        print "Added %s %s data to DynamoDB" % (summary_date, summary_type)
+        print "Added {0} {1} {2} {3} data to DynamoDB".format(gender, str(stall), str(status), str(bathroom))
 
     except Exception as err:
+        print("Error occurred while adding data to the new DynamoDB table")
         print("Error occurred:", err)
         sys.exit()
-
-
-def addDay(solar_data):
-    """
-    Gets the day data from the solar data payload and sends it to the database.
-
-    :param solar_data: data about the energy generated by the solar panels
-    :type solar_data: json
-    """
-    summary_type = "day"
-    energy_today = (str)((int)(solar_data['energy_today']) * .001)
-    summary_date = (str)(solar_data['summary_date'])
-
-    addDynamoDBData(summary_date, summary_type, energy_today)
-
-
-def addMonth():
-    """
-    Get the month data from the current day just entered in the database
-    OR you can send the solar_data payload and get the month data from there.
-    Gets the current month total from the DynamoDB.
-    Calculates the new current month total and sends it to the database.
-
-    :param solar_data: data about the energy generated by the solar panels
-    :type solar_data: json
-    """
-    print "add month"
-    summary_type = "month"
-    total_month = 0
-    this_month = today.strftime("%Y-%m")
-
-    try:
-        # get all the values in the table for the current year & month
-        record_exist = table.query(
-            KeyConditionExpression=Key('type').eq('day') & Key('date').begins_with(this_month)
-        )
-        print record_exist
-        if record_exist['Count'] != 0:
-            for items in record_exist['Items']:
-                total_month += (float)(items['generated'])
-
-        addDynamoDBData(this_month, summary_type, (str)(total_month))
-
-    except Exception as err:
-        print("Error occurred:", err)
-        sys.exit()
-
-
-def addYear():
-    """
-    Get the year data from the current month just entered in the database
-    Gets the current year total from the DynamoDB.
-    Calculates the new current year total and sends it to the database.
-
-    :param solar_data: data about the energy generated by the solar panels
-    :type solar_data: json
-    """
-    summary_type = "year"
-    total_year = 0
-    this_year = today.strftime("%Y")
-    try:
-        # get all the values in the table for the current year
-        record_exist = table.query(
-            KeyConditionExpression=Key('type').eq('month') & Key('date').begins_with(this_year)
-        )
-
-        if record_exist['Count'] != 0:
-            for items in record_exist['Items']:
-                total_year += (float)(items['generated'])
-
-        addDynamoDBData(this_year, summary_type, (str)(total_year))
-
-    except Exception as err:
-        print("Error occurred:", err)
-        sys.exit()
-
 
 def lambda_handler(event, context):
     """
-    Create the DynamoDB table, get the solar data, add the day, month and year totals and store in DynamoDB.
+    Create the DynamoDB table, load the initial Payload data,
 
     :param event: The payload sent to the lambda functions endpoint
     :type event: dict|list|str|int|float|NoneType
     :param context: Runtime information
-    :type context: LambdaContext
+    :type context: LambdaContext 
     """
     # run the program
-    print "BEGIN: solar_data lambda run"
+    print "BEGIN: lambda run"
     createDynamoDBTable()
-    solar_data = getSolarData()
-    addDay(solar_data)
-    addMonth()
-    addYear()
-    print "STOPPED: solar_data lambda run"
-    return "Solar Data DynamoDB Table Complete"
+    for value in PAYLOAD:
+        unique_id = "{0}{1}{2}".format(value['gender'], value['stall'] , value['bathroom']) 
+        addDynamoDBData(unique_id, value['gender'], value['stall'], value['status'], value['bathroom'], value['timestamp'])
+    print "STOPPED: lambda run"
+    return "DynamoDB Table Complete"
+
+
+lambda_handler("","")
+
+
+

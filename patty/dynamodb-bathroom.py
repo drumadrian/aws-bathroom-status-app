@@ -160,11 +160,11 @@ def createDynamoDBTable():
                 KeySchema=[
                     {
                         'AttributeName': 'stall',
-                        'KeyType': 'HASH'
+                        'KeyType': 'HASH'                           #AWS calls this a Partition Key
                     },
                     {
                         'AttributeName': 'gender',
-                        'KeyType': 'RANGE'
+                        'KeyType': 'RANGE'                          #AWS calls this a Sort Key
                     }
                 ],
                 LocalSecondaryIndexes=[
