@@ -1,70 +1,32 @@
 'use strict';
 
-console.log('Loading function');
-
-const doc = require('dynamodb-doc');
-
-const dynamo = new doc.DynamoDB();
-
 var AWS = require("aws-sdk");
-
-
-
-// exports.handler = function(event, context, callback) {
-
-
-
-AWS.config.update({
-  region: "us-west-2",
-  endpoint: "dynamodb.us-west-2.amazonaws.com"
-});
-
-
-
 var docClient = new AWS.DynamoDB.DocumentClient()
 
-
 var table = "study-guru-bathrooms";
-
-var bathroom = 2;
-var stall = 10;
 var gender = "F";
-var unique_id = 'F102'
+var stall = 10;
+var bathroom = 2;
+var unique_id = gender+stall+bathroom;
 
 var params = {
     TableName: table,
     Key:{
-        "unique_id": unique_id
+        "unique_id": unique_id     
     }
 };
-// var params = {
-//     TableName: table,
-//     Key:{
-//         "bathroom": bathroom,
-//         "stall": stall,
-//         "gender": gender
-//     }
-// };
 
 
 
- docClient.get(params, function(err, data) {
+exports.handler = function(event, context, callback) {
+   
+    console.log(unique_id);
+    docClient.get(params, function(err, data) {
     if (err) {
         console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
     } else {
         console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
     }
 });
-
-
-//};    //End of main AWS Lambda 
-
-
-// exports.handler("","","");
-
-
-
-
-
-
-
+    //callback(null, "some success message"){console.log("success");};
+};
