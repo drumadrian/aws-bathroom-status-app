@@ -1,2 +1,4 @@
 notifications:
   slack: aws-study-gurus:xtwiPAeu8VwM1HaPb28Fo9og
+
+script: ./travis-test.sh 
