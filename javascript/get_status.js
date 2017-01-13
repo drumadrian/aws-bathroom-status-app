@@ -1,6 +1,19 @@
 'use strict';
 
+
+
+
+
+exports.handler = function(event, context, callback) {
+
+
 var AWS = require("aws-sdk");
+AWS.config.update({
+  region: "us-west-2",
+  endpoint: "dynamodb.us-west-2.amazonaws.com"
+});
+
+
 var docClient = new AWS.DynamoDB.DocumentClient()
 
 var table = "study-guru-bathrooms";
@@ -18,7 +31,7 @@ var params = {
 
 
 
-exports.handler = function(event, context, callback) {
+	
    
     console.log(unique_id);
     docClient.get(params, function(err, data) {
@@ -30,3 +43,6 @@ exports.handler = function(event, context, callback) {
 });
     //callback(null, "some success message"){console.log("success");};
 };
+
+
+exports.handler();
