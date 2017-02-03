@@ -74,3 +74,32 @@ Use in AWS to update the status of the restroom stalls.
 
 
 
+
+---
+#Repository Notes:
+#### <a name="fenced-code-block">Explanation of Folders and Files</a>
+
+
+##Folders 
+
+### bathroom_app
+- This folder holdes the main source code for project
+- **create_dynamodb**
+	- The Python script used to [create the DynamoDB database](http://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_CreateTable.html "AWS Documentation") and HASH/partition key 
+- **get_status**
+	- This is the initial attempt to use a Javascript function in a lambda function to return the status of a status request recieved.  API Gateway will ultimately trigger this Lambda function.  
+- **set_status**
+	- This function is written in Python to set the status of a given stall
+	- This function combines set-occupied() and set-vacant() into a single function
+		- This may later find that it is better to separate these functions/activities
+
+
+	
+
+### documentation
+
+- This folder holds original documentation for this project.  Related files, images, etc. are stored here
+- Most items in the folder that constitute documention are precluded by this README page. 
+
+
+
