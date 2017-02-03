@@ -5,13 +5,15 @@ Use in AWS to update the status of the restroom stalls.
 
 
 
+![bathroom2](https://cloud.githubusercontent.com/assets/6573380/22574528/3943d338-e964-11e6-9c07-b6841f809f70.jpg)
 
 
 
-# Architecture
 
 
-Architecture: 
+## Architecture
+
+
 *  DynamoDB
 *  Webpage
 *  (later) Auth
@@ -22,17 +24,17 @@ Architecture:
 
 
 
-Feature: 
+##Features: 
 * Auto Unoccupied after 5 minutes 
 * We will assume users will use the App or Webpage to mark Occupied or Vacant 
 * Do not allow Occupy requests if the bathroom status is Occupied.  
 * Always check Status at user interface level before requesting to Occupy/Reserve the bathroom 
 
 
-Need: 
+## Need to develop: 
 * a DynamoDB
 * (2) Lambda functions
-* (2) queues 
+* (2) queues (no initially needed)
 * (2) API Gateway endpoints 
 * a Webpage on S3 
 * (1) IoT Button 
@@ -50,11 +52,25 @@ Need:
 
 
 
-Bathroom App: 
+##Bathroom App Consumers (Client-side software): 
 
-Integrate with iOS
-Amazon Alexa
-Slack? 
-Webpage 
+* Integrate with iOS
+
+* Amazon Alexa
+
+* Slack? 
+
+* Webpage 
+
+
+
+
+
+
+
+
+![bathroom1](https://cloud.githubusercontent.com/assets/6573380/22574527/3940d0ac-e964-11e6-9d74-1fe4e8da8fa5.jpg)
+
+
 
 

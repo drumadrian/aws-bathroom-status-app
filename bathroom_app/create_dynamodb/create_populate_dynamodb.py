@@ -298,3 +298,6 @@ def lambda_handler(event, context):
         addDynamoDBData(unique_id, value['gender'], value['stall'], value['bstatus'], value['bathroom'], value['timestamp'])
     print "STOPPED: lambda run"
     return "DynamoDB Table Complete"
+
+
+lambda_handler("","")
