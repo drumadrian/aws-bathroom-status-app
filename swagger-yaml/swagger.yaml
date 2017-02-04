@@ -1,0 +1,81 @@
+---
+swagger: "2.0"
+info:
+  description: "This is a simple API for get status for the bathroom app"
+  version: "1.1"
+  title: "Simple Inventory API"
+  contact:
+    email: "admin@onedaywillwillownbathroomapp.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "virtserver.swaggerhub.com"
+basePath: "/drumadrian/bathroom-app-get-status/1.0.0"
+tags:
+- name: "admins"
+  description: "none"
+- name: "developers"
+  description: "none"
+schemes:
+- "https"
+paths:
+  /getstatus/{unique-id}:
+    get:
+      tags:
+      - "developers"
+      summary: "gets status of a bathroom or multiple bathrooms"
+      description: "By passing nothing, you will get all of the bathrooms and statuses\n"
+      operationId: "getallstatuses"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "unique-id"
+        in: "path"
+        description: "pass DynamoDB Primary partition key to get an entry"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "search results matching criteria"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InventoryItem"
+        400:
+          description: "bad input parameter"
+definitions:
+  InventoryItem:
+    type: "object"
+    required:
+    - "id"
+    - "manufacturer"
+    - "name"
+    - "releaseDate"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+        example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
+      name:
+        type: "string"
+        example: "Widget Adapter"
+      releaseDate:
+        type: "string"
+        format: "int32"
+        example: "2016-08-29T09:12:33.001Z"
+      manufacturer:
+        $ref: "#/definitions/Manufacturer"
+  Manufacturer:
+    required:
+    - "name"
+    properties:
+      name:
+        type: "string"
+        example: "ACME Corporation"
+      homePage:
+        type: "string"
+        format: "url"
+        example: "https://www.acme-corp.com"
+      phone:
+        type: "string"
+        example: "408-867-5309"
