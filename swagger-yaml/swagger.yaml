@@ -23,7 +23,7 @@ paths:
     get:
       tags:
       - "developers"
-      summary: "gets status of a bathroom or multiple bathrooms"
+      summary: "gets status of a bathroom  or multiple bathrooms"
       description: "By passing nothing, you will get all of the bathrooms and statuses\n"
       operationId: "getallstatuses"
       produces:
@@ -43,6 +43,19 @@ paths:
               $ref: "#/definitions/InventoryItem"
         400:
           description: "bad input parameter"
+      x-amazon-apigateway-integration:
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:getallstatuses/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        type: "aws"
+        parameters:
+          unique-id: "$input.params('unique-id')"
+        requestTemplates:
+          application/json: "{\n  \"unique-id\" : \"$input.params('unique-id')\"\n\
+            }"
 definitions:
   InventoryItem:
     type: "object"
@@ -55,27 +68,23 @@ definitions:
       id:
         type: "string"
         format: "uuid"
-        example: "d290f1ee-6c54-4b01-90e6-d701748f0851"
       name:
         type: "string"
-        example: "Widget Adapter"
       releaseDate:
         type: "string"
         format: "int32"
-        example: "2016-08-29T09:12:33.001Z"
       manufacturer:
         $ref: "#/definitions/Manufacturer"
   Manufacturer:
+    type: "object"
     required:
     - "name"
     properties:
       name:
         type: "string"
-        example: "ACME Corporation"
       homePage:
         type: "string"
         format: "url"
-        example: "https://www.acme-corp.com"
       phone:
         type: "string"
-        example: "408-867-5309"
+x-aws-api-id: "6j2lxzffih"
