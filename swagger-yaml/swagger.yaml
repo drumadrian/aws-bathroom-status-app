@@ -23,7 +23,7 @@ paths:
     get:
       tags:
       - "developers"
-      summary: "gets status of a bathroom  or multiple bathrooms"
+      summary: "gets status of a bathroom  or multiple  bathrooms"
       description: "By passing nothing, you will get all of the bathrooms and statuses\n"
       operationId: "getallstatuses"
       produces:
