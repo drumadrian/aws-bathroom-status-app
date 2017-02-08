@@ -19,7 +19,7 @@ tags:
 schemes:
 - "https"
 paths:
-  /getstatus/{unique-id}:
+  /getstatus/{unique_id}:
     get:
       tags:
       - "developers"
@@ -29,7 +29,7 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "unique-id"
+      - name: "unique_id"
         in: "path"
         description: "pass DynamoDB Primary partition key to get an entry"
         required: true
@@ -52,9 +52,9 @@ paths:
             statusCode: "200"
         type: "aws"
         parameters:
-          unique-id: "$input.params('unique-id')"
+          unique-id: "$input.params('unique_id')"
         requestTemplates:
-          application/json: "{\n  \"unique-id\" : \"$input.params('unique-id')\"\n\
+          application/json: "{\n  \"unique_id\" : \"$input.params('unique_id')\"\n\
             }"
 definitions:
   InventoryItem:
