@@ -10,7 +10,7 @@ info:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
 host: "virtserver.swaggerhub.com"
-basePath: "/drumadrian/bathroom-app-get-status/1.0.0"
+basePath: "/drumadrian/bathroom-app-get-status/1.1"
 tags:
 - name: "admins"
   description: "none"
@@ -46,6 +46,43 @@ paths:
       x-amazon-apigateway-integration:
         passthroughBehavior: "when_no_match"
         httpMethod: "POST"
+        uri: "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:getallstatuses/invocations"
+        responses:
+          default:
+            statusCode: "200"
+        type: "aws"
+        parameters:
+          unique-id: "$input.params('unique_id')"
+        requestTemplates:
+          application/json: "{\n  \"unique_id\" : \"$input.params('unique_id')\"\n\
+            }"
+  /setstatus/{unique_id}:
+    put:
+      tags:
+      - "developers"
+      summary: "set the status of a bathroom  or multiple  bathrooms in the future"
+      description: "By passing noting you will get a 400 error"
+      operationId: "setstatus"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "unique_id"
+        in: "path"
+        description: "pass DynamoDB Primary partition key to set an entry"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "search results matching criteria"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InventoryItem"
+        400:
+          description: "bad input parameter"
+      x-amazon-apigateway-integration:
+        passthroughBehavior: "when_no_match"
+        httpMethod: "PUT"
         uri: "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:getallstatuses/invocations"
         responses:
           default:
