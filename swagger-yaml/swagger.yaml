@@ -61,7 +61,7 @@ paths:
       tags:
       - "developers"
       summary: "set the status of a bathroom  or multiple  bathrooms in the future"
-      description: "By passing noting you will get a 400 error"
+      description: "By passing nothing you will get a 400 error"
       operationId: "setstatus"
       produces:
       - "application/json"
