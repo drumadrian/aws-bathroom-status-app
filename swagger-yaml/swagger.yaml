@@ -19,7 +19,7 @@ tags:
 schemes:
 - "https"
 paths:
-  /getstatus/{unique_id}:
+  /getstatus/{unique_id}/{bstatus}:
     get:
       tags:
       - "developers"
@@ -40,7 +40,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/InventoryItem"
+              $ref: "#/definitions/BathroomStall"
         400:
           description: "bad input parameter"
       x-amazon-apigateway-integration:
@@ -56,7 +56,7 @@ paths:
         requestTemplates:
           application/json: "{\n  \"unique_id\" : \"$input.params('unique_id')\"\n\
             }"
-  /setstatus/{unique_id}:
+  /setstatus/{unique_id}/{bstatus}:
     put:
       tags:
       - "developers"
@@ -71,13 +71,18 @@ paths:
         description: "pass DynamoDB Primary partition key to set an entry"
         required: true
         type: "string"
+      - name: "bstatus"
+        in: "path"
+        description: "pass the status indicator to set, 1=Occupied, 0=Vacant"
+        required: true
+        type: "string"
       responses:
         200:
           description: "search results matching criteria"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/InventoryItem"
+              $ref: "#/definitions/BathroomStall"
         400:
           description: "bad input parameter"
       x-amazon-apigateway-integration:
@@ -90,15 +95,15 @@ paths:
         type: "aws"
         parameters:
           unique-id: "$input.params('unique_id')"
+          bstatus: "$input.params('bstatus')"
         requestTemplates:
-          application/json: "{\n  \"unique_id\" : \"$input.params('unique_id')\"\n\
-            }"
+          application/json: "{\n  \"unique_id\" : \"$input.params('unique_id')\" \
+            \ \n\n  \"bstatus\" : \"$input.params('bstatus')\"\n}"
 definitions:
-  InventoryItem:
+  BathroomStall:
     type: "object"
     required:
     - "id"
-    - "manufacturer"
     - "name"
     - "releaseDate"
     properties:
@@ -110,18 +115,4 @@ definitions:
       releaseDate:
         type: "string"
         format: "int32"
-      manufacturer:
-        $ref: "#/definitions/Manufacturer"
-  Manufacturer:
-    type: "object"
-    required:
-    - "name"
-    properties:
-      name:
-        type: "string"
-      homePage:
-        type: "string"
-        format: "url"
-      phone:
-        type: "string"
 x-aws-api-id: "6j2lxzffih"
