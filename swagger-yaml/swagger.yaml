@@ -97,8 +97,8 @@ paths:
           unique-id: "$input.params('unique_id')"
           bstatus: "$input.params('bstatus')"
         requestTemplates:
-          application/json: "{\n  \"unique_id\" : \"$input.params('unique_id')\" \
-            \ \n\"bstatus\" : \"$input.params('bstatus')\"\n}"
+          application/json: "{\n  \"unique_id\" : \"$input.params('unique_id')\" \n\
+            \  \"bstatus\" : \"$input.params('bstatus')\"\n}"
 definitions:
   BathroomStall:
     type: "object"
