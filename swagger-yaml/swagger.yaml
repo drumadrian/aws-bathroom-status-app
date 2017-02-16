@@ -1,7 +1,7 @@
 ---
 swagger: "2.0"
 info:
-  description: "This is a simple API for get status for the bathroom app"
+  description: "This is a simple API to get status for the bathroom app"
   version: "1.1"
   title: "Simple Bathroom Status"
   contact:
@@ -19,7 +19,7 @@ tags:
 schemes:
 - "https"
 paths:
-  /getstatus/{unique_id}/{bstatus}:
+  /getstatus/{unique_id}:
     get:
       tags:
       - "developers"
