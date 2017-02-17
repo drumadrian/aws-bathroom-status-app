@@ -65,22 +65,79 @@ def lambda_handler(event, context):
     # run the program
     logger.info("BEGIN: lambda run")
 
-    # variables
-    user_request = event['request']
-    gender = event['gender']
-    stall = event['stall']
-    bathroom_number = event['bathroom']
-    unique_id = '{0}{1}{2}'.format(gender, stall, bathroom_number)
 
-    if user_request == 'set_occupied':
-        logger.info('Setting {0} bathroom {1} stall {2} to occupied status.'.format(gender, bathroom_number, stall))
-        set_occupied(unique_id)
-    elif user_request == 'set_vacant':
-        logger.info('Setting {0} bathroom {1} stall {2} to vacant status.'.format(gender, bathroom_number, stall))
-        set_vacant(unique_id)
+    #TODO:  If parameters are empty return a 400 error 
+
+    # # variables when using Lambda Proxy and HTTP body parameters
+    # user_request = event['request']
+    # gender = event['gender']
+    # stall = event['stall']
+    # bathroom_number = event['bathroom']
+    # unique_id = '{0}{1}{2}'.format(gender, stall, bathroom_number)
+
+    # if user_request == 'set_occupied':
+    #     logger.info('Setting {0} bathroom {1} stall {2} to occupied status.'.format(gender, bathroom_number, stall))
+    #     set_occupied(unique_id)
+    # elif user_request == 'set_vacant':
+    #     logger.info('Setting {0} bathroom {1} stall {2} to vacant status.'.format(gender, bathroom_number, stall))
+    #     set_vacant(unique_id)
+    # else:
+    #     error_message = 'Invalid request'
+    #     logger.error(error_message)
+    #     raise Exception(error_message)
+    # logger.info("STOPPED: lambda run")
+    # return "Setting bathroom status {0} complete".format(user_request)
+
+
+    print "event[bstatus]={}".format(event['bstatus'])
+    print "event type={}".format(type(event['bstatus']))
+
+
+    requested_status = int(event['bstatus'])
+
+    if requested_status == 1:
+        user_request = 'set_occupied'
+        set_occupied(event['unique_id'])
+    elif requested_status == 0:
+        set_vacant(event['unique_id'])
+        user_request = 'set_vacent'
     else:
-        error_message = 'Invalid request'
+        error_message = 'Invalid request - the variable requested_status was not set to either 0 or 1'
         logger.error(error_message)
-        raise Exception(error_message)
+        # raise Exception(error_message)
+        return "Setting bathroom status using event={0} failed".format(event)
+
     logger.info("STOPPED: lambda run")
     return "Setting bathroom status {0} complete".format(user_request)
+
+#####################################################################################
+#  Code below is for Desktop testing 
+#####################################################################################
+
+if __name__ == "__main__":
+
+    # #Test events 
+    # event =
+    # {
+    #   "request": "set_vacant",
+    #   "bathroom": 2,
+    #   "gender": "F",
+    #   "stall": 10
+    # }
+
+    event = dict()
+    event['unique_id'] = 'F102'
+    event['bstatus'] = 1
+
+
+    context = ""
+    lambda_handler(event, context)
+ 
+
+
+
+
+
+
+
+
