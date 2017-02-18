@@ -1,0 +1,13 @@
+Type = 		LIST_OF_NAMES_FOR_A_STALL
+
+
+Values = 	bathroom
+			stall
+			crapper
+			pooper
+			john
+			shitter
+			throne
+			potty
+			porta-potty
+			number 2

@@ -1,0 +1,40 @@
+{
+  "intents": [
+    {
+      "intent": "GetStallStatus",
+      "slots": [
+      {
+        "name" : "Stall",
+        "type": "LIST_OF_NAMES_FOR_A_STALL"
+      }
+     ]
+    },
+    {
+      "intent": "SetStatusToOccupied",
+      "slots": [
+      {
+        "name" : "Stall",
+        "type": "LIST_OF_NAMES_FOR_A_STALL"
+      }
+     ]
+    },
+    {
+      "intent": "SetStatusToVacant",
+      "slots": [
+      {
+        "name" : "Stall",
+        "type": "LIST_OF_NAMES_FOR_A_STALL"
+      }
+     ]
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+ }
