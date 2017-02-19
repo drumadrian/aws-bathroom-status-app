@@ -22,6 +22,7 @@ SetStatusToVacant leave a {Stall}
 SetStatusToVacant clear a {Stall}
 SetStatusToVacant clear out the {Stall}
 SetStatusToVacant vacate {Stall}
+SetStatusToVacant vacate a {Stall}
 SetStatusToVacant make the stall open {Stall}
 SetStatusToVacant I'm done with a {Stall}
 SetStatusToVacant I'm finished with a {Stall}
