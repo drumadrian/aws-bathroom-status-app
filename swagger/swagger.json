@@ -1,0 +1,147 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is a simple API to set the status for the bathroom app. A test without Lambda Sync",
+    "version" : "1.0.0",
+    "title" : "Simple Bathroom Status Two",
+    "contact" : {
+      "email" : "admin@onedaywillwillownbathroomapp.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "tags" : [ {
+    "name" : "admins",
+    "description" : "none"
+  }, {
+    "name" : "developers",
+    "description" : "none"
+  } ],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/getstatus/{unique_id}" : {
+      "get" : {
+        "tags" : [ "developers" ],
+        "summary" : "gets status of a bathroom  or multiple  bathrooms",
+        "description" : "By passing nothing, you will get all of the bathrooms and statuses\n",
+        "operationId" : "test-get-status",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "unique_id",
+          "in" : "path",
+          "description" : "pass DynamoDB Pripmary partition key to get an entry",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/BathroomStall"
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "passthroughBehavior" : "when_no_match",
+          "httpMethod" : "POST",
+          "uri" : "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:test-get-status/invocations",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200"
+            }
+          },
+          "type" : "aws",
+          "parameters" : {
+            "unique-id" : "$input.params('unique_id')"
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"unique_id\" : \"$input.params('unique_id')\"\n}"
+          }
+        }
+      }
+    },
+    "/setstatus/{unique_id}/{bstatus}" : {
+      "put" : {
+        "tags" : [ "developers" ],
+        "summary" : "set the status of a bathroom  or multiple  bathrooms in the future",
+        "description" : "By passing nothing you will get a 400 error",
+        "operationId" : "set-status",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "unique_id",
+          "in" : "path",
+          "description" : "pass DynamoDB Primary partition key to set an entry",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "bstatus",
+          "in" : "path",
+          "description" : "pass the status indicator to set, 1=Occupied, 0=Vacant",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results matching criteria",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/BathroomStall"
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "passthroughBehavior" : "when_no_match",
+          "httpMethod" : "PUT",
+          "uri" : "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:set-status/invocations",
+          "responses" : {
+            "default" : {
+              "statusCode" : "200"
+            }
+          },
+          "type" : "aws",
+          "parameters" : {
+            "unique-id" : "$input.params('unique_id')",
+            "bstatus" : "$input.params('bstatus')"
+          },
+          "requestTemplates" : {
+            "application/json" : "{\n  \"unique_id\" : \"$input.params('unique_id')\" \n  \"bstatus\" : \"$input.params('bstatus')\"\n}"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "BathroomStall" : {
+      "type" : "object",
+      "required" : [ "id", "name", "releaseDate" ],
+      "properties" : {
+        "id" : {
+          "type" : "string",
+          "format" : "uuid"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "releaseDate" : {
+          "type" : "string",
+          "format" : "int32"
+        }
+      }
+    }
+  },
+  "x-aws-api-id" : "t8xxh46pgh"
+}
