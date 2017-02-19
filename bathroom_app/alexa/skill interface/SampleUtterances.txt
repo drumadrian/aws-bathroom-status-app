@@ -1,4 +1,5 @@
 GetStallStatus a stall
+GetStallStatus what is the status of my {Stall}
 GetStallStatus get {Stall} status
 GetStallStatus get the {Stall} status
 GetStallStatus get a {Stall} status
@@ -25,4 +26,3 @@ SetStatusToVacant make the stall open {Stall}
 SetStatusToVacant I'm done with a {Stall}
 SetStatusToVacant I'm finished with a {Stall}
 SetStatusToVacant I'm done pooping
-
