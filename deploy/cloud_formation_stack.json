@@ -1,0 +1,52 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "tablestudygurubathrooms": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "unique_id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "unique_id",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "1",
+          "WriteCapacityUnits": "1"
+        }
+      }
+    },
+    "s3awsbathroomappfiles": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "CorsConfiguration": {
+          "CorsRules": [
+            {
+              "AllowedHeaders": [
+                "Authorization"
+              ],
+              "AllowedMethods": [
+                "GET"
+              ],
+              "AllowedOrigins": [
+                "*"
+              ],
+              "MaxAge": "3000"
+            }
+          ]
+        },
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        }
+      }
+    }
+  },
+  "Description": "The Bathroom App"
+}
