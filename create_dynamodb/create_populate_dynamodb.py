@@ -4,118 +4,19 @@ import sys
 import datetime
 import os
 
-# timezone changes
-os.environ['TZ'] = 'America/Los_Angeles'
 
-# today's date
-# today = date.today()
-# today=datetime.date(2016, 9, 3)
 
-# DynamoDB table name (What is a collection of bathrooms called?)
-table_name = "study-guru-bathrooms"
-
-# AWS Client - Raw Low Level client
-client = boto3.client('dynamodb')
-
-# DynamoDB resource - High Level (Object Oriented)
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(table_name)
-
-# payload
-PAYLOAD = [
-    {
-        "stall": 1,
-        "gender": 'M',
-        "bstatus": 0,
-        "bathroom": 1,
-        "timestamp": '1245678930'
-    },
-    {
-        "stall": 2,
-        "gender": 'M',
-        "bstatus": 0,
-        "bathroom": 1,
-        "timestamp": '1245678920'
-    },
-    {
-        "stall": 3,
-        "gender": 'M',
-        "bstatus": 0,
-        "bathroom": 1,
-        "timestamp": '1245678910'
-    },
-    {
-        "stall": 4,
-        "gender": 'M',
-        "bstatus": 0,
-        "bathroom": 2,
-        "timestamp": '1245678909'
-    },
-    {
-        "stall": 5,
-        "gender": 'M',
-        "bstatus": 1,
-        "bathroom": 2,
-        "timestamp": '1245678908'
-    },
-    {
-        "stall": 6,
-        "gender": 'M',
-        "bstatus": 1,
-        "bathroom": 2,
-        "timestamp": '1245678907'
-    },
-    {
-        "stall": 7,
-        "gender": 'F',
-        "bstatus": 0,
-        "bathroom": 1,
-        "timestamp": '1245678906'
-    },
-    {
-        "stall": 8,
-        "gender": 'F',
-        "bstatus": 1,
-        "bathroom": 1,
-        "timestamp": '1245678905'
-    },
-    {
-        "stall": 9,
-        "gender": 'F',
-        "bstatus": 0,
-        "bathroom": 1,
-        "timestamp": '1245678904'
-    },
-    {
-        "stall": 10,
-        "gender": 'F',
-        "bstatus": 1,
-        "bathroom": 2,
-        "timestamp": '1245678903'
-    },
-    {
-        "stall": 11,
-        "gender": 'F',
-        "bstatus": 0,
-        "bathroom": 2,
-        "timestamp": '1245678902'
-    },
-    {
-        "stall": 12,
-        "gender": 'F',
-        "bstatus": 1,
-        "bathroom": 2,
-        "timestamp": '1245678901'
-    }
-]
-
-def createDynamoDBTable():
+def createDynamoDBTable(table_name):
     """
     Checks if the DynamoDB table exists. Otherwise, it will create
     a table and wait for it to complete creation before continuing
     with the rest of the script.
     Adrian Alternative database fields:  Bathroom ID, Stall ID, Gender, bstatus, Time of Last bstatus, Stall Name
     """
+
+    # AWS Client - Raw Low Level client
+    client = boto3.client('dynamodb')
+
     try:
         # skip creating table if it already exists
         response = client.describe_table(
@@ -244,7 +145,7 @@ def createDynamoDBTable():
             sys.exit()
 
 
-def addDynamoDBData(unique_id, gender, stall, bstatus, bathroom, timestamp):
+def addDynamoDBData(table, unique_id, gender, stall, bstatus, bathroom, timestamp):
     """
     Puts the payload from the script into a DynamoDB table
 
@@ -280,7 +181,23 @@ def addDynamoDBData(unique_id, gender, stall, bstatus, bathroom, timestamp):
         print("Error occurred:", err)
         sys.exit()
 
+def populate_database(initial_database_PAYLOAD, table_name):
+    # AWS Client - Raw Low Level client
+    # client = boto3.client('dynamodb')
 
+    # DynamoDB resource - High Level (Object Oriented)
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table(table_name)
+
+    for value in initial_database_PAYLOAD:
+        unique_id = "{0}{1}{2}".format(value['gender'], value['stall'] , value['bathroom'])
+        addDynamoDBData(table, unique_id, value['gender'], value['stall'], value['bstatus'], value['bathroom'], value['timestamp'])
+
+
+
+##################################################
+    # LAMBDA HANDLER FUNCTION 
+##################################################
 def lambda_handler(event, context):
     """
     Create the DynamoDB table, load the initial Payload data,
@@ -291,13 +208,161 @@ def lambda_handler(event, context):
     :type context: LambdaContext
     """
     # run the program
-    print "BEGIN: lambda run"
-    createDynamoDBTable()
-    for value in PAYLOAD:
-        unique_id = "{0}{1}{2}".format(value['gender'], value['stall'] , value['bathroom'])
-        addDynamoDBData(unique_id, value['gender'], value['stall'], value['bstatus'], value['bathroom'], value['timestamp'])
-    print "STOPPED: lambda run"
+    print "BEGIN: lambda_handler()"
+
+    #########################   
+    # START Refactored Code  
+    #########################
+
+    # timezone changes
+    os.environ['TZ'] = 'America/Los_Angeles'
+
+    # today's date
+    # today = date.today()
+    # today=datetime.date(2016, 9, 3)
+
+    # DEFAULT DynamoDB table name (What is a collection of bathrooms called?)
+    DEFAULT_table_name = "study-guru-bathrooms3"
+
+    # AWS Client - Raw Low Level client
+    client = boto3.client('dynamodb')
+
+    # DynamoDB resource - High Level (Object Oriented)
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table(DEFAULT_table_name)
+
+    # payload
+    PAYLOAD = [
+        {
+            "stall": 1,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678930'
+        },
+        {
+            "stall": 2,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678920'
+        },
+        {
+            "stall": 3,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678910'
+        },
+        {
+            "stall": 4,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 2,
+            "timestamp": '1245678909'
+        },
+        {
+            "stall": 5,
+            "gender": 'M',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678908'
+        },
+        {
+            "stall": 6,
+            "gender": 'M',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678907'
+        },
+        {
+            "stall": 7,
+            "gender": 'F',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678906'
+        },
+        {
+            "stall": 8,
+            "gender": 'F',
+            "bstatus": 1,
+            "bathroom": 1,
+            "timestamp": '1245678905'
+        },
+        {
+            "stall": 9,
+            "gender": 'F',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678904'
+        },
+        {
+            "stall": 10,
+            "gender": 'F',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678903'
+        },
+        {
+            "stall": 11,
+            "gender": 'F',
+            "bstatus": 0,
+            "bathroom": 2,
+            "timestamp": '1245678902'
+        },
+        {
+            "stall": 12,
+            "gender": 'F',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678901'
+        }
+    ]
+
+    #########################
+    # END Refactored Code  
+    #########################
+
+
+
+
+    if 'dynamodb_table_name' in os.environ:
+        table_name = os.environ['dynamodb_table_name']
+    else:
+        table_name = DEFAULT_table_name
+
+    createDynamoDBTable(table_name)
+
+    populate_database(PAYLOAD, table_name)
+
+    print "END: lambda run"
     return "DynamoDB Table Complete"
 
 
-lambda_handler("","")
+
+##################################################
+# Used for desktop testing (outside of AWS Lambda)
+##################################################
+
+if __name__ == "__main__":
+    # sys.exit(main())
+
+    event=""
+
+    # Populate context object to emulate execution environment in AWS Lambda
+    context={
+            'context_data': 'config_DATABASE_NAME',
+            'context_data2': 'config_DATABASE_NAME',
+            'context_data3': 'config_DATABASE_NAME'
+            }
+
+
+
+
+
+    print'\n BEGIN LOCAL (non-Lambda) EXECUTION \n'
+    sys.exit(lambda_handler(event,context))
+
+
+
+
