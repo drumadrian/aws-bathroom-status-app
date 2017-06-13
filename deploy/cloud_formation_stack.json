@@ -1,6 +1,8 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The Bathroom App",
   "Resources": {
+
     "tablestudygurubathrooms": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
@@ -22,26 +24,19 @@
         }
       }
     },
+
     "tablestudygurubathroomsconfig": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [
           {
-            "AttributeName": "config_date_hash",
-            "AttributeType": "S"
-          },
-          {
             "AttributeName": "current_config",
-            "AttributeType": "Boolean"
-          },
-          {
-            "AttributeName": "config_date",
             "AttributeType": "S"
           }
         ],
         "KeySchema": [
           {
-            "AttributeName": "config_date_hash",
+            "AttributeName": "current_config",
             "KeyType": "HASH"
           }
         ],
@@ -51,7 +46,28 @@
         }
       }
     },
+
     "s3awsbathroomappfiles": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        },
+        "Tags": [
+          {
+            "Key": "project",
+            "Value": "the bathroom app"
+          },
+          {
+            "Key": "provisioned by",
+            "Value": "initial setup using CloudFormation"
+          }
+        ]        
+      }
+    },
+
+    "s3awsbathroomappwebsitebucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
@@ -73,70 +89,302 @@
         },
         "VersioningConfiguration": {
           "Status": "Suspended"
+        },
+        "Tags": [
+          {
+            "Key": "project",
+            "Value": "the bathroom app"
+          },
+          {
+            "Key": "provisioned by",
+            "Value": "initial setup using CloudFormation"
+          }
+        ]
+      }
+    },
+
+    "adminTopicEmailListforNotifications": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "DisplayName": "AdminEmailListforBathroomAppNotifications",
+        "Subscription": [
+          {
+            "Endpoint": "admin@mydomain.com",
+            "Protocol": "email"
+          }
+        ]
+      }
+    },
+
+    "snspolicyAdrianEmailListforNotifications": {
+      "Type": "AWS::SNS::TopicPolicy",
+      "Properties": {
+        "Topics": [
+          {
+            "Ref": "adminTopicEmailListforNotifications"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2008-10-17",
+          "Id": "__default_policy_ID",
+          "Statement": [
+            {
+              "Sid": "__default_statement_ID",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": [
+                "SNS:GetTopicAttributes",
+                "SNS:SetTopicAttributes",
+                "SNS:AddPermission",
+                "SNS:RemovePermission",
+                "SNS:DeleteTopic",
+                "SNS:Subscribe",
+                "SNS:ListSubscriptionsByTopic",
+                "SNS:Publish",
+                "SNS:Receive"
+              ],
+              "Resource": {
+                "Ref": "adminTopicEmailListforNotifications"
+              }
+            }
+          ]
         }
       }
+    },
+
+    "bathroomappgetstatuslambdafunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Handler": "index.handler",
+            "MemorySize": "128",
+            "FunctionName": "bathroomappgetstatuslambdafunction",
+            "Role": { "Fn::GetAtt" : ["bathroomappgetstatuslambdarole", "Arn"] },
+             "Code": {
+                  "ZipFile": { "Fn::Join": ["\n", [
+                      "exports.adrian = (event, context, callback) => ",
+                      "{callback(null, 'Hello from Lambda');};"]
+                 ]}
+             },
+            "Runtime": "nodejs4.3",
+            "Timeout": "10"
+          }
+    },
+
+    "bathroomappgetstatuslambdarole":{
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": 
+            {
+              "Version": "2012-10-17",
+              "Statement": [{
+                "Sid":"testpolicy",
+                "Effect": "Allow",
+                "Action": ["sts:AssumeRole"],
+                "Principal": {
+                  "Service": ["lambda.amazonaws.com","ec2.amazonaws.com"]
+                }
+              }]
+            },
+        "RoleName": "bathroomappgetstatuslambdarole"
+      }
+    },
+
+    "bathroomappgetstatuslambdapolicy": {
+      "DependsOn":"bathroomappgetstatuslambdarole",
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Action": [
+              "*"
+            ],
+            "Resource": "*"
+          }]
+        },
+        "PolicyName": "bathroomappgetstatuslambdapolicy",
+        "Roles":["bathroomappgetstatuslambdarole"]
+      }
+    },
+
+    "bathroomappsetstatuslambdafunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Handler": "index.handler",
+            "MemorySize": "128",
+            "FunctionName": "bathroomappsetstatuslambdafunction",
+            "Role": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] },
+              "Code": {
+                "ZipFile": { "Fn::Join": ["\n", [
+                    "import json",
+                    "def handler(event, context):",
+                    "    lambdaRetVal = {\"Hello\":\"World\"}",
+                    "    return json.dumps(lambdaRetVal)"]
+                ]}
+              },
+            "Runtime": "python2.7",
+            "Timeout": "10"
+          }
+    },
+
+    "bathroomappalexalambdafunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Handler": "index.handler",
+            "MemorySize": "128",
+            "FunctionName": "bathroomappalexalambdafunction",
+            "Role": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] },
+              "Code": {
+                "ZipFile": { "Fn::Join": ["\n", [
+                    "import json",
+                    "def handler(event, context):",
+                    "    lambdaRetVal = {\"Hello\":\"World\"}",
+                    "    return json.dumps(lambdaRetVal)"]
+                ]}
+              },
+            "Runtime": "python2.7",
+            "Timeout": "10"
+          }
+    },
+
+    "bathroomappsyncdyanomoands3lambdafunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Handler": "index.handler",
+            "MemorySize": "128",
+            "FunctionName": "bathroomappsyncdyanomoands3lambdafunction",
+            "Role": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] },
+              "Code": {
+                "ZipFile": { "Fn::Join": ["\n", [
+                    "import json",
+                    "def handler(event, context):",
+                    "    lambdaRetVal = {\"Hello\":\"World\"}",
+                    "    return json.dumps(lambdaRetVal)"]
+                ]}
+              },
+            "Runtime": "python2.7",
+            "Timeout": "10"
+          }
+    },
+
+    "bathroomappkickstartconfiglambdafunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Handler": "index.handler",
+            "MemorySize": "128",
+            "FunctionName": "bathroomappkickstartconfiglambdafunction",
+            "Role": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] },
+              "Code": {
+                "ZipFile": { "Fn::Join": ["\n", [
+                    "import json",
+                    "def handler(event, context):",
+                    "    lambdaRetVal = {\"Hello\":\"World\"}",
+                    "    return json.dumps(lambdaRetVal)"]
+                ]}
+              },
+            "Runtime": "python2.7",
+            "Timeout": "10"
+          }
+    },
+
+    "bathroomappsuperrole":{
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": 
+            {
+              "Version": "2012-10-17",
+              "Statement": [{
+                "Sid":"testpolicy",
+                "Effect": "Allow",
+                "Action": ["sts:AssumeRole"],
+                "Principal": {
+                  "Service": ["lambda.amazonaws.com","ec2.amazonaws.com"]
+                }
+              }]
+            },
+        "RoleName": "bathroomappsuperrole"
+      }
+    },
+
+    "bathroomappsuperpolicy": {
+      "DependsOn":"bathroomappgetstatuslambdarole",
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Action": [
+              "*",
+              "logs:CreateLogGroup"
+            ],
+            "Resource": "*"
+          }]
+        },
+        "PolicyName": "bathroomappsuperpolicy",
+        "Roles":["bathroomappsuperrole"]
+      }
     }
-  },
-{
-  "Type" : "AWS::IAM::Policy",
-  "Properties" : { 
-    "Groups" : [ String, ... ],
-    "PolicyDocument" : JSON object,
-    "PolicyName" : String,
-    "Roles" : [ String, ... ],
+
   }
-},
-{
-  "Type": "AWS::IAM::Role",
-  "Properties": {
-    "AssumeRolePolicyDocument": { JSON },
-    "ManagedPolicyArns": [ String, ... ],
-    "Path": String,
-    "Policies": [ Policies, ... ],
-    "RoleName": "bathroom_app_get_status_lambda_role"
-  }
-},
-{
-  "Type": "AWS::IAM::Role",
-  "Properties": {
-    "AssumeRolePolicyDocument": { JSON },
-    "ManagedPolicyArns": [ String, ... ],
-    "Path": String,
-    "Policies": [ Policies, ... ],
-    "RoleName": "bathroom_app_set_status_lambda_role"
-  }
-},
-{
-  "Type": "AWS::IAM::Role",
-  "Properties": {
-    "AssumeRolePolicyDocument": { JSON },
-    "ManagedPolicyArns": [ String, ... ],
-    "Path": String,
-    "Policies": [ Policies, ... ],
-    "RoleName": "bathroom_app_alexa_lambda_role"
-  }
-},
-{
-  "Type": "AWS::IAM::Role",
-  "Properties": {
-    "AssumeRolePolicyDocument": { JSON },
-    "ManagedPolicyArns": [ String, ... ],
-    "Path": String,
-    "Policies": [ Policies, ... ],
-    "RoleName": "bathroom_app_apply_config_lambda_role"
-  }
-},
-{
-  "Type": "AWS::IAM::Role",
-  "Properties": {
-    "AssumeRolePolicyDocument": { JSON },
-    "ManagedPolicyArns": [ String, ... ],
-    "Path": String,
-    "Policies": [ Policies, ... ],
-    "RoleName": "bathroom_app_update_config_lambda_role"
-  }
+
 }
 
 
-  "Description": "The Bathroom App"
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
