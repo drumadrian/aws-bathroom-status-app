@@ -330,19 +330,6 @@
     },
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     "vpce5a89282": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
@@ -655,25 +642,151 @@
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
+    },
+
+
+
+
+
+    "BathroomAppAPI": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "Greeting API",
+        "Description": "API used for Greeting requests",
+        "FailOnWarnings": true,
+        "Body": {
+          "swagger": "2.0",
+          "info": {
+            "version": "2016-08-17T18:08:34Z",
+            "title": "Greeting API"
+          },
+          "basePath": "/LATEST",
+          "schemes": ["https"],
+          "paths": {
+            "/greeting": {
+              "get": {
+                "parameters": [{
+                  "name": "name",
+                  "in": "query",
+                  "required": false,
+                  "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                  "200": {
+                    "description": "200 response"
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "requestTemplates": {
+                    "application/json": "{\"name\": \"$input.params('name')\"}"
+                  },
+                  "uri": {"Fn::Join": ["",
+                    ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, ":lambda:path/2015-03-31/functions/", {"Fn::GetAtt": ["bathroomappgetstatuslambdafunction", "Arn"]}, "/invocations"]
+                  ]},
+                  "responses": {
+                    "default": {
+                      "statusCode": "200"
+                    }
+                  },
+                  "httpMethod": "POST",
+                  "type": "aws"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "LambdaPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:invokeFunction",
+        "FunctionName": {"Fn::GetAtt": ["bathroomappgetstatuslambdafunction", "Arn"]},
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {"Fn::Join": ["",
+          ["arn:aws:execute-api:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":", {"Ref": "BathroomAppAPI"}, "/*"]
+        ]}
+      }
+    },
+
+    "ApiGatewayCloudWatchLogsRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": { "Service": ["apigateway.amazonaws.com"] },
+            "Action": ["sts:AssumeRole"]
+          }]
+        },
+        "Policies": [{
+          "PolicyName": "ApiGatewayLogsPolicy",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "logs:GetLogEvents",
+                "logs:FilterLogEvents"
+              ],
+              "Resource": "*"
+            }]
+          }
+        }]
+      }
+    },
+
+    "ApiGatewayAccount": {
+      "Type": "AWS::ApiGateway::Account",
+      "Properties": {
+        "CloudWatchRoleArn": {"Fn::GetAtt": ["ApiGatewayCloudWatchLogsRole", "Arn"] }
+      }
+    },
+
+    "BathroomAppAPIStage": {
+      "DependsOn": ["ApiGatewayAccount"],
+      "Type": "AWS::ApiGateway::Stage",
+      "Properties": {
+        "DeploymentId": {"Ref": "ApiDeployment"},
+        "MethodSettings": [{
+          "DataTraceEnabled": true,
+          "HttpMethod": "*",
+          "LoggingLevel": "INFO",
+          "ResourcePath": "/*"
+        }],
+        "RestApiId": {"Ref": "BathroomAppAPI"},
+        "StageName": "LATEST"
+      }
+    },
+
+    "ApiDeployment": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {"Ref": "BathroomAppAPI"},
+        "StageName": "DummyStage"
+      }
     }
 
 
 
 
+  },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "Outputs": {
+    "RootUrl": {
+      "Description": "Root URL of the API gateway",
+      "Value": {"Fn::Join": ["",
+        ["https://", {"Ref": "BathroomAppAPI"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com"]
+      ]}
+    }
   }
 
 }
