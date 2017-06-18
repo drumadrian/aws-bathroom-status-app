@@ -1,10 +1,10 @@
 ### Solar System Exploration, 1950s – 1960s
 
-- [ ] Need to updated Cloudformation to only use 1 super role
+- [X] Need to updated Cloudformation to only use 1 super role
 	- [ ] Replace bathroomappsuperrole2 with bathroomappsuperrole......bathroomappsuperrole2 is really used for the EC2 instance
 	- [ ] Replace bathroomappsuperpolicy2 with bathroomappsuperpolicy....bathroomappsuperpolicy was really just used for the Lambda function 
 
-- [ ] Need to write shell script or Python script to configure each asset and deploy the app live
+- [ ] Need to write Kickstart shell script or Python script to configure each asset and deploy the app live
 
 - [ ] Need to add iOS app project to Cloudformation. Or built app to point to API
 
@@ -16,10 +16,13 @@
 
 - [ ] Capture logs from API gateway and view in Logstalgia
 
-- [ ] TBD
+- [X] Add LambdaPermission for each backen AWS Lambda function 
+
+- [ ] Document Kickstart script steps using Installation document 
 
 - [ ] TBD
 
+- [ ] TBD
 
 
 
