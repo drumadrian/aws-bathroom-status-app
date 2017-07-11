@@ -1,0 +1,32 @@
+{
+  "alexa_function_region": "us-east-1",
+  "Description": "The Bathroom App",
+  "Resources": {
+
+    "tablestudygurubathrooms": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "unique_id",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "unique_id",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "1",
+          "WriteCapacityUnits": "1"
+        }
+      }
+    },
+
+  }
+}
+
+
+
