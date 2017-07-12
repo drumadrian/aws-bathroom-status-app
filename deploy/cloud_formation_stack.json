@@ -1,6 +1,32 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "The Bathroom App Version 0.4",
+  "Parameters" : {
+    "KeyName": {
+      "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instances",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
+    },
+    "AdminUser" : {
+      "NoEcho": "true",
+      "Description" : "The admin user account username",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "16",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "AdminPassword" : {
+      "NoEcho": "true",
+      "Description" : "The admin user account password",
+      "Type": "String",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "must contain only alphanumeric characters."
+    }
+  },
+
   "Resources": {
 
     "tablestudygurubathrooms": {
@@ -432,7 +458,7 @@
         "IamInstanceProfile": {"Ref":"bathroomAppConfigEC2InstanceProfile"},
         "ImageId": "ami-4836a428",
         "InstanceType": "t2.medium",
-        "KeyName": "TheBathroomAppConfigEC2InstanceKeyPair",
+        "KeyName": { "Ref" : "KeyName" },
         "Monitoring": "true",
         "Tags": [
           {
@@ -591,7 +617,7 @@
         "IpProtocol": "tcp",
         "FromPort": "22",
         "ToPort": "22",
-        "CidrIp": "174.65.130.138/32"
+        "CidrIp": "174.65.133.169/32"
       }
     },
 
