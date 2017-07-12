@@ -41,9 +41,20 @@ USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 # Update date/time configuration data file in AWS S3 bucket
 # Setup DNS for S3 website bucket
 # Setup DNS for API
-# Setup trigger on Config S3 bucket for config update Lambda function to sync setting into DynomoDB
 # Deploy AWS API Gateway API 
-# Publish config date to AWS SNS Topic for the system admin
+# Publish config data to AWS SNS Topic for the system admin
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -64,6 +75,26 @@ def lambda_handler(event, context):
     if DEBUG:
         print "event={}".format(event)
         print "context={}".format(context)
+
+
+
+    clone_git_repo()
+    create_zip_for_lambda() 
+    get_system_config_file()  
+    update_lambda_functions_code()
+    turn_on_versioning_for_buckets()
+    add_tags_to_assets()
+    attach_policies_to_roles()
+    create_api_from_swagger()
+    setup_lambda_trigger_for_config()
+    update_date_and_time_in_configuration()
+    setup_dns_for_s3_website()
+    setup_dns_for_api()
+    deploy_api_gateway_api() 
+    publish_config_data_to_system_admin()
+
+
+
 
 
     return "lambda_handler() complete"

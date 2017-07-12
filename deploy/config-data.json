@@ -36,7 +36,38 @@
       "time_of_last_update": "not_yet_set",
       "dynamo_db_database_arn": "not_yet_set"
 
-  }
+  },
+
+  "bathrooms": [
+
+      {
+        "gender" : "M",
+        "building": "",
+        "name":"",
+        "stalls":[
+          {
+            "stall_id":"not_set"
+          },
+          {
+            "stall_id":"not_set"
+          }
+        ]
+      },
+      {
+        "gender" : "F",
+        "building": "",
+        "name":"",
+        "stalls":[
+          {
+            "stall_id":"not_set"
+          },
+          {
+            "stall_id":"not_set"
+          }
+        ]
+      }
+  
+  ]
 }
 
 
