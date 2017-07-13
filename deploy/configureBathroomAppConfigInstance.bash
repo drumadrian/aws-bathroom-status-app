@@ -62,23 +62,31 @@ echo -e "\n COMPLETED: sudo yum install -y python34-setuptools \n"
 sudo easy_install-3.4 pip
 echo -e "\n COMPLETED: sudo easy_install-3.4 pip \n"
 
-sudo pip34 install json
-echo -e "\n COMPLETED: sudo pip34 install json \n"
-
-sudo pip34 install os
-echo -e "\n COMPLETED: sudo pip34 install os \n"
-
-
+pip install --upgrade pip
+echo -e "\n COMPLETED: pip install --upgrade pip \n"
 
 echo -e "\n\n ######### Setting up Python Virtual Environment #########  \n"
 
 cd
 mkdir environments
 cd environments
+
 sudo pip install --upgrade virtualenv
+echo -e "\n COMPLETED: sudo pip install --upgrade virtualenv \n"
+
 virtualenv -p python3 venvironmentforconfig
+echo -e "\n COMPLETED: virtualenv -p python3 venvironmentforconfig \n"
+
 source venvironmentforconfig/bin/activate
 pip install boto3
+echo -e "\n COMPLETED: pip install boto3 \n"
+
+# pip install json
+# echo -e "\n COMPLETED: pip install json \n"
+
+# pip install os
+# echo -e "\n COMPLETED: pip install os \n"
+
 
 echo -e "\n\n ######### COMPLETED:  system updates and Prerequisites: COMPLETED #########  \n"
 
