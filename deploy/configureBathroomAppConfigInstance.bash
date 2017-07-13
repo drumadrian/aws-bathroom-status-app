@@ -2,7 +2,9 @@
 # Sources: 
 # 	https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-centos-7
 # 	https://www.tecmint.com/install-python-in-linux/
-# 
+# 	https://stackoverflow.com/questions/23842713/using-python-3-in-virtualenv
+#	https://forums.aws.amazon.com/thread.jspa?messageID=705010
+#
 ############################################################
 # Note: This script mostly runs from the ec2-user's home directory
 
@@ -73,8 +75,10 @@ echo -e "\n\n ######### Setting up Python Virtual Environment #########  \n"
 cd
 mkdir environments
 cd environments
-python3.6 -m venv venvironmentforconfig
+sudo pip install --upgrade virtualenv
+virtualenv -p python3 venvironmentforconfig
 source venvironmentforconfig/bin/activate
+pip install boto3
 
 echo -e "\n\n ######### COMPLETED:  system updates and Prerequisites: COMPLETED #########  \n"
 
@@ -90,7 +94,7 @@ cd
 python aws-bathroom-status-app/deploy/config-script.py
 
 
-
+deactivate
 
 
 

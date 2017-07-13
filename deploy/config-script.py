@@ -98,29 +98,11 @@ def publish_config_data_to_system_admin():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def lambda_handler(event, context):
 
     if DEBUG:
-        print "event={}".format(event)
-        print "context={}".format(context)
+        print("event={}".format(event))
+        print("context={}".format(context))
 
 
 
