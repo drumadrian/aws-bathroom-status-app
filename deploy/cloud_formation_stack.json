@@ -78,7 +78,7 @@
       "Properties": {
         "AccessControl": "Private",
         "VersioningConfiguration": {
-          "Status": "Suspended"
+          "Status": "Enabled"
         },
         "Tags": [
           {
@@ -114,7 +114,7 @@
           ]
         },
         "VersioningConfiguration": {
-          "Status": "Suspended"
+          "Status": "Enabled"
         },
         "Tags": [
           {

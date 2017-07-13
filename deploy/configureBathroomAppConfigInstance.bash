@@ -3,7 +3,7 @@
 # 	https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-centos-7
 # 	
 ############################################################
-
+# Note: This script mostly runs from the ec2-user's home directory
 
 echo -e "\n\n ######### Installing system updates and Prerequisites #########  \n"
 
@@ -54,15 +54,21 @@ cd environments
 python3.6 -m venv venvironmentforconfig
 source venvironmentforconfig/bin/activate
 
-
-echo -e "\n\n ######### Cloning Git Repo #########  \n"
-
-sudo yum install -Y git
-cd 
-git clone https://github.com/drumadrian/aws-bathroom-status-app.git
+echo -e "\n\n ######### COMPLETED:  system updates and Prerequisites: COMPLETED #########  \n"
 
 
 
-echo -e "\n\n ######### COMPLETED #########  \n"
+
+
+
+
+echo -e "\n\n ######### Running The Bathroom App System Config Script #########  \n"
+
+cd
+python aws-bathroom-status-app/deploy/config-script.py
+
+
+
+
 
 
