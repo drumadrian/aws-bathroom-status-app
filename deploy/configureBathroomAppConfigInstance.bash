@@ -8,7 +8,7 @@
 echo -e "\n\n ######### Installing system updates and Prerequisites #########  \n"
 
 cd
-sudo yum update -y
+sudo yum update
 echo -e "\n COMPLETED: sudo yum update -y \n"
 
 sudo yum install -y yum-utils
