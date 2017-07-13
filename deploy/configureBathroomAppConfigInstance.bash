@@ -8,19 +8,19 @@
 echo -e "\n\n ######### Installing system updates and Prerequisites #########  \n"
 
 cd
-sudo yum update
+sudo yum -y update
 echo -e "\n COMPLETED: sudo yum update -y \n"
 
-sudo yum install -y yum-utils
+sudo yum -y install yum-utils
 echo -e "\n COMPLETED: sudo yum -y install yum-utils \n"
 
-sudo yum groupinstall development
+sudo yum -y groupinstall development
 echo -e "\n COMPLETED: sudo yum -y groupinstall development \n"
 
-sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
 echo -e "\n COMPLETED: sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm \n"
 
-sudo yum install -y python36u
+sudo yum -y install python36u
 echo -e "\n COMPLETED: sudo yum -y install python36u \n"
 
 
@@ -32,10 +32,10 @@ echo ""
 echo ""
 
 
-sudo yum install -y python36u-pip
+sudo yum -y install python36u-pip
 echo -e "\n COMPLETED: sudo yum -y install python36u-pip \n"
 
-sudo yum install -y python36u-devel
+sudo yum -y install python36u-devel
 echo -e "\n COMPLETED: sudo yum -y install python36u-devel \n"
 
 sudo pip3.6 install json
