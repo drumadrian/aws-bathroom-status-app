@@ -1,7 +1,8 @@
 ############################################################
 # Sources: 
 # 	https://www.digitalocean.com/community/tutorials/how-to-install-python-3-and-set-up-a-local-programming-environment-on-centos-7
-# 	
+# 	https://www.tecmint.com/install-python-in-linux/
+# 
 ############################################################
 # Note: This script mostly runs from the ec2-user's home directory
 
@@ -17,32 +18,53 @@ echo -e "\n COMPLETED: sudo yum -y install yum-utils \n"
 sudo yum -y groupinstall development
 echo -e "\n COMPLETED: sudo yum -y groupinstall development \n"
 
-sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm
-echo -e "\n COMPLETED: sudo yum -y install https://centos7.iuscommunity.org/ius-release.rpm \n"
+sudo yum -y install zlib-devel
+echo -e "\n COMPLETED: sudo yum -y install zlib-devel \n"
 
-sudo yum -y install python36u
-echo -e "\n COMPLETED: sudo yum -y install python36u \n"
+wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
+echo -e "\n COMPLETED: wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz \n"
+
+tar xJf Python-3.6.0.tar.xz
+echo -e "\n COMPLETED: tar xJf Python-3.6.0.tar.xz \n"
+
+cd Python-3.6.0
+echo -e "\n COMPLETED: cd Python-3.6.0 \n"
+
+./configure
+echo -e "\n COMPLETED: ./configure \n"
+
+make
+echo -e "\n COMPLETED: make \n"
+
+make install
+echo -e "\n COMPLETED: make install \n"
+
+
+
+
+
+
 
 
 echo ""
 echo ""
 echo "your Python version is now: "
-python3.6 -V
+python3 -V
 echo ""
 echo ""
 
 
-sudo yum -y install python36u-pip
-echo -e "\n COMPLETED: sudo yum -y install python36u-pip \n"
+sudo yum install -y python34-setuptools
+echo -e "\n COMPLETED: sudo yum install -y python34-setuptools \n"
 
-sudo yum -y install python36u-devel
-echo -e "\n COMPLETED: sudo yum -y install python36u-devel \n"
+sudo easy_install-3.4 pip
+echo -e "\n COMPLETED: sudo easy_install-3.4 pip \n"
 
-sudo pip3.6 install json
-echo -e "\n COMPLETED: sudo pip3.6 install json \n"
+sudo pip34 install json
+echo -e "\n COMPLETED: sudo pip34 install json \n"
 
-sudo pip3.6 install os
-echo -e "\n COMPLETED: sudo pip3.6 install os \n"
+sudo pip34 install os
+echo -e "\n COMPLETED: sudo pip34 install os \n"
 
 
 
