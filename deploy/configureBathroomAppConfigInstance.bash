@@ -11,6 +11,13 @@
 
 echo -e "\n\n ######### Installing system updates and Prerequisites #########  \n"
 
+
+su ec2-user
+echo -e "\n COMPLETED: su ec2-user \n"
+
+whoami
+echo -e "\n COMPLETED: whoami \n"
+
 cd
 sudo yum -y update
 echo -e "\n COMPLETED: sudo yum update -y \n"
@@ -51,7 +58,7 @@ echo -e "\n COMPLETED: make install \n"
 
 echo ""
 echo ""
-echo "your Python version is now: "
+echo "(might not work for root user) your Python version is now: "
 python3 -V
 echo ""
 echo ""
