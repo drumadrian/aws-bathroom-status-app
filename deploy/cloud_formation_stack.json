@@ -459,6 +459,15 @@
         "ImageId": "ami-4836a428",
         "InstanceType": "t2.medium",
         "KeyName": { "Ref" : "KeyName" },
+        "UserData": 
+          { "Fn::Base64" : { "Fn::Join" : ["", [
+          "#!/bin/bash -v\n",
+          "# Install git and software repo before running setup\n",
+          "sudo yum -y install git",
+          "cd /home/ec2-user",
+          "git clone https://github.com/drumadrian/aws-bathroom-status-app.git",
+          "bash aws-bathroom-status-app/deploy/configureBathroomAppConfigInstance.bash"
+        ]]}},
         "Monitoring": "true",
         "Tags": [
           {
