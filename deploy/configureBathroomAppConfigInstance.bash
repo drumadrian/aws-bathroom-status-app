@@ -4,7 +4,8 @@
 # 	https://www.tecmint.com/install-python-in-linux/
 # 	https://stackoverflow.com/questions/23842713/using-python-3-in-virtualenv
 #	https://forums.aws.amazon.com/thread.jspa?messageID=705010
-#
+#	https://gist.github.com/diegopacheco/ee7ac81deb6e33a8cf7ae9f674e0df6a
+# 	
 ############################################################
 # Note: This script mostly runs from the ec2-user's home directory
 
