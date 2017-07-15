@@ -33,7 +33,7 @@ echo -e "\n COMPLETED: sudo yum -y groupinstall development \n"
 sudo yum -y install zlib-devel
 echo -e "\n COMPLETED: sudo yum -y install zlib-devel \n"
 
-wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
+# wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
 echo -e "\n COMPLETED: wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz \n"
 
 tar xJf Python-3.6.0.tar.xz
