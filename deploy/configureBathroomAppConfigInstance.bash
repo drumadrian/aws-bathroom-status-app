@@ -12,13 +12,15 @@
 echo -e "\n\n ######### Installing system updates and Prerequisites #########  \n"
 
 
+cd /home/ec2-user
+echo -e "\n COMPLETED: cd /home/ec2-user \n"
+
 su ec2-user
 echo -e "\n COMPLETED: su ec2-user \n"
 
 whoami
 echo -e "\n COMPLETED: whoami \n"
 
-cd
 sudo yum -y update
 echo -e "\n COMPLETED: sudo yum update -y \n"
 
