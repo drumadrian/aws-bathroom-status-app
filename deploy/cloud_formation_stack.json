@@ -463,10 +463,10 @@
           { "Fn::Base64" : { "Fn::Join" : ["", [
           "#!/bin/bash -v\n",
           "# Install git and software repo before running setup\n",
-          "yum -y install git",
-          "cd /home/ec2-user",
-          "git clone https://github.com/drumadrian/aws-bathroom-status-app.git",
-          "bash aws-bathroom-status-app/deploy/configureBathroomAppConfigInstance.bash"
+          "yum -y install git\n",
+          "cd /home/ec2-user\n",
+          "git clone https://github.com/drumadrian/aws-bathroom-status-app.git\n",
+          "bash aws-bathroom-status-app/deploy/configureBathroomAppConfigInstance.bash\n"
         ]]}},
         "Monitoring": "true",
         "Tags": [
