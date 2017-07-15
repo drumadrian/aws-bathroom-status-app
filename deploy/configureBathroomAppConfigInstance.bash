@@ -15,23 +15,23 @@ echo -e "\n\n ######### Installing system updates and Prerequisites #########  \
 cd /home/ec2-user
 echo -e "\n COMPLETED: cd /home/ec2-user \n"
 
-su ec2-user
-echo -e "\n COMPLETED: su ec2-user \n"
+# su ec2-user
+# echo -e "\n COMPLETED: su ec2-user \n"
 
 whoami
 echo -e "\n COMPLETED: whoami \n"
 
-sudo yum -y update
-echo -e "\n COMPLETED: sudo yum update -y \n"
+yum -y update
+echo -e "\n COMPLETED: yum update -y \n"
 
-sudo yum -y install yum-utils
-echo -e "\n COMPLETED: sudo yum -y install yum-utils \n"
+yum -y install yum-utils
+echo -e "\n COMPLETED: yum -y install yum-utils \n"
 
-sudo yum -y groupinstall development
-echo -e "\n COMPLETED: sudo yum -y groupinstall development \n"
+yum -y groupinstall development
+echo -e "\n COMPLETED: yum -y groupinstall development \n"
 
-sudo yum -y install zlib-devel
-echo -e "\n COMPLETED: sudo yum -y install zlib-devel \n"
+yum -y install zlib-devel
+echo -e "\n COMPLETED: yum -y install zlib-devel \n"
 
 # wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
 echo -e "\n COMPLETED: wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz \n"
@@ -57,6 +57,11 @@ echo -e "\n COMPLETED: make install \n"
 
 
 
+echo "export PATH=$PATH:/usr/local/bin/python3"
+export PATH=$PATH:/usr/local/bin/python3
+
+
+
 
 echo ""
 echo ""
@@ -66,11 +71,11 @@ echo ""
 echo ""
 
 
-sudo yum install -y python34-setuptools
-echo -e "\n COMPLETED: sudo yum install -y python34-setuptools \n"
+yum install -y python34-setuptools
+echo -e "\n COMPLETED: yum install -y python34-setuptools \n"
 
-sudo easy_install-3.4 pip
-echo -e "\n COMPLETED: sudo easy_install-3.4 pip \n"
+easy_install-3.4 pip
+echo -e "\n COMPLETED: easy_install-3.4 pip \n"
 
 pip install --upgrade pip
 echo -e "\n COMPLETED: pip install --upgrade pip \n"
@@ -81,13 +86,16 @@ cd
 mkdir environments
 cd environments
 
-sudo pip install --upgrade virtualenv
-echo -e "\n COMPLETED: sudo pip install --upgrade virtualenv \n"
+pip install --upgrade virtualenv
+echo -e "\n COMPLETED: pip install --upgrade virtualenv \n"
 
 virtualenv -p python3 venvironmentforconfig
 echo -e "\n COMPLETED: virtualenv -p python3 venvironmentforconfig \n"
 
 source venvironmentforconfig/bin/activate
+echo -e "\n COMPLETED: source venvironmentforconfig/bin/activate \n"
+
+
 pip install boto3
 echo -e "\n COMPLETED: pip install boto3 \n"
 
