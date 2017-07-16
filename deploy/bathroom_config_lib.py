@@ -15,8 +15,8 @@ def create_zip_file_for_set_status():
 	if CONFIG_DEBUG:
 		print("STARTING:   create_zip_file_for_set_status() \n")
 
-		create_the_zip_file = "zip -r9 /home/ec2-user/set_status.zip /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*"
-		add_code_to_zip_file = "zip -g /home/ec2-user/set_status.zip /home/ec2-user/aws-bathroom-status-app/set_status/set_status.py"
+		create_the_zip_file = "zip -r9 /home/ec2-user/outputs/set_status.zip /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*"
+		add_code_to_zip_file = "zip -g /home/ec2-user/outputs/set_status.zip /home/ec2-user/aws-bathroom-status-app/set_status/set_status.py"
 
 		os.system(create_the_zip_file)
 		os.system(add_code_to_zip_file)		

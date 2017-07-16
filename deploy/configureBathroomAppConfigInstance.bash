@@ -117,6 +117,7 @@ echo -e "\n\n ######### COMPLETED:  system updates and Prerequisites: COMPLETED 
 echo -e "\n\n ######### Starting The Bathroom App System Config Script #########  \n"
 
 cd /home/ec2-user
+mkdir outputs
 python aws-bathroom-status-app/deploy/config-script.py
 
 
