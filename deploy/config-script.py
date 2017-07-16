@@ -74,7 +74,7 @@ def create_zip_files_for_lambda():
     bathroom_config_lib.create_zip_file_for_sync_dyanomo_and_s3()
     bathroom_config_lib.create_zip_file_for_alexa_function()
     print("COMPLETED:  create_zip_files_for_lambda()")
-
+    
 
 
 def get_system_config_file():  
