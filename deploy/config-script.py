@@ -70,9 +70,9 @@ USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 def create_zip_files_for_lambda(): 
 
     bathroom_config_lib.create_zip_file_for_get_status()
-    # create_zip_file_for_set_status()
-    # create_zip_file_for_sync_dyanomo_and_s3()
-    # create_zip_file_for_alexa_function()
+    bathroom_config_lib.create_zip_file_for_set_status()
+    bathroom_config_lib.create_zip_file_for_sync_dyanomo_and_s3()
+    bathroom_config_lib.create_zip_file_for_alexa_function()
     print("COMPLETED:  create_zip_files_for_lambda()")
 
 
