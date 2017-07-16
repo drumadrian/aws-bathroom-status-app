@@ -13,16 +13,12 @@ def create_zip_file_for_get_status():
 
 def create_zip_file_for_set_status():
 	if CONFIG_DEBUG:
-		print("STARTING:   create_zip_file_for_get_status() \n")
+		print("STARTING:   create_zip_file_for_set_status() \n")
 
-		change_to_directory = "cd /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages"
-		create_the_zip_file = "zip -r9 /home/ec2-user/set_status.zip *"
-		change_to_code_directory = "cd /home/ec2-user/aws-bathroom-status-app/set_status"
-		add_code_to_zip_file = "zip -g /home/ec2-user/set_status.zip set_status.py"
+		create_the_zip_file = "zip -r9 /home/ec2-user/set_status.zip /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*"
+		add_code_to_zip_file = "zip -g /home/ec2-user/set_status.zip /home/ec2-user/aws-bathroom-status-app/set_status/set_status.py"
 
-		os.system(change_to_directory)
 		os.system(create_the_zip_file)
-		os.system(change_to_code_directory)
 		os.system(add_code_to_zip_file)		
 
 		#TODO
@@ -31,7 +27,7 @@ def create_zip_file_for_set_status():
 		# print(out)
 
 	if CONFIG_DEBUG:
-		print("COMPLETED:   create_zip_file_for_get_status() \n")
+		print("COMPLETED:   create_zip_file_for_set_status() \n")
 
 def create_zip_file_for_sync_dyanomo_and_s3():
 	print("This baby is sync \n")
