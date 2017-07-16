@@ -1,8 +1,15 @@
 import boto3
 import json  #I'm sure I'll need it at some point.  :-) 
 import os
+from importlib.machinery import SourceFileLoader
+bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
 
 
+
+################################################################################
+#   References:
+#       https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
+################################################################################
 
 
 
@@ -10,6 +17,7 @@ import os
 #   Global Config Settings
 ################################################################################
 DEBUG = True
+DRY_RUN_SCRIPT_TEST = False
 DEFAULT_GIT_REPO_URL = "git@github.com:drumadrian/aws-bathroom-status-app.git"
 USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 ################################################################################
@@ -20,6 +28,7 @@ USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 ################################################################################
 #   ToDo:
       # Allow config script to use AWS S3 for variables
+      # Add unit testing code to use the 'DEFAULT_GIT_REPO_URL' flag
 ################################################################################
 
 
@@ -59,7 +68,14 @@ USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 
 
 def create_zip_files_for_lambda(): 
+
+    bathroom_config_lib.create_zip_file_for_get_status()
+    # create_zip_file_for_set_status()
+    # create_zip_file_for_sync_dyanomo_and_s3()
+    # create_zip_file_for_alexa_function()
     print("COMPLETED:  create_zip_files_for_lambda()")
+
+
 
 def get_system_config_file():  
     print("COMPLETED:  get_system_config_file()")

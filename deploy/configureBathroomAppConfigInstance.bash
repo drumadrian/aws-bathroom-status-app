@@ -114,13 +114,14 @@ echo -e "\n\n ######### COMPLETED:  system updates and Prerequisites: COMPLETED 
 
 
 
-echo -e "\n\n ######### Running The Bathroom App System Config Script #########  \n"
+echo -e "\n\n ######### Starting The Bathroom App System Config Script #########  \n"
 
-cd
+cd /home/ec2-user
 python aws-bathroom-status-app/deploy/config-script.py
 
 
 deactivate
 
 
+echo -e "\n\n ######### COMPLETED: The Bathroom App System Config Script #########  \n"
 
