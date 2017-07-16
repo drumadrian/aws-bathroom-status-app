@@ -16,7 +16,7 @@ def create_zip_file_for_set_status():
 		print("STARTING:   create_zip_file_for_get_status() \n")
 
 		change_to_directory = "cd /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages"
-		create_the_zip_file = "zip -r9 /home/ec2-user/get_status.zip *"
+		create_the_zip_file = "zip -r9 /home/ec2-user/set_status.zip *"
 		change_to_code_directory = "cd /home/ec2-user/aws-bathroom-status-app/set_status"
 		add_code_to_zip_file = "zip -g /home/ec2-user/set_status.zip set_status.py"
 
