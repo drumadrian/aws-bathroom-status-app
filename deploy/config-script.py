@@ -9,6 +9,7 @@ bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aw
 ################################################################################
 #   References:
 #       https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
+#       http://docs.aws.amazon.com/lambda/latest/dg/nodejs-create-deployment-pkg.html
 ################################################################################
 
 
