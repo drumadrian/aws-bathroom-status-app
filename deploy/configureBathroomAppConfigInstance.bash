@@ -5,7 +5,8 @@
 # 	https://stackoverflow.com/questions/23842713/using-python-3-in-virtualenv
 #	https://forums.aws.amazon.com/thread.jspa?messageID=705010
 #	https://gist.github.com/diegopacheco/ee7ac81deb6e33a8cf7ae9f674e0df6a
-# 	
+# 	http://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-up-node-on-ec2-instance.html
+# 	https://gist.github.com/drumadrian/150c9adcb79f16be003951ff31613c21
 ############################################################
 # Note: This script mostly runs from the ec2-user's home directory
 
@@ -106,11 +107,50 @@ echo -e "\n COMPLETED: pip install boto3 \n"
 # echo -e "\n COMPLETED: pip install os \n"
 
 
+
+
+echo -e "\n\n ######### Begin Node.js SETUP #########  \n"
+
+
+
+wget https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh /home/ec2-user/install.sh
+echo -e "\n COMPLETED: https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh /home/ec2-user/install.sh \n"
+
+NVM_DIR=/usr/bin
+echo -e "\n COMPLETED: NVM_DIR=/usr/bin \n"
+
+bash /home/ec2-user/install.sh
+echo -e "\n COMPLETED: bash /home/ec2-user/install.sh \n"
+
+mv /usr/bin/nvm.sh /usr/bin/nvm
+echo -e "\n COMPLETED: bash mv /usr/bin/nvm.sh /usr/bin/nvm \n"
+
+nvm install 4.3
+echo -e "\n COMPLETED: nvm install 4.3 \n"
+
+node -e "console.log('Running Node.js ' + process.version)"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 echo -e "\n\n ######### COMPLETED:  system updates and Prerequisites: COMPLETED #########  \n"
-
-
-
-
 
 
 
@@ -125,4 +165,10 @@ deactivate
 
 
 echo -e "\n\n ######### COMPLETED: The Bathroom App System Config Script #########  \n"
+
+
+
+
+
+
 

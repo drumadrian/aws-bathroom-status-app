@@ -9,7 +9,12 @@ import os
 
 
 def create_zip_file_for_get_status():
-	print("This baby is fat \n")
+	if CONFIG_DEBUG:
+		print("This baby is fat \n")
+
+	create_zip_file_for_get_status = "zip -r9 /home/ec2-user/outputs/get_status.zip /home/ec2-user/aws-bathroom-status-app/get_status/*"
+	os.system(create_zip_file_for_get_status)
+
 
 def create_zip_file_for_set_status():
 	if CONFIG_DEBUG:
@@ -30,8 +35,10 @@ def create_zip_file_for_set_status():
 		print("COMPLETED:   create_zip_file_for_set_status() \n")
 
 def create_zip_file_for_sync_dyanomo_and_s3():
-	print("This baby is sync \n")
+	if CONFIG_DEBUG:
+		print("This baby is sync \n")
 
 
 def create_zip_file_for_alexa_function():
-	print("This baby is alexa \n")
+	if CONFIG_DEBUG:
+		print("This baby is alexa \n")
