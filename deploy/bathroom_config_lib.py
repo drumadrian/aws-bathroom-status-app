@@ -6,6 +6,8 @@ CONFIG_DEBUG = True
 
 import subprocess
 import os
+import json
+
 
 
 def create_zip_file_for_get_status():
@@ -42,3 +44,25 @@ def create_zip_file_for_sync_dyanomo_and_s3():
 def create_zip_file_for_alexa_function():
 	if CONFIG_DEBUG:
 		print("This baby is alexa \n")
+
+
+def get_local_system_config_file(current_LOCAL_CONFIG_FILE_PATH):
+	with open(current_LOCAL_CONFIG_FILE_PATH) as json_file:  
+	    data = json.load(json_file)
+
+	    for thing in data:
+	    	print("thing in file".format(thing))
+	return local_config_data
+
+
+
+
+def get_S3_system_config_file():
+	return S3_config_data
+
+
+
+
+
+
+

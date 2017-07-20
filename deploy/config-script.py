@@ -10,6 +10,7 @@ bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aw
 #   References:
 #       https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
 #       http://docs.aws.amazon.com/lambda/latest/dg/nodejs-create-deployment-pkg.html
+#       http://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
 ################################################################################
 
 
@@ -21,6 +22,7 @@ DEBUG = True
 DRY_RUN_SCRIPT_TEST = False
 DEFAULT_GIT_REPO_URL = "git@github.com:drumadrian/aws-bathroom-status-app.git"
 USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
+LOCAL_CONFIG_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/deploy/default-config-data.json"
 ################################################################################
 
 
@@ -78,32 +80,50 @@ def create_zip_files_for_lambda():
     
 
 
-def get_system_config_file():  
+def get_system_config_file(runtime_context):  
+    if runtime_context == "":
+        if DEBUG:
+            print("Running on EC2 Instance. Do not fetch file from S3!")
+            local_config = get_local_system_config_file(LOCAL_CONFIG_FILE_PATH)
+            return local_config
+        else
+            print("Running on Lambda.  Fetch config file from S3!")
+            S3_config = get_S3_system_config_file()
+            return S3_config
     print("COMPLETED:  get_system_config_file()")
+
 
 def update_lambda_functions_code():
     print("COMPLETED:  update_lambda_functions_code()")
 
+
 def add_tags_to_assets():
     print("COMPLETED:  add_tags_to_assets()")
+
 
 def update_api_from_swagger():
     print("COMPLETED:  update_api_from_swagger()")
 
+
 def setup_lambda_trigger_for_config():
     print("COMPLETED:  setup_lambda_trigger_for_config()")
+
 
 def update_date_and_time_in_configuration():
     print("COMPLETED:  update_date_and_time_in_configuration()")
 
+
 def setup_dns_for_s3_website():
     print("COMPLETED:  setup_dns_for_s3_website()")
+
 
 def setup_dns_for_api():
     print("COMPLETED:  setup_dns_for_api()")
 
+
 def deploy_api_gateway_api():
     print("COMPLETED:  deploy_api_gateway_api()")
+
 
 def publish_config_data_to_system_admin():
     print("COMPLETED:  publish_config_data_to_system_admin()")
@@ -125,7 +145,7 @@ def lambda_handler(event, context):
 
     # clone_git_repo()
     create_zip_files_for_lambda() 
-    get_system_config_file()  
+    system_config = get_system_config_file(context)  
     update_lambda_functions_code()
     # turn_on_versioning_for_buckets()                  (moved into CloudFormation)
     add_tags_to_assets()
