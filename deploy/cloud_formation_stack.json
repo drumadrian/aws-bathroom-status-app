@@ -312,7 +312,21 @@
                 ]}
               },
             "Runtime": "python2.7",
-            "Timeout": "10"
+            "Timeout": "10",
+            "Tags": [
+              {
+                "Key" : "asset_purpose",
+                "Value" : "kick start system using config file"
+              },
+              {
+                "Key" : "my_cf_stack_id",
+                "Value" : {"Ref": "AWS::StackId"}
+              },
+              {
+                "Key" : "my_cf_stack_name",
+                "Value" : {"Ref": "AWS::StackName"}
+              }
+            ]
           }
     },
 
@@ -796,7 +810,20 @@
       "Value": {"Fn::Join": ["",
         ["https://", {"Ref": "BathroomAppAPI"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com"]
       ]}
-    }
+    },
+    "cf_output_s3awsbathroomappfiles_arn": {
+      "Description": "ARN of the bathroom app config file bucket",
+      "Value": { "Fn::GetAtt" : ["s3awsbathroomappfiles", "Arn"] }
+    },
+    "cf_output_tablestudygurubathroomsconfig_arn": {
+      "Description": "ARN of the DynamoDB config database",
+      "Value": { "Fn::GetAtt" : ["tablestudygurubathroomsconfig", "Arn"] }
+    },
+
+
+
+
+
   }
 
 }
