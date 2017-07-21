@@ -48,10 +48,14 @@ def create_zip_file_for_alexa_function():
 
 def get_local_system_config_file(current_LOCAL_CONFIG_FILE_PATH):
 	with open(current_LOCAL_CONFIG_FILE_PATH) as json_file:  
-	    data = json.load(json_file)
+		local_config_data = json.load(json_file)
 
-	    for thing in data:
-	    	print("thing in file".format(thing))
+		if CONFIG_DEBUG:
+			print("local_config_data is of type: {}\n\n".format(type(local_config_data)))
+			for section in local_config_data:
+				print("section is of type: {}\n\n".format(type(section)))
+				print("\nsection in local_config_data=\n{}".format(section))
+				print("local_config_data['current_config']['alexa_function_region']={}".format(local_config_data['current_config']['alexa_function_region']))
 	return local_config_data
 
 

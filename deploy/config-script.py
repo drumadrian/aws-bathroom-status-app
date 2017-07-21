@@ -2,7 +2,11 @@ import boto3
 import json  #I'm sure I'll need it at some point.  :-) 
 import os
 from importlib.machinery import SourceFileLoader
-bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
+# bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
+
+
+#For local desktop testing 
+bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
 
 
 
@@ -83,11 +87,12 @@ def create_zip_files_for_lambda():
 def get_system_config_file(runtime_context):  
     if runtime_context == "":
         if DEBUG:
-            print("Running on EC2 Instance. Do not fetch file from S3!")
-            local_config = get_local_system_config_file(LOCAL_CONFIG_FILE_PATH)
+            print("Running in: EC2 Instance mode. Do not fetch file from S3!")
+            # local_config = get_local_system_config_file(LOCAL_CONFIG_FILE_PATH)
+            local_config = bathroom_config_lib.get_local_system_config_file("/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/default-config-data.json")
             return local_config
-        else
-            print("Running on Lambda.  Fetch config file from S3!")
+        else:
+            print("Running in: AWS Lambda mode.  Fetch config file from S3!")
             S3_config = get_S3_system_config_file()
             return S3_config
     print("COMPLETED:  get_system_config_file()")
@@ -143,9 +148,10 @@ def lambda_handler(event, context):
 
 
 
-    # clone_git_repo()
-    create_zip_files_for_lambda() 
+    # clone_git_repo()                                  (ToDo)
+    ##create_zip_files_for_lambda() 
     system_config = get_system_config_file(context)  
+    print('\n\n\nsystem_config={}'.format(system_config))
     update_lambda_functions_code()
     # turn_on_versioning_for_buckets()                  (moved into CloudFormation)
     add_tags_to_assets()
