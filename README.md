@@ -24,8 +24,6 @@ Use in AWS to update the status of the restroom stalls.
 
 [![Watch the video](https://user-images.githubusercontent.com/6573380/28448417-adab9ca4-6d8c-11e7-935a-e4ad29e08ee3.png)](https://cloudcraft.co/view/beef112e-7eec-4480-bc4c-11c56041f189?key=BuYN0O-c-5sQ6ajRyJgFhw)
 
-https://cloudcraft.co/view/beef112e-7eec-4480-bc4c-11c56041f189?key=BuYN0O-c-5sQ6ajRyJgFhw
-
 
 
 ##Features: 
