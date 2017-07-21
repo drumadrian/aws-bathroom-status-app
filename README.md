@@ -32,20 +32,9 @@ Use in AWS to update the status of the restroom stalls.
 
 
 ## Need to develop: 
-* a DynamoDB
-* (2) Lambda functions
-* (2) queues (no initially needed)
-* (2) API Gateway endpoints 
-* a Webpage on S3 
-* (1) IoT Button 
-* AWS Cognito for Authentication 
-* an iOS App 
-* an Alexa Skill 
-* (1) CloudFormation Stack 
+ Please see Issues page
 
-
-
-
+[Issues](https://github.com/drumadrian/aws-bathroom-status-app/issues/12)
 
 
 
