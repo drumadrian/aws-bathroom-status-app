@@ -7,7 +7,7 @@
       "Type": "AWS::EC2::KeyPair::KeyName",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
-    "AdminUser" : {
+    "system_admin_name" : {
       "NoEcho": "true",
       "Description" : "The admin user account username",
       "Type": "String",
@@ -15,6 +15,15 @@
       "MaxLength": "16",
       "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
       "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "system_admin_email_address" : {
+      "NoEcho": "true",
+      "Description" : "The admin user email address",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "20",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "Your email address for logins and notifications."
     },
     "AdminPassword" : {
       "NoEcho": "true",
@@ -24,7 +33,37 @@
       "MaxLength": "41",
       "AllowedPattern" : "[a-zA-Z0-9]*",
       "ConstraintDescription" : "must contain only alphanumeric characters."
+    },
+
+    "alexa_function_region" : {
+      "NoEcho": "true",
+      "Description" : "Region for the Alexa Lambda function.",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "20",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "Please choose from Amazon regions supporting Lambda"
+    },
+    "root_domain" : {
+      "NoEcho": "true",
+      "Description" : "Domain for the system",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "20",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "A domain that you own."
+    },
+    "name_of_bathroom_status_system" : {
+      "NoEcho": "true",
+      "Description" : "Name for the system",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "20",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "A name that you like."
     }
+
+
   },
 
   "Resources": {
@@ -463,7 +502,7 @@
     },      
 
 
-    "instancei067e413879695858e": {      
+    "bathroomAppConfigEC2Instance": {      
       "Type": "AWS::EC2::Instance",
       "DependsOn":"bathroomappsuperrole",
       "Properties": {
@@ -800,31 +839,95 @@
     }
 
 
-
-
   },
 
   "Outputs": {
-    "RootUrl": {
-      "Description": "Root URL of the API gateway",
+
+    "cf_output_bathroomappalexalambdafunction_arn": {
+      "Description": "ARN of the bathroom app alexa lambda function",
+      "Value": { "Fn::GetAtt" : ["bathroomappalexalambdafunction", "Arn"] }
+    },
+    "cf_output_bathroomappgetstatuslambdafunction_arn": {
+      "Description": "ARN of the bathroom app getstatus lambda function",
+      "Value": { "Fn::GetAtt" : ["bathroomappgetstatuslambdafunction", "Arn"] }
+    },
+    "cf_output_bathroomappsetstatuslambdafunction_arn": {
+      "Description": "ARN of the bathroom app setstatus lambda function",
+      "Value": { "Fn::GetAtt" : ["bathroomappsetstatuslambdafunction", "Arn"] }
+    },
+    "cf_output_bathroomappsyncdyanomoands3lambdafunction_arn": {
+      "Description": "ARN of the bathroom app sync dyanomo and s3 lambda function",
+      "Value": { "Fn::GetAtt" : ["bathroomappsyncdyanomoands3lambdafunction", "Arn"] }
+    },
+    "cf_output_BathroomAppAPI_Id": {
+      "Description": "ID of the bathroom app API Gateway REST API",
+      "Value": {"Ref": "BathroomAppAPI"}
+    },
+    "API_RootUrl": {
+      "Description": "Root URL of the API gateway REST API",
       "Value": {"Fn::Join": ["",
         ["https://", {"Ref": "BathroomAppAPI"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com"]
       ]}
     },
+    "cf_output_adminTopicEmailListforNotifications_arn": {
+      "Description": "ARN of the SNS admin Topic Email List for Notifications",
+      "Value": { "Fn::GetAtt" : ["adminTopicEmailListforNotifications", "Arn"] }
+    },
+    "cf_output_bathroomappsuperpolicy_arn": {
+      "Description": "ARN of the bathroom app superpolicy",
+      "Value": { "Fn::GetAtt" : ["bathroomappsuperpolicy", "Arn"] }
+    },
+    "cf_output_bathroomappsuperrole_arn": {
+      "Description": "ARN of the bathroom app super role",
+      "Value": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] }
+    },
     "cf_output_s3awsbathroomappfiles_arn": {
       "Description": "ARN of the bathroom app config file bucket",
       "Value": { "Fn::GetAtt" : ["s3awsbathroomappfiles", "Arn"] }
+    },
+    "cf_output_s3awsbathroomappwebsitebucket_arn": {
+      "Description": "ARN of the bathroom app website bucket",
+      "Value": { "Fn::GetAtt" : ["s3awsbathroomappwebsitebucket", "Arn"] }
+    },
+    "cf_output_tablestudygurubathrooms_arn": {
+      "Description": "ARN of the DynamoDB bathrooms database",
+      "Value": { "Fn::GetAtt" : ["tablestudygurubathrooms", "Arn"] }
     },
     "cf_output_tablestudygurubathroomsconfig_arn": {
       "Description": "ARN of the DynamoDB config database",
       "Value": { "Fn::GetAtt" : ["tablestudygurubathroomsconfig", "Arn"] }
     },
 
+    "cf_output_system_admin_name": {
+      "Description": "First and Last Name of the system admin",
+      "Value": {"Ref": "system_admin_name"}
+    },
+    "cf_output_system_admin_email_address": {
+      "Description": "email address of the system admin",
+      "Value": {"Ref": "system_admin_email_address"}
+    },
+    "cf_output_alexa_function_region": {
+      "Description": "alexa function region",
+      "Value": {"Ref": "alexa_function_region"}
+    },
+    "cf_output_root_domain": {
+      "Description": "root domain for the system",
+      "Value": {"Ref": "root_domain"}
+    },
+    "cf_output_name_of_bathroom_status_system": {
+      "Description": "Name of bathroom status system",
+      "Value": {"Ref": "name_of_bathroom_status_system"}
+    },
+    "cf_output_s3awsbathroomappfiles": {
+      "Description": "aws s3 config file bucket name",
+      "Value": {"Ref": "s3awsbathroomappfiles"}
+    },
+    "cf_output_s3awsbathroomappwebsitebucket": {
+      "Description": "aws s3 website file bucket name",
+      "Value": {"Ref": "s3awsbathroomappwebsitebucket"}
+    }
 
-
-
-
-  }
+  }   
 
 }
 
