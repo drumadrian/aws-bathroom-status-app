@@ -34,7 +34,7 @@ Use in AWS to update the status of the restroom stalls.
 ## Need to develop: 
  Please see Issues page
 
-[Issues](https://github.com/drumadrian/aws-bathroom-status-app/issues/12)
+[Issues](https://github.com/drumadrian/aws-bathroom-status-app/issues)
 
 
 
