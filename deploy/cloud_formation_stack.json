@@ -7,22 +7,20 @@
       "Type": "AWS::EC2::KeyPair::KeyName",
       "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
     },
-    "system_admin_name" : {
-      "NoEcho": "true",
+    "systemadminname" : {
+      "NoEcho": "false",
       "Description" : "The admin user account username",
       "Type": "String",
       "MinLength": "1",
       "MaxLength": "16",
-      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
       "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
     },
-    "system_admin_email_address" : {
-      "NoEcho": "true",
+    "systemadminemailaddress" : {
+      "NoEcho": "false",
       "Description" : "The admin user email address",
       "Type": "String",
       "MinLength": "1",
-      "MaxLength": "20",
-      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "MaxLength": "40",
       "ConstraintDescription" : "Your email address for logins and notifications."
     },
     "AdminPassword" : {
@@ -35,31 +33,28 @@
       "ConstraintDescription" : "must contain only alphanumeric characters."
     },
 
-    "alexa_function_region" : {
-      "NoEcho": "true",
+    "alexafunctionregion" : {
+      "NoEcho": "false",
       "Description" : "Region for the Alexa Lambda function.",
       "Type": "String",
       "MinLength": "1",
       "MaxLength": "20",
-      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
       "ConstraintDescription" : "Please choose from Amazon regions supporting Lambda"
     },
-    "root_domain" : {
-      "NoEcho": "true",
+    "rootdomain" : {
+      "NoEcho": "false",
       "Description" : "Domain for the system",
       "Type": "String",
       "MinLength": "1",
       "MaxLength": "20",
-      "AllowedPattern" : "[a-zA-Z0-9]*",
       "ConstraintDescription" : "A domain that you own."
     },
-    "name_of_bathroom_status_system" : {
-      "NoEcho": "true",
+    "nameofbathroomstatussystem" : {
+      "NoEcho": "false",
       "Description" : "Name for the system",
       "Type": "String",
       "MinLength": "1",
       "MaxLength": "20",
-      "AllowedPattern" : "[a-zA-Z0-9]*",
       "ConstraintDescription" : "A name that you like."
     }
 
@@ -174,7 +169,7 @@
         "DisplayName": "AdminEmailListforBathroomAppNotifications",
         "Subscription": [
           {
-            "Endpoint": "admin@mydomain.com",
+            "Endpoint": {"Ref": "systemadminemailaddress"},
             "Protocol": "email"
           }
         ]
@@ -843,86 +838,86 @@
 
   "Outputs": {
 
-    "cf_output_bathroomappalexalambdafunction_arn": {
+    "cfoutputbathroomappalexalambdafunctionarn": {
       "Description": "ARN of the bathroom app alexa lambda function",
       "Value": { "Fn::GetAtt" : ["bathroomappalexalambdafunction", "Arn"] }
     },
-    "cf_output_bathroomappgetstatuslambdafunction_arn": {
+    "cfoutputbathroomappgetstatuslambdafunctionarn": {
       "Description": "ARN of the bathroom app getstatus lambda function",
       "Value": { "Fn::GetAtt" : ["bathroomappgetstatuslambdafunction", "Arn"] }
     },
-    "cf_output_bathroomappsetstatuslambdafunction_arn": {
+    "cfoutputbathroomappsetstatuslambdafunctionarn": {
       "Description": "ARN of the bathroom app setstatus lambda function",
       "Value": { "Fn::GetAtt" : ["bathroomappsetstatuslambdafunction", "Arn"] }
     },
-    "cf_output_bathroomappsyncdyanomoands3lambdafunction_arn": {
+    "cfoutputbathroomappsyncdyanomoands3lambdafunctionarn": {
       "Description": "ARN of the bathroom app sync dyanomo and s3 lambda function",
       "Value": { "Fn::GetAtt" : ["bathroomappsyncdyanomoands3lambdafunction", "Arn"] }
     },
-    "cf_output_BathroomAppAPI_Id": {
+    "cfoutputBathroomAppAPIiD": {
       "Description": "ID of the bathroom app API Gateway REST API",
       "Value": {"Ref": "BathroomAppAPI"}
     },
-    "API_RootUrl": {
+    "APIRootUrl": {
       "Description": "Root URL of the API gateway REST API",
       "Value": {"Fn::Join": ["",
         ["https://", {"Ref": "BathroomAppAPI"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com"]
       ]}
     },
-    "cf_output_adminTopicEmailListforNotifications_arn": {
+    "cfoutputadminTopicEmailListforNotificationsarn": {
       "Description": "ARN of the SNS admin Topic Email List for Notifications",
-      "Value": { "Fn::GetAtt" : ["adminTopicEmailListforNotifications", "Arn"] }
+      "Value": {"Ref": "adminTopicEmailListforNotifications"}
     },
-    "cf_output_bathroomappsuperpolicy_arn": {
+    "cfoutputbathroomappsuperpolicyarn": {
       "Description": "ARN of the bathroom app superpolicy",
-      "Value": { "Fn::GetAtt" : ["bathroomappsuperpolicy", "Arn"] }
+      "Value": {"Ref": "bathroomappsuperpolicy"}
     },
-    "cf_output_bathroomappsuperrole_arn": {
+    "cfoutputbathroomappsuperrolearn": {
       "Description": "ARN of the bathroom app super role",
       "Value": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] }
     },
-    "cf_output_s3awsbathroomappfiles_arn": {
+    "cfoutputs3awsbathroomappfilesarn": {
       "Description": "ARN of the bathroom app config file bucket",
       "Value": { "Fn::GetAtt" : ["s3awsbathroomappfiles", "Arn"] }
     },
-    "cf_output_s3awsbathroomappwebsitebucket_arn": {
+    "cfoutputs3awsbathroomappwebsitebucketarn": {
       "Description": "ARN of the bathroom app website bucket",
       "Value": { "Fn::GetAtt" : ["s3awsbathroomappwebsitebucket", "Arn"] }
     },
-    "cf_output_tablestudygurubathrooms_arn": {
+    "cfoutputtablestudygurubathroomsarn": {
       "Description": "ARN of the DynamoDB bathrooms database",
-      "Value": { "Fn::GetAtt" : ["tablestudygurubathrooms", "Arn"] }
+      "Value": {"Ref": "tablestudygurubathrooms"}
     },
-    "cf_output_tablestudygurubathroomsconfig_arn": {
+    "cfoutputtablestudygurubathroomsconfigarn": {
       "Description": "ARN of the DynamoDB config database",
-      "Value": { "Fn::GetAtt" : ["tablestudygurubathroomsconfig", "Arn"] }
+      "Value": {"Ref": "tablestudygurubathroomsconfig"}
     },
 
-    "cf_output_system_admin_name": {
+    "cfoutputsystemadminname": {
       "Description": "First and Last Name of the system admin",
-      "Value": {"Ref": "system_admin_name"}
+      "Value": {"Ref": "systemadminname"}
     },
-    "cf_output_system_admin_email_address": {
+    "cfoutputsystemadminemailaddress": {
       "Description": "email address of the system admin",
-      "Value": {"Ref": "system_admin_email_address"}
+      "Value": {"Ref": "systemadminemailaddress"}
     },
-    "cf_output_alexa_function_region": {
+    "cfoutputalexafunctionregion": {
       "Description": "alexa function region",
-      "Value": {"Ref": "alexa_function_region"}
+      "Value": {"Ref": "alexafunctionregion"}
     },
-    "cf_output_root_domain": {
+    "cfoutputrootdomain": {
       "Description": "root domain for the system",
-      "Value": {"Ref": "root_domain"}
+      "Value": {"Ref": "rootdomain"}
     },
-    "cf_output_name_of_bathroom_status_system": {
+    "cfoutputnameofbathroomstatussystem": {
       "Description": "Name of bathroom status system",
-      "Value": {"Ref": "name_of_bathroom_status_system"}
+      "Value": {"Ref": "nameofbathroomstatussystem"}
     },
-    "cf_output_s3awsbathroomappfiles": {
+    "cfoutputs3awsbathroomappfiles": {
       "Description": "aws s3 config file bucket name",
       "Value": {"Ref": "s3awsbathroomappfiles"}
     },
-    "cf_output_s3awsbathroomappwebsitebucket": {
+    "cfoutputs3awsbathroomappwebsitebucket": {
       "Description": "aws s3 website file bucket name",
       "Value": {"Ref": "s3awsbathroomappwebsitebucket"}
     }
