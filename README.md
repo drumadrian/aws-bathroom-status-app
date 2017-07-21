@@ -22,6 +22,10 @@ Use in AWS to update the status of the restroom stalls.
 *  Static webpages in AWS S3
 *  AWS API Gateway 
 
+[![Watch the video](https://user-images.githubusercontent.com/6573380/28448417-adab9ca4-6d8c-11e7-935a-e4ad29e08ee3.png)](https://cloudcraft.co/view/beef112e-7eec-4480-bc4c-11c56041f189?key=BuYN0O-c-5sQ6ajRyJgFhw)
+
+https://cloudcraft.co/view/beef112e-7eec-4480-bc4c-11c56041f189?key=BuYN0O-c-5sQ6ajRyJgFhw
+
 
 
 ##Features: 
@@ -34,7 +38,7 @@ Use in AWS to update the status of the restroom stalls.
 ## Need to develop: 
  Please see Issues page
 
-[Issues](https://github.com/drumadrian/aws-bathroom-status-app/issues)
+[Issues](https://github.com/drumadrian/aws-bathroom-status-app/issues/12)
 
 
 
