@@ -9,7 +9,7 @@
     },
     "systemadminname" : {
       "NoEcho": "false",
-      "Description" : "The admin user account username",
+      "Description" : "The admin user's First and Last name",
       "Type": "String",
       "MinLength": "1",
       "MaxLength": "16",

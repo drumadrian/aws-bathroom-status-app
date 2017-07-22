@@ -112,8 +112,8 @@ echo -e "\n COMPLETED: pip install boto3 \n"
 echo -e "\n\n ######### Begin Node.js SETUP #########  \n"
 
 
-
-wget https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh /home/ec2-user/install.sh
+cd /home/ec2-user
+wget https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh -O /home/ec2-user/install.sh
 echo -e "\n COMPLETED: https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh /home/ec2-user/install.sh \n"
 
 NVM_DIR=/usr/bin
