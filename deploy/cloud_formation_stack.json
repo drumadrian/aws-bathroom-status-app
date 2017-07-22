@@ -46,7 +46,7 @@
       "Description" : "Domain for the system",
       "Type": "String",
       "MinLength": "1",
-      "MaxLength": "20",
+      "MaxLength": "40",
       "ConstraintDescription" : "A domain that you own."
     },
     "nameofbathroomstatussystem" : {
@@ -861,76 +861,125 @@
     },
     "cfoutputbathroomappsyncdyanomoands3lambdafunctionarn": {
       "Description": "ARN of the bathroom app sync dyanomo and s3 lambda function",
-      "Value": { "Fn::GetAtt" : ["bathroomappsyncdyanomoands3lambdafunction", "Arn"] }
+      "Value": { "Fn::GetAtt" : ["bathroomappsyncdyanomoands3lambdafunction", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputbathroomappsyncdyanomoands3lambdafunctionarn"
+      }
     },
     "cfoutputBathroomAppAPIiD": {
       "Description": "ID of the bathroom app API Gateway REST API",
-      "Value": {"Ref": "BathroomAppAPI"}
+      "Value": {"Ref": "BathroomAppAPI"},
+      "Export" : {
+        "Name": "cfoutputBathroomAppAPIiD"
+      }
     },
     "APIRootUrl": {
       "Description": "Root URL of the API gateway REST API",
       "Value": {"Fn::Join": ["",
-        ["https://", {"Ref": "BathroomAppAPI"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com"]
-      ]}
+        ["https://", {"Ref": "BathroomAppAPI"}, ".execute-api.", {"Ref": "AWS::Region"}, ".amazonaws.com"]]},
+      "Export" : {
+        "Name": "APIRootUrl"
+      }
     },
     "cfoutputadminTopicEmailListforNotificationsarn": {
       "Description": "ARN of the SNS admin Topic Email List for Notifications",
-      "Value": {"Ref": "adminTopicEmailListforNotifications"}
+      "Value": {"Ref": "adminTopicEmailListforNotifications"},
+      "Export" : {
+        "Name": "cfoutputadminTopicEmailListforNotificationsarn"
+      }
     },
     "cfoutputbathroomappsuperpolicyarn": {
       "Description": "ARN of the bathroom app superpolicy",
-      "Value": {"Ref": "bathroomappsuperpolicy"}
+      "Value": {"Ref": "bathroomappsuperpolicy"},
+      "Export" : {
+        "Name": "cfoutputbathroomappsuperpolicyarn"
+      }
     },
     "cfoutputbathroomappsuperrolearn": {
       "Description": "ARN of the bathroom app super role",
-      "Value": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] }
+      "Value": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputbathroomappsuperrolearn"
+      }
     },
     "cfoutputs3awsbathroomappfilesarn": {
       "Description": "ARN of the bathroom app config file bucket",
-      "Value": { "Fn::GetAtt" : ["s3awsbathroomappfiles", "Arn"] }
+      "Value": { "Fn::GetAtt" : ["s3awsbathroomappfiles", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputs3awsbathroomappfilesarn"
+      }
     },
     "cfoutputs3awsbathroomappwebsitebucketarn": {
       "Description": "ARN of the bathroom app website bucket",
-      "Value": { "Fn::GetAtt" : ["s3awsbathroomappwebsitebucket", "Arn"] }
+      "Value": { "Fn::GetAtt" : ["s3awsbathroomappwebsitebucket", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputs3awsbathroomappwebsitebucketarn"
+      }
     },
     "cfoutputtablestudygurubathroomsarn": {
       "Description": "ARN of the DynamoDB bathrooms database",
-      "Value": {"Ref": "tablestudygurubathrooms"}
+      "Value": {"Ref": "tablestudygurubathrooms"},
+      "Export" : {
+        "Name": "cfoutputtablestudygurubathroomsarn"
+      }
     },
     "cfoutputtablestudygurubathroomsconfigarn": {
       "Description": "ARN of the DynamoDB config database",
-      "Value": {"Ref": "tablestudygurubathroomsconfig"}
+      "Value": {"Ref": "tablestudygurubathroomsconfig"},
+      "Export" : {
+        "Name": "cfoutputtablestudygurubathroomsconfigarn"
+      }
     },
 
     "cfoutputsystemadminname": {
       "Description": "First and Last Name of the system admin",
-      "Value": {"Ref": "systemadminname"}
+      "Value": {"Ref": "systemadminname"},
+      "Export" : {
+        "Name": "cfoutputsystemadminname"
+      }
     },
     "cfoutputsystemadminemailaddress": {
       "Description": "email address of the system admin",
-      "Value": {"Ref": "systemadminemailaddress"}
+      "Value": {"Ref": "systemadminemailaddress"},
+      "Export" : {
+        "Name": "cfoutputsystemadminemailaddress"
+      }
     },
     "cfoutputalexafunctionregion": {
       "Description": "alexa function region",
-      "Value": {"Ref": "alexafunctionregion"}
+      "Value": {"Ref": "alexafunctionregion"},
+      "Export" : {
+        "Name": "cfoutputalexafunctionregion"
+      }
     },
     "cfoutputrootdomain": {
       "Description": "root domain for the system",
-      "Value": {"Ref": "rootdomain"}
+      "Value": {"Ref": "rootdomain"},
+      "Export" : {
+        "Name": "cfoutputrootdomain"
+      }
     },
     "cfoutputnameofbathroomstatussystem": {
       "Description": "Name of bathroom status system",
-      "Value": {"Ref": "nameofbathroomstatussystem"}
+      "Value": {"Ref": "nameofbathroomstatussystem"},
+      "Export" : {
+        "Name": "cfoutputnameofbathroomstatussystem"
+      }
     },
     "cfoutputs3awsbathroomappfiles": {
       "Description": "aws s3 config file bucket name",
-      "Value": {"Ref": "s3awsbathroomappfiles"}
+      "Value": {"Ref": "s3awsbathroomappfiles"},
+      "Export" : {
+        "Name": "cfoutputs3awsbathroomappfiles"
+      }
     },
     "cfoutputs3awsbathroomappwebsitebucket": {
       "Description": "aws s3 website file bucket name",
-      "Value": {"Ref": "s3awsbathroomappwebsitebucket"}
+      "Value": {"Ref": "s3awsbathroomappwebsitebucket"},
+      "Export" : {
+        "Name": "cfoutputs3awsbathroomappwebsitebucket"
+      }
     }
-
   }   
 
 }
