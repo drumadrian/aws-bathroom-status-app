@@ -2,11 +2,10 @@ import boto3
 import json  #I'm sure I'll need it at some point.  :-) 
 import os
 from importlib.machinery import SourceFileLoader
-# bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
+bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
 
-#deleteme
 #For local desktop testing 
-bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
+# bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
 
 
 
@@ -27,9 +26,8 @@ DEBUG = True
 DRY_RUN_SCRIPT_TEST = False
 DEFAULT_GIT_REPO_URL = "git@github.com:drumadrian/aws-bathroom-status-app.git"
 USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
-#deleteme
-# LOCAL_CONFIG_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/deploy/default-config-data.json"
-LOCAL_CONFIG_FILE_PATH = "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/default-config-data.json"
+LOCAL_CONFIG_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/deploy/default-config-data.json"
+# LOCAL_CONFIG_FILE_PATH = "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/default-config-data.json"
 
 ################################################################################
 

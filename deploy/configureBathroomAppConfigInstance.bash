@@ -83,9 +83,9 @@ echo -e "\n COMPLETED: pip install --upgrade pip \n"
 
 echo -e "\n\n ######### Setting up Python Virtual Environment #########  \n"
 
-cd
-mkdir environments
-cd environments
+cd /home/ec2-user
+mkdir /home/ec2-user/environments
+cd /home/ec2-user/environments
 
 pip install --upgrade virtualenv
 echo -e "\n COMPLETED: pip install --upgrade virtualenv \n"
@@ -122,8 +122,17 @@ echo -e "\n COMPLETED: NVM_DIR=/usr/bin \n"
 bash /home/ec2-user/install.sh
 echo -e "\n COMPLETED: bash /home/ec2-user/install.sh \n"
 
-mv /usr/bin/nvm.sh /usr/bin/nvm
-echo -e "\n COMPLETED: bash mv /usr/bin/nvm.sh /usr/bin/nvm \n"
+
+chmod -R 744 /root/.nvm/*
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+echo -e "\n COMPLETED: nvm setup \n"
+
+# mv /usr/bin/nvm.sh /usr/bin/nvm
+cp /root/.nvm/nvm.sh /usr/bin/nvm
+echo -e "\n COMPLETED: cp /root/.nvm/nvm.sh /usr/bin/nvm \n"
 
 nvm install 4.3
 echo -e "\n COMPLETED: nvm install 4.3 \n"
@@ -131,6 +140,7 @@ echo -e "\n COMPLETED: nvm install 4.3 \n"
 node -e "console.log('Running Node.js ' + process.version)"
 
 
+# Stopped here for Node setup.  The node environment is already in the git repo
 
 
 
@@ -157,7 +167,7 @@ echo -e "\n\n ######### COMPLETED:  system updates and Prerequisites: COMPLETED 
 echo -e "\n\n ######### Starting The Bathroom App System Config Script #########  \n"
 
 cd /home/ec2-user
-mkdir outputs
+mkdir /home/ec2-user/outputs
 python aws-bathroom-status-app/deploy/config-script.py
 
 
