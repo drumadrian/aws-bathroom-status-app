@@ -85,7 +85,7 @@ def get_cloudformation_stackId(context_c):
 		print("Not yet implemented")
 
 	if CONFIG_DEBUG:
-		print("\n\n(describe_tags)response_b={}\n\n".format(response_b)
+		print("\n\n(describe_tags)response_b={}\n\n".format(response_b))
 
 	for tag in response_b['Tags']:
 		if tag['Key'] == "aws:cloudformation:stack-id":
@@ -93,11 +93,6 @@ def get_cloudformation_stackId(context_c):
 	# stackId_arn = "arn:aws:cloudformation:us-west-2:101845606311:stack/The-Bathroom-App-17/a0b69700-69b4-11e7-9deb-50a686fc37d2"
 
 	if CONFIG_DEBUG:
-		print("\stackId_arn={}\n".format(stackId_arn))
+		print("\nstackId_arn={}\n".format(stackId_arn))
 
 	return stackId_arn
-
-
-
-
-
