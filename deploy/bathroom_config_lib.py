@@ -84,7 +84,9 @@ def get_cloudformation_stackId(context_c):
 	else:
 		print("Not yet implemented")
 
-	print(response_b)
+	if CONFIG_DEBUG:
+		print("\n\n(describe_tags)response_b={}\n\n".format(response_b)
+
 	for tag in response_b['Tags']:
 		if tag['Key'] == "aws:cloudformation:stack-id":
 			stackId_arn = tag['Value']
