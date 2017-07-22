@@ -108,17 +108,20 @@ def get_cloudformation_outputs(context_a):
     cf_client = boto3.client('cloudformation', region_name='us-west-2')
     cf_response = cf_client.list_exports()
 
-    cf_outputs_a = ""
-    for export_data in cf_response['Exports']:
-        if DEBUG:
-            print("\nexport_data['ExportingStackId']={}".format(export_data['ExportingStackId']))
-            print("cf_stackId={}".format(cf_stackId))
-
+    cf_outputs_a = {}
+    for exported_Item in cf_response['Exports']:
         if export_data['ExportingStackId'] == cf_stackId:
-            cf_outputs_a = export_data
+            cf_outputs_a[exported_Item['Name']] = exported_Item['Value'])
+
+        if DEBUG:
+            print("\exported_Item['ExportingStackId']={}".format(exported_Item['ExportingStackId']))
+            print("cf_stackId={}".format(cf_stackId))
+            print("\exported_Item['Name']={}".format(exported_Item['Name']))
+            print("\exported_Item['Value']={}".format(exported_Item['Value']))
+
 
     if DEBUG:
-        print("\n\n cf_outputs_a={}".format(cf_outputs_a))
+        print("\n\n cf_outputs_a={}\n\n".format(cf_outputs_a))
     return cf_outputs_a
 
 def update_lambda_functions_code():
