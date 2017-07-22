@@ -840,15 +840,24 @@
 
     "cfoutputbathroomappalexalambdafunctionarn": {
       "Description": "ARN of the bathroom app alexa lambda function",
-      "Value": { "Fn::GetAtt" : ["bathroomappalexalambdafunction", "Arn"] }
+      "Value": { "Fn::GetAtt" : ["bathroomappalexalambdafunction", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputbathroomappalexalambdafunctionarn"
+      }
     },
     "cfoutputbathroomappgetstatuslambdafunctionarn": {
       "Description": "ARN of the bathroom app getstatus lambda function",
-      "Value": { "Fn::GetAtt" : ["bathroomappgetstatuslambdafunction", "Arn"] }
+      "Value": { "Fn::GetAtt" : ["bathroomappgetstatuslambdafunction", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputbathroomappgetstatuslambdafunctionarn"
+      }
     },
     "cfoutputbathroomappsetstatuslambdafunctionarn": {
       "Description": "ARN of the bathroom app setstatus lambda function",
-      "Value": { "Fn::GetAtt" : ["bathroomappsetstatuslambdafunction", "Arn"] }
+      "Value": { "Fn::GetAtt" : ["bathroomappsetstatuslambdafunction", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputbathroomappsetstatuslambdafunctionarn"
+      }
     },
     "cfoutputbathroomappsyncdyanomoands3lambdafunctionarn": {
       "Description": "ARN of the bathroom app sync dyanomo and s3 lambda function",
