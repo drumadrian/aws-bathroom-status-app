@@ -105,7 +105,7 @@ def get_cloudformation_outputs(context_a):
 
     cf_stackId = bathroom_config_lib.get_cloudformation_stackId(context_a)
     
-    cf_client = boto3.client('cloudformation')
+    cf_client = boto3.client('cloudformation', region_name='us-west-2')
     cf_response = cf_client.list_exports()
 
     cf_outputs_a = ""

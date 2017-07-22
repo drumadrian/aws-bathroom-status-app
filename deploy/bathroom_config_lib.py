@@ -70,7 +70,7 @@ def get_cloudformation_stackId(context_c):
 		instanceid = urllib.request.urlopen('http://169.254.169.254/latest/meta-data/instance-id').read().decode()
 		# instanceid = "i-0e9e3c787428d0f5a"
 		
-		ec2_client = boto3.client('ec2')
+		ec2_client = boto3.client('ec2', region_name='us-west-2')
 		response_b = ec2_client.describe_tags(
 		    Filters=[
 		        {
