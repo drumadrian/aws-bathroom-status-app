@@ -105,7 +105,7 @@ def update_lambda_function_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c)
 	path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
 	S3_config_bucket = cf_outputs_c['cfoutputs3awsbathroomappfiles']
 
-	client = boto3.client('lambda')
+	client = boto3.client('lambda', region_name='us-west-2')
 
 	response = client.update_function_code(
     FunctionName=function_arn,
