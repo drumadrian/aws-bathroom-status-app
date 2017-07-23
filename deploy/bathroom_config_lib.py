@@ -98,7 +98,7 @@ def get_cloudformation_stackId(context_c):
 	return stackId_arn
 
 
-def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c):
+def update_lambda_function_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c):
 
 	function_arn = cf_outputs_c['cfoutputbathroomappgetstatuslambdafunctionarn']
 	zip_file_name = "get_status.zip"
@@ -126,15 +126,18 @@ def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c):
 		print("\nresponse={}".format(response))
 
 
-def create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER):
-	if CONFIG_DEBUG:
-		print("This baby is sync \n")
 
-def create_zip_file_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER):
+def update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b):
 	if CONFIG_DEBUG:
-		print("create_zip_file_for_sync_dyanomo_and_s3() Not yet implemented \n")
+		print("update_lambda_function_for_set_status() Not yet implemented \n")
 
-def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER):
+
+def update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b):
 	if CONFIG_DEBUG:
-		print("create_zip_file_for_alexa_function() Not yet implemented \n")
+		print("update_lambda_function_for_sync_dyanomo_and_s3() Not yet implemented \n")
+
+
+def update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b):
+	if CONFIG_DEBUG:
+		print("update_lambda_function_for_alexa_function() Not yet implemented \n")
     
