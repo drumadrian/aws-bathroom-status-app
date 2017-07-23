@@ -110,8 +110,8 @@ def get_cloudformation_outputs(context_a):
 
     cf_outputs_a = {}
     for exported_Item in cf_response['Exports']:
-        if export_data['ExportingStackId'] == cf_stackId:
-            cf_outputs_a[exported_Item['Name']] = exported_Item['Value'])
+        if exported_Item['ExportingStackId'] == cf_stackId:
+            cf_outputs_a[exported_Item['Name']] = exported_Item['Value']
 
         if DEBUG:
             print("\exported_Item['ExportingStackId']={}".format(exported_Item['ExportingStackId']))
