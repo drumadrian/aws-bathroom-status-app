@@ -15,6 +15,7 @@ bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aw
 #       http://docs.aws.amazon.com/lambda/latest/dg/nodejs-create-deployment-pkg.html
 #       http://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
 #       https://boto3.readthedocs.io/en/latest/reference/services/cloudformation.html#CloudFormation.Client.list_exports
+#       http://boto3.readthedocs.io/en/latest/reference/services/lambda.html#Lambda.Client.update_function_code
 ################################################################################
 
 
@@ -28,6 +29,8 @@ DEFAULT_GIT_REPO_URL = "git@github.com:drumadrian/aws-bathroom-status-app.git"
 USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 LOCAL_CONFIG_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/deploy/default-config-data.json"
 # LOCAL_CONFIG_FILE_PATH = "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/default-config-data.json"
+PATH_TO_ZIP_FILE_FOLDER = "/home/ec2-user/outputs/"
+
 
 ################################################################################
 
@@ -80,10 +83,10 @@ LOCAL_CONFIG_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/deploy/default-
 
 def create_zip_files_for_lambda(): 
 
-    bathroom_config_lib.create_zip_file_for_get_status()
-    bathroom_config_lib.create_zip_file_for_set_status()
-    bathroom_config_lib.create_zip_file_for_sync_dyanomo_and_s3()
-    bathroom_config_lib.create_zip_file_for_alexa_function()
+    bathroom_config_lib.create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER)
+    bathroom_config_lib.create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER)
+    bathroom_config_lib.create_zip_file_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER)
+    bathroom_config_lib.create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER)
     print("COMPLETED:  create_zip_files_for_lambda()")
     
 
@@ -124,7 +127,15 @@ def get_cloudformation_outputs(context_a):
         print("\n\n cf_outputs_a={}\n\n".format(cf_outputs_a))
     return cf_outputs_a
 
-def update_lambda_functions_code():
+def update_lambda_functions_code(cf_outputs_b):
+    bathroom_config_lib.update_lambda_function_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
+    bathroom_config_lib.update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
+    bathroom_config_lib.update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
+    bathroom_config_lib.update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b
+
+    update_get_status_lambda_function_code
+
+
     print("COMPLETED:  update_lambda_functions_code()")
 
 
@@ -178,7 +189,7 @@ def lambda_handler(event, context):
     ##create_zip_files_for_lambda() 
     system_config = get_system_config_file(context)  
     cf_outputs = get_cloudformation_outputs(context)
-    update_lambda_functions_code()
+    update_lambda_functions_code(cf_outputs)
     # turn_on_versioning_for_buckets()                  (moved into CloudFormation)
     add_tags_to_assets()
     # attach_policies_to_roles()                        (moved into CloudFormation)

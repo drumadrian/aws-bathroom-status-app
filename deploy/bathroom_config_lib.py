@@ -96,3 +96,45 @@ def get_cloudformation_stackId(context_c):
 		print("\nstackId_arn={}\n".format(stackId_arn))
 
 	return stackId_arn
+
+
+def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c):
+
+	function_arn = cf_outputs_c['cfoutputbathroomappgetstatuslambdafunctionarn']
+	zip_file_name = "get_status.zip"
+	path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
+	S3_config_bucket = cf_outputs_c['cfoutputs3awsbathroomappfiles']
+
+	client = boto3.client('lambda')
+
+	response = client.update_function_code(
+    FunctionName=function_arn,
+    # ZipFile=b'bytes',
+    S3Bucket=S3_config_bucket,
+    S3Key=zip_file_name,
+    # S3ObjectVersion='string',
+    # Publish=True|False,
+    # DryRun=True|False
+	)
+
+
+	if CONFIG_DEBUG:
+		print("\nfunction_arn={}".format(function_arn))
+		print("\nzip_file_name={}".format(zip_file_name))
+		print("\npath_to_zip_file={}".format(path_to_zip_file))
+		print("\nS3_config_bucket={}".format(S3_config_bucket))
+		print("\nresponse={}".format(response))
+
+
+def create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER):
+	if CONFIG_DEBUG:
+		print("This baby is sync \n")
+
+def create_zip_file_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER):
+	if CONFIG_DEBUG:
+		print("create_zip_file_for_sync_dyanomo_and_s3() Not yet implemented \n")
+
+def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER):
+	if CONFIG_DEBUG:
+		print("create_zip_file_for_alexa_function() Not yet implemented \n")
+    
