@@ -131,8 +131,7 @@ def update_lambda_functions_code(cf_outputs_b):
     bathroom_config_lib.update_lambda_function_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
     bathroom_config_lib.update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
     bathroom_config_lib.update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
-    bathroom_config_lib.update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b
-
+    bathroom_config_lib.update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
 
     print("COMPLETED:  update_lambda_functions_code()")
 
