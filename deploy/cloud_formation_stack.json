@@ -334,7 +334,7 @@
         "Type": "AWS::Lambda::Function",
         "Properties": {
             "Handler": "index.handler",
-            "MemorySize": "128",
+            "MemorySize": "1024",
             "FunctionName": "bathroomappkickstartconfiglambdafunction",
             "Role": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] },
               "Code": {
