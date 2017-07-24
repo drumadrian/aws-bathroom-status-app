@@ -89,6 +89,7 @@ def create_zip_files_for_lambda(system_config_a):
     bathroom_config_lib.create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER)
     bathroom_config_lib.create_zip_file_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER)
     bathroom_config_lib.create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER)
+    bathroom_config_lib.create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDER)
     print("COMPLETED:  create_zip_files_for_lambda()")
     
 
@@ -162,7 +163,21 @@ def update_lambda_functions_code(cf_outputs_b):
 
 
 def invoke_populate_dynamoDB_lambda_function(context_c, cf_outputs_d):
-    cf_client = boto3.client('lambda', region_name='us-west-2')
+    function_arn = cf_outputs_d['cfoutputsbathroomappcreatepopulatedynamodblambdafunction']
+    lambda_client = boto3.client('lambda', region_name='us-west-2')
+
+    response = lambda_client.invoke(
+    FunctionName=function_arn,
+    InvocationType='RequestResponse',
+    LogType='None',
+    # ClientContext='string',
+    Payload=''
+    # Qualifier='string'
+)
+
+    if DEBUG:
+        print("\n\n cf_outputs_a={}\n\n".format(cf_outputs_a))
+
 
     print("COMPLETED:  invoke_populate_dynamoDB_lambda_function()")
 
@@ -226,7 +241,9 @@ def lambda_handler(event, context):
 
     update_lambda_functions_code(cf_outputs)
 
-    #next    
+    #next  use this for testing during development when there the function was not yet in the cloudformation stack
+    cf_outputs['cfoutputtablestudygurubathroomsname'] = "TheBathroomApp22-tablestudygurubathrooms-KCZPH9OJ95X5"  
+    cf_outputs['cfoutputsbathroomappcreatepopulatedynamodblambdafunction'] = "arn:aws:lambda:us-west-2:101845606311:function:TESTbathroomappcreatepopulatedynamodblambdafunction"   
     invoke_populate_dynamoDB_lambda_function(context, cf_outputs)
 
 
