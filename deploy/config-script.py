@@ -156,8 +156,17 @@ def update_lambda_functions_code(cf_outputs_b):
     bathroom_config_lib.update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
     bathroom_config_lib.update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
     bathroom_config_lib.update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
+    bathroom_config_lib.update_lambda_function_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b)
 
     print("COMPLETED:  update_lambda_functions_code()")
+
+
+def invoke_populate_dynamoDB_lambda_function(context_c, cf_outputs_d):
+    cf_client = boto3.client('lambda', region_name='us-west-2')
+
+    print("COMPLETED:  invoke_populate_dynamoDB_lambda_function()")
+
+
 
 
 def add_tags_to_assets():
@@ -216,13 +225,14 @@ def lambda_handler(event, context):
     put_zip_files_in_S3_bucket(cf_outputs, context)
 
     update_lambda_functions_code(cf_outputs)
-    
+
+    #next    
+    invoke_populate_dynamoDB_lambda_function(context, cf_outputs)
 
 
 
-    # turn_on_versioning_for_buckets()                  (moved into CloudFormation)
-    add_tags_to_assets()
-    # attach_policies_to_roles()                        (moved into CloudFormation)
+
+    # add_tags_to_assets()                              #ToDo
     update_api_from_swagger()
     setup_lambda_trigger_for_config()
     setup_dns_for_s3_website()

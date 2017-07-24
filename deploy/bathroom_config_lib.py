@@ -52,7 +52,7 @@ def create_zip_file_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER_c):
 
 def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	if CONFIG_DEBUG:
-		print("STARTING:   create_zip_file_for_set_status() \n")
+		print("STARTING:   create_zip_file_for_alexa_function() \n")
 
 	zip_file_name = "alexa.zip"
 	function_file_name = "index.py"
@@ -68,7 +68,28 @@ def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	# print(out)
 
 	if CONFIG_DEBUG:
-		print("COMPLETED:   create_zip_file_for_set_status() \n")
+		print("COMPLETED:   create_zip_file_for_alexa_function() \n")
+
+
+def create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDER_d):
+	if CONFIG_DEBUG:
+		print("STARTING:   create_zip_file_for_populate_dynamoDB_lambda_function() \n")
+
+	zip_file_name = "populatedynamo.zip"
+	function_file_name = "index.py"
+	create_the_zip_file = "zip -r9 {}{} /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name)
+	add_code_to_zip_file = "zip -g {}{} /home/ec2-user/aws-bathroom-status-app/create_and_populate_dynamodb/{}".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name, function_file_name)
+
+	os.system(create_the_zip_file)
+	os.system(add_code_to_zip_file)		
+
+	#TODO
+	# process = subprocess.Popen(['ls', '-a'], stdout=subprocess.PIPE)
+	# out, err = process.communicate()
+	# print(out)
+
+	if CONFIG_DEBUG:
+		print("COMPLETED:   create_zip_file_for_populate_dynamoDB_lambda_function() \n")
 
 
 
@@ -212,5 +233,78 @@ def update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_output
 		# print("\npath_to_zip_file={}".format(path_to_zip_file))
 		print("\nS3_config_bucket={}".format(S3_config_bucket))
 		print("\nresponse={}".format(response))
+
+
+
+def update_lambda_function_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_f):
+	if CONFIG_DEBUG:
+		print("STARTING:   update_lambda_function_for_populate_dynamoDB_lambda_function() \n")
+
+	function_arn = cf_outputs_f['cfoutputsbathroomappcreatepopulatedynamodblambdafunction']
+	zip_file_name = "populatedynamo.zip"
+	# path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
+		S3_config_bucket = cf_outputs_f['cfoutputs3awsbathroomappfiles']
+
+	client = boto3.client('lambda', region_name='us-west-2')
+
+	response = client.update_function_code(
+    FunctionName=function_arn,
+    # ZipFile=b'bytes',
+    S3Bucket=S3_config_bucket,
+    S3Key=zip_file_name,
+    # S3ObjectVersion='string',
+    # Publish=True|False,
+    # DryRun=True|False
+	)
+
+
+	if CONFIG_DEBUG:
+		print("\nfunction_arn={}".format(function_arn))
+		print("\nzip_file_name={}".format(zip_file_name))
+		# print("\npath_to_zip_file={}".format(path_to_zip_file))
+		print("\nS3_config_bucket={}".format(S3_config_bucket))
+		print("\nresponse={}".format(response))
+
+
+	#Now, we need to update the environment data with the correct dynamoDB table name
+	dynamodbTableName = cf_outputs_f['cfoutputtablestudygurubathroomsname']
+
+	response = client.update_function_configuration(
+	    FunctionName=function_arn,
+	    # Role='string',
+	    # Handler='string',
+	    # Description='string',
+	    # Timeout=123,
+	    # MemorySize=123,
+	    # VpcConfig={
+	    #     'SubnetIds': [
+	    #         'string',
+	    #     ],
+	    #     'SecurityGroupIds': [
+	    #         'string',
+	    #     ]
+	    # },
+	    Environment={
+	        'Variables': {
+	            'dynamodb_table_name': dynamodbTableName
+	        }
+	    }
+	    # Runtime='nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+	    # DeadLetterConfig={
+	    #     'TargetArn': 'string'
+	    # },
+	    # KMSKeyArn='string',
+	    # TracingConfig={
+	    #     'Mode': 'Active'|'PassThrough'
+	    # }
+	)
+
+	if CONFIG_DEBUG:
+		print("\nfunction_arn={}".format(function_arn))
+		print("\ndynamodbTableName={}".format(dynamodbTableName))
+		print("\nresponse={}".format(response))
+		print("COMPLETED:   update_lambda_function_for_populate_dynamoDB_lambda_function() \n")
+
+
 
 

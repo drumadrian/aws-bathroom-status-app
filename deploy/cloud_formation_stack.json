@@ -326,7 +326,7 @@
                 ]}
               },
             "Runtime": "python3.6",
-            "Timeout": "10"
+            "Timeout": "20"
           }
     },
 
@@ -346,11 +346,45 @@
                 ]}
               },
             "Runtime": "python3.6",
-            "Timeout": "10",
+            "Timeout": "600",
             "Tags": [
               {
                 "Key" : "asset_purpose",
                 "Value" : "kick start system using config file"
+              },
+              {
+                "Key" : "my_cf_stack_id",
+                "Value" : {"Ref": "AWS::StackId"}
+              },
+              {
+                "Key" : "my_cf_stack_name",
+                "Value" : {"Ref": "AWS::StackName"}
+              }
+            ]
+          }
+    },
+
+    "bathroomappcreatepopulatedynamodblambdafunction": {
+        "Type": "AWS::Lambda::Function",
+        "Properties": {
+            "Handler": "index.handler",
+            "MemorySize": "128",
+            "FunctionName": "bathroomappcreatepopulatedynamodblambdafunction",
+            "Role": { "Fn::GetAtt" : ["bathroomappsuperrole", "Arn"] },
+              "Code": {
+                "ZipFile": { "Fn::Join": ["\n", [
+                    "import json",
+                    "def handler(event, context):",
+                    "    lambdaRetVal = {\"Hello\":\"World\"}",
+                    "    return json.dumps(lambdaRetVal)"]
+                ]}
+              },
+            "Runtime": "python3.6",
+            "Timeout": "200",
+            "Tags": [
+              {
+                "Key" : "asset_purpose",
+                "Value" : "populate existing dynamoDB database"
               },
               {
                 "Key" : "my_cf_stack_id",
@@ -916,11 +950,11 @@
         "Name": "cfoutputs3awsbathroomappwebsitebucketarn"
       }
     },
-    "cfoutputtablestudygurubathroomsarn": {
-      "Description": "ARN of the DynamoDB bathrooms database",
+    "cfoutputtablestudygurubathroomsname": {
+      "Description": "Name of the DynamoDB bathrooms database",
       "Value": {"Ref": "tablestudygurubathrooms"},
       "Export" : {
-        "Name": "cfoutputtablestudygurubathroomsarn"
+        "Name": "cfoutputtablestudygurubathroomsname"
       }
     },
     "cfoutputtablestudygurubathroomsconfigarn": {
@@ -979,7 +1013,16 @@
       "Export" : {
         "Name": "cfoutputs3awsbathroomappwebsitebucket"
       }
-    }
+    },
+    "cfoutputsbathroomappcreatepopulatedynamodblambdafunction": {
+      "Description": "lambda function to populate dynamoDB",
+      "Value": { "Fn::GetAtt" : ["bathroomappcreatepopulatedynamodblambdafunction", "Arn"] },
+      "Export" : {
+        "Name": "cfoutputsbathroomappcreatepopulatedynamodblambdafunction"
+      }
+    },
+
+    
   }   
 
 }
