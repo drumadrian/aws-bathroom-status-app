@@ -239,11 +239,12 @@ def lambda_handler(event, context):
     
     put_zip_files_in_S3_bucket(cf_outputs, context)
 
-    update_lambda_functions_code(cf_outputs)
-
     #next  use this for testing during development when there the function was not yet in the cloudformation stack
     cf_outputs['cfoutputtablestudygurubathroomsname'] = "TheBathroomApp22-tablestudygurubathrooms-KCZPH9OJ95X5"  
     cf_outputs['cfoutputsbathroomappcreatepopulatedynamodblambdafunction'] = "arn:aws:lambda:us-west-2:101845606311:function:TESTbathroomappcreatepopulatedynamodblambdafunction"   
+
+    update_lambda_functions_code(cf_outputs)
+
     invoke_populate_dynamoDB_lambda_function(context, cf_outputs)
 
 
