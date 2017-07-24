@@ -16,8 +16,8 @@ def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER_a):
 	if CONFIG_DEBUG:
 		print("This baby is fat \n")
 
-	create_zip_file_for_get_status = "zip -r9 /home/ec2-user/outputs/get_status.zip /home/ec2-user/aws-bathroom-status-app/get_status/*"
-	os.system(create_zip_file_for_get_status)
+	create_zip_file_for_get_status_command = "zip -r9 /home/ec2-user/outputs/get_status.zip /home/ec2-user/aws-bathroom-status-app/get_status/*"
+	os.system(create_zip_file_for_get_status_command)
 
 
 def create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER_b):

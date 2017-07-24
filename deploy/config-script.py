@@ -83,7 +83,7 @@ PATH_TO_ZIP_FILE_FOLDER = "/home/ec2-user/outputs/"
 
 
 
-def create_zip_files_for_lambda(): 
+def create_zip_files_for_lambda(system_config_a): 
 
     bathroom_config_lib.create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER)
     bathroom_config_lib.create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER)
