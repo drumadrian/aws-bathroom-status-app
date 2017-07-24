@@ -11,7 +11,8 @@ import urllib.request
 import boto3
 
 
-def create_zip_file_for_get_status():
+
+def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER_a):
 	if CONFIG_DEBUG:
 		print("This baby is fat \n")
 
@@ -19,7 +20,7 @@ def create_zip_file_for_get_status():
 	os.system(create_zip_file_for_get_status)
 
 
-def create_zip_file_for_set_status():
+def create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER_b):
 	if CONFIG_DEBUG:
 		print("STARTING:   create_zip_file_for_set_status() \n")
 
@@ -37,12 +38,12 @@ def create_zip_file_for_set_status():
 	if CONFIG_DEBUG:
 		print("COMPLETED:   create_zip_file_for_set_status() \n")
 
-def create_zip_file_for_sync_dyanomo_and_s3():
+def create_zip_file_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER_c):
 	if CONFIG_DEBUG:
 		print("This baby is sync \n")
 
 
-def create_zip_file_for_alexa_function():
+def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	if CONFIG_DEBUG:
 		print("This baby is alexa \n")
 
@@ -62,8 +63,11 @@ def get_local_system_config_file(current_LOCAL_CONFIG_FILE_PATH):
 
 
 
-def get_S3_system_config_file():
+def get_S3_system_config_file(cf_outputs_d):
+	print("get_S3_system_config_file() Not yet implemented \n")
+	S3_config_data = "blank by design"
 	return S3_config_data
+
 
 def get_cloudformation_stackId(context_c):
 	if context_c == "":

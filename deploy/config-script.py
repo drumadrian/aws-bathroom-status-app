@@ -1,6 +1,8 @@
 import boto3
 import json  #I'm sure I'll need it at some point.  :-) 
 import os
+import subprocess
+
 from importlib.machinery import SourceFileLoader
 bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
 
@@ -91,16 +93,37 @@ def create_zip_files_for_lambda():
     
 
 
-def get_system_config_file(runtime_context):  
+def put_zip_files_in_S3_bucket(cf_outputs, context_b):
+    if context_b == ""
+        bucket_name = cf_outputs['cfoutputs3awsbathroomappfiles']
+        # "aws s3 sync /home/ec2-user/outputs/ s3://thebathroomapp20-s3awsbathroomappfiles-1fulzqxu4j0m8"
+        put_zip_files_in_S3_bucket_command = "aws s3 sync /home/ec2-user/outputs/ s3://{}".format(bucket_name)
+        os.system(put_zip_files_in_S3_bucket_command)
+        if DEBUG:
+            print("Running in: EC2 Instance mode. Do not fetch file from S3!")
+            print("\nbucket_name = {}\n".format(bucket_name))
+            
+    else:
+        if DEBUG:
+            print("Running in: AWS Lambda mode.  Fetch config file from S3!")
+        print("Lambda mode:  Not yet implemented \n")
+
+    print("COMPLETED:  s3_sync_output_files()")
+
+
+def get_system_config_file(runtime_context, cf_outputs_c):  
     if runtime_context == "":
         if DEBUG:
             print("Running in: EC2 Instance mode. Do not fetch file from S3!")
-            local_config = bathroom_config_lib.get_local_system_config_file(LOCAL_CONFIG_FILE_PATH)
-            return local_config
-        else:
+        local_config = bathroom_config_lib.get_local_system_config_file(LOCAL_CONFIG_FILE_PATH)
+        return local_config
+    else:
+        if DEBUG:
             print("Running in: AWS Lambda mode.  Fetch config file from S3!")
-            S3_config = get_S3_system_config_file()
-            return S3_config
+        S3_config = get_S3_system_config_file(cf_outputs_c)
+        return S3_config
+
+
     print("COMPLETED:  get_system_config_file()")
 
 
@@ -183,10 +206,19 @@ def lambda_handler(event, context):
 
 
     # clone_git_repo()                                  (ToDo)
-    ##create_zip_files_for_lambda() 
-    system_config = get_system_config_file(context)  
     cf_outputs = get_cloudformation_outputs(context)
+
+    system_config = get_system_config_file(context, cf_outputs)  
+
+    create_zip_files_for_lambda(system_config) 
+    
+    put_zip_files_in_S3_bucket(cf_outputs, context)
+
     update_lambda_functions_code(cf_outputs)
+    
+
+
+
     # turn_on_versioning_for_buckets()                  (moved into CloudFormation)
     add_tags_to_assets()
     # attach_policies_to_roles()                        (moved into CloudFormation)
