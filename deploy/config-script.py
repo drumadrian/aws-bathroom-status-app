@@ -168,16 +168,16 @@ def invoke_populate_dynamoDB_lambda_function(context_c, cf_outputs_d):
     lambda_client = boto3.client('lambda', region_name='us-west-2')
 
     response = lambda_client.invoke(
-    FunctionName=function_arn,
-    InvocationType='RequestResponse',
-    LogType='None',
-    # ClientContext='string',
-    Payload=''
-    # Qualifier='string'
-)
+        FunctionName=function_arn,
+        InvocationType='RequestResponse',
+        LogType='None',
+        # ClientContext='string',
+        Payload=''
+        # Qualifier='string'
+    )
 
     if DEBUG:
-        print("\n\n cf_outputs_a={}\n\n".format(cf_outputs_a))
+        print("\n\n function_arn={}\n\n".format(function_arn))
 
 
     print("COMPLETED:  invoke_populate_dynamoDB_lambda_function()")
