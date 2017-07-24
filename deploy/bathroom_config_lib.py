@@ -14,7 +14,7 @@ import boto3
 
 def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER_a):
 	if CONFIG_DEBUG:
-		print("This baby is fat \n")
+		print("STARTING:   create_zip_file_for_get_status() \n")
 
 	zip_file_name = "get_status.zip"
 	create_zip_file_for_get_status_command = "zip -r9 {}{} /home/ec2-user/aws-bathroom-status-app/get_status/*".format(PATH_TO_ZIP_FILE_FOLDER_a, zip_file_name)
@@ -66,9 +66,9 @@ def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	# process = subprocess.Popen(['ls', '-a'], stdout=subprocess.PIPE)
 	# out, err = process.communicate()
 	# print(out)
-
 	if CONFIG_DEBUG:
 		print("COMPLETED:   create_zip_file_for_alexa_function() \n")
+
 
 
 def create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDER_d):
@@ -89,6 +89,8 @@ def create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDE
 	# print(out)
 
 	if CONFIG_DEBUG:
+		print("\n create_the_zip_file={}".format(create_the_zip_file))
+		print("\n add_code_to_zip_file={}".format(add_code_to_zip_file))
 		print("COMPLETED:   create_zip_file_for_populate_dynamoDB_lambda_function() \n")
 
 
