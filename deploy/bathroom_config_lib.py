@@ -243,7 +243,7 @@ def update_lambda_function_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FIL
 	function_arn = cf_outputs_f['cfoutputsbathroomappcreatepopulatedynamodblambdafunction']
 	zip_file_name = "populatedynamo.zip"
 	# path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
-		S3_config_bucket = cf_outputs_f['cfoutputs3awsbathroomappfiles']
+	S3_config_bucket = cf_outputs_f['cfoutputs3awsbathroomappfiles']
 
 	client = boto3.client('lambda', region_name='us-west-2')
 
