@@ -188,10 +188,10 @@ def update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_o
 
 
 def update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b):
-	function_arn = cf_outputs_f['cfoutputbathroomappalexalambdafunctionarn']
+	function_arn = cf_outputs_b['cfoutputbathroomappalexalambdafunctionarn']
 	zip_file_name = "alexa.zip"
 	# path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
-	S3_config_bucket = cf_outputs_f['cfoutputs3awsbathroomappfiles']
+	S3_config_bucket = cf_outputs_b['cfoutputs3awsbathroomappfiles']
 
 	client = boto3.client('lambda', region_name='us-west-2')
 
