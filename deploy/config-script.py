@@ -94,7 +94,7 @@ def create_zip_files_for_lambda():
 
 
 def put_zip_files_in_S3_bucket(cf_outputs, context_b):
-    if context_b == ""
+    if context_b == "":
         bucket_name = cf_outputs['cfoutputs3awsbathroomappfiles']
         # "aws s3 sync /home/ec2-user/outputs/ s3://thebathroomapp20-s3awsbathroomappfiles-1fulzqxu4j0m8"
         put_zip_files_in_S3_bucket_command = "aws s3 sync /home/ec2-user/outputs/ s3://{}".format(bucket_name)
