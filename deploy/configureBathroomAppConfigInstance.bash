@@ -100,6 +100,11 @@ echo -e "\n COMPLETED: source venvironmentforconfig/bin/activate \n"
 pip install boto3
 echo -e "\n COMPLETED: pip install boto3 \n"
 
+cd /home/ec2-user
+pip install -r /home/ec2-user/aws-bathroom-status-app/requirements.txt
+echo -e "\n COMPLETED: pip install -r /home/ec2-user/aws-bathroom-status-app/requirements.txt \n"
+
+
 # pip install json
 # echo -e "\n COMPLETED: pip install json \n"
 
