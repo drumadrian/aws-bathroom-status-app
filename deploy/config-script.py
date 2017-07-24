@@ -103,6 +103,7 @@ def put_zip_files_in_S3_bucket(cf_outputs, context_b):
         if DEBUG:
             print("Running in: EC2 Instance mode. Do not fetch file from S3!")
             print("\nbucket_name = {}\n".format(bucket_name))
+            print("\nput_zip_files_in_S3_bucket_command = {}\n".format(put_zip_files_in_S3_bucket_command))
             
     else:
         if DEBUG:
