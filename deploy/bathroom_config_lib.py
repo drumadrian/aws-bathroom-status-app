@@ -16,7 +16,8 @@ def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER_a):
 	if CONFIG_DEBUG:
 		print("This baby is fat \n")
 
-	create_zip_file_for_get_status_command = "zip -r9 /home/ec2-user/outputs/get_status.zip /home/ec2-user/aws-bathroom-status-app/get_status/*"
+	zip_file_name = "get_status.zip"
+	create_zip_file_for_get_status_command = "zip -r9 {}{} /home/ec2-user/aws-bathroom-status-app/get_status/*".format(PATH_TO_ZIP_FILE_FOLDER_a, zip_file_name)
 	os.system(create_zip_file_for_get_status_command)
 
 
@@ -24,28 +25,52 @@ def create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER_b):
 	if CONFIG_DEBUG:
 		print("STARTING:   create_zip_file_for_set_status() \n")
 
-		create_the_zip_file = "zip -r9 /home/ec2-user/outputs/set_status.zip /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*"
-		add_code_to_zip_file = "zip -g /home/ec2-user/outputs/set_status.zip /home/ec2-user/aws-bathroom-status-app/set_status/set_status.py"
+	zip_file_name = "set_status.zip"
+	function_file_name = "index.py"
+	create_the_zip_file = "zip -r9 {}{} /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*".format(PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name)
+	add_code_to_zip_file = "zip -g {}{} /home/ec2-user/aws-bathroom-status-app/set_status/{}".format(PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name, function_file_name)
 
-		os.system(create_the_zip_file)
-		os.system(add_code_to_zip_file)		
+	os.system(create_the_zip_file)
+	os.system(add_code_to_zip_file)		
 
-		#TODO
-		# process = subprocess.Popen(['ls', '-a'], stdout=subprocess.PIPE)
-		# out, err = process.communicate()
-		# print(out)
+	#TODO
+	# process = subprocess.Popen(['ls', '-a'], stdout=subprocess.PIPE)
+	# out, err = process.communicate()
+	# print(out)
 
 	if CONFIG_DEBUG:
 		print("COMPLETED:   create_zip_file_for_set_status() \n")
 
+
 def create_zip_file_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER_c):
+	zip_file_name = "sync_dyanomo_and_s3"
 	if CONFIG_DEBUG:
-		print("This baby is sync \n")
+		print("create_zip_file_for_sync_dyanomo_and_s3() Not yet implemented \n\n")
+
+
 
 
 def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	if CONFIG_DEBUG:
-		print("This baby is alexa \n")
+		print("STARTING:   create_zip_file_for_set_status() \n")
+
+	zip_file_name = "alexa.zip"
+	function_file_name = "index.py"
+	create_the_zip_file = "zip -r9 {}{} /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name)
+	add_code_to_zip_file = "zip -g {}{} /home/ec2-user/aws-bathroom-status-app/alexa/skill_service/{}".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name, function_file_name)
+
+	os.system(create_the_zip_file)
+	os.system(add_code_to_zip_file)		
+
+	#TODO
+	# process = subprocess.Popen(['ls', '-a'], stdout=subprocess.PIPE)
+	# out, err = process.communicate()
+	# print(out)
+
+	if CONFIG_DEBUG:
+		print("COMPLETED:   create_zip_file_for_set_status() \n")
+
+
 
 
 def get_local_system_config_file(current_LOCAL_CONFIG_FILE_PATH):
@@ -103,10 +128,9 @@ def get_cloudformation_stackId(context_c):
 
 
 def update_lambda_function_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c):
-
 	function_arn = cf_outputs_c['cfoutputbathroomappgetstatuslambdafunctionarn']
 	zip_file_name = "get_status.zip"
-	path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
+	# path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
 	S3_config_bucket = cf_outputs_c['cfoutputs3awsbathroomappfiles']
 
 	client = boto3.client('lambda', region_name='us-west-2')
@@ -125,23 +149,68 @@ def update_lambda_function_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c)
 	if CONFIG_DEBUG:
 		print("\nfunction_arn={}".format(function_arn))
 		print("\nzip_file_name={}".format(zip_file_name))
-		print("\npath_to_zip_file={}".format(path_to_zip_file))
+		# print("\npath_to_zip_file={}".format(path_to_zip_file))
 		print("\nS3_config_bucket={}".format(S3_config_bucket))
 		print("\nresponse={}".format(response))
 
 
 
-def update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b):
+def update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_e):
+	function_arn = cf_outputs_e['cfoutputbathroomappsetstatuslambdafunctionarn']
+	zip_file_name = "set_status.zip"
+	# path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
+	S3_config_bucket = cf_outputs_e['cfoutputs3awsbathroomappfiles']
+
+	client = boto3.client('lambda', region_name='us-west-2')
+
+	response = client.update_function_code(
+    FunctionName=function_arn,
+    # ZipFile=b'bytes',
+    S3Bucket=S3_config_bucket,
+    S3Key=zip_file_name,
+    # S3ObjectVersion='string',
+    # Publish=True|False,
+    # DryRun=True|False
+	)
+
+
 	if CONFIG_DEBUG:
-		print("update_lambda_function_for_set_status() Not yet implemented \n")
+		print("\nfunction_arn={}".format(function_arn))
+		print("\nzip_file_name={}".format(zip_file_name))
+		# print("\npath_to_zip_file={}".format(path_to_zip_file))
+		print("\nS3_config_bucket={}".format(S3_config_bucket))
+		print("\nresponse={}".format(response))
 
 
-def update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b):
+def update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_f):
 	if CONFIG_DEBUG:
 		print("update_lambda_function_for_sync_dyanomo_and_s3() Not yet implemented \n")
 
 
 def update_lambda_function_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_b):
+	function_arn = cf_outputs_f['cfoutputbathroomappalexalambdafunctionarn']
+	zip_file_name = "alexa.zip"
+	# path_to_zip_file = PATH_TO_ZIP_FILE_FOLDER + zip_file_name
+	S3_config_bucket = cf_outputs_f['cfoutputs3awsbathroomappfiles']
+
+	client = boto3.client('lambda', region_name='us-west-2')
+
+	response = client.update_function_code(
+    FunctionName=function_arn,
+    # ZipFile=b'bytes',
+    S3Bucket=S3_config_bucket,
+    S3Key=zip_file_name,
+    # S3ObjectVersion='string',
+    # Publish=True|False,
+    # DryRun=True|False
+	)
+
+
 	if CONFIG_DEBUG:
-		print("update_lambda_function_for_alexa_function() Not yet implemented \n")
-    
+		print("\nfunction_arn={}".format(function_arn))
+		print("\nzip_file_name={}".format(zip_file_name))
+		# print("\npath_to_zip_file={}".format(path_to_zip_file))
+		print("\nS3_config_bucket={}".format(S3_config_bucket))
+		print("\nresponse={}".format(response))
+
+

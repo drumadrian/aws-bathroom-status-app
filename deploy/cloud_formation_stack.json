@@ -285,7 +285,7 @@
                     "    return json.dumps(lambdaRetVal)"]
                 ]}
               },
-            "Runtime": "python2.7",
+            "Runtime": "python3.6",
             "Timeout": "10"
           }
     },
@@ -305,7 +305,7 @@
                     "    return json.dumps(lambdaRetVal)"]
                 ]}
               },
-            "Runtime": "python2.7",
+            "Runtime": "python3.6",
             "Timeout": "10"
           }
     },
@@ -325,7 +325,7 @@
                     "    return json.dumps(lambdaRetVal)"]
                 ]}
               },
-            "Runtime": "python2.7",
+            "Runtime": "python3.6",
             "Timeout": "10"
           }
     },
@@ -345,7 +345,7 @@
                     "    return json.dumps(lambdaRetVal)"]
                 ]}
               },
-            "Runtime": "python2.7",
+            "Runtime": "python3.6",
             "Timeout": "10",
             "Tags": [
               {
