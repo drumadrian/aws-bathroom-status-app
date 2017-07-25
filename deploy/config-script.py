@@ -198,9 +198,10 @@ def update_api_from_swagger(context_e, cf_outputs_e):
 
     system_restApiId = cf_outputs_e['cfoutputBathroomAppAPIiD']
 
-    with open(LOCAL_SWAGGER_FILE_PATH_FILE_PATH) as local_swagger_file:  
-        # local_swagger_file_byte_data = bytes(local_swagger_file, "ascii")
-
+    with open(LOCAL_SWAGGER_FILE_PATH_FILE_PATH) as local_swagger_file:
+        local_swagger_file_json = json.load(local_swagger_file)
+        local_swagger_file_string = json.dumps(local_swagger_file_json)
+        local_swagger_file_byte_data = bytes(local_swagger_file_string, "utf-8")
         api_gateway_client = boto3.client('apigateway', region_name='us-west-2')
 
         response = api_gateway_client.put_rest_api(
@@ -212,11 +213,8 @@ def update_api_from_swagger(context_e, cf_outputs_e):
             #     'string': 'string'
             # },
             # body=b'bytes'|file
-            body=local_swagger_file
+            body=local_swagger_file_byte_data
         )
-
-
-
 
     if DEBUG:
         print("\n LOCAL_SWAGGER_FILE_PATH_FILE_PATH={}".format(LOCAL_SWAGGER_FILE_PATH_FILE_PATH))
