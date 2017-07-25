@@ -77,7 +77,7 @@ def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	create_the_zip_file = "cd {} ; zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name)
 
 	add_code_to_zip_file = "cd {} ; zip -g {}{} {}".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name, function_file_name)
-`
+
 	os.system(create_the_zip_file)
 	os.system(add_code_to_zip_file)		
 
