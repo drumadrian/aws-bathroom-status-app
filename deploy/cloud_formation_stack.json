@@ -346,7 +346,7 @@
                 ]}
               },
             "Runtime": "python3.6",
-            "Timeout": "600",
+            "Timeout": "300",
             "Tags": [
               {
                 "Key" : "asset_purpose",
