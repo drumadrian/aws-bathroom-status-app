@@ -191,6 +191,7 @@ def invoke_populate_dynamoDB_lambda_function(context_c, cf_outputs_d):
 
 
 def add_tags_to_assets():
+    print("\n Not yet implemented \n")
     print("COMPLETED:  add_tags_to_assets()")
 
 
@@ -225,26 +226,32 @@ def update_api_from_swagger(context_e, cf_outputs_e):
 
 
 def setup_lambda_trigger_for_config():
+    print("\n Not yet implemented \n")
     print("COMPLETED:  setup_lambda_trigger_for_config()")
 
 
 def update_date_and_time_in_configuration():
+    print("\n Not yet implemented \n")
     print("COMPLETED:  update_date_and_time_in_configuration()")
 
 
 def setup_dns_for_s3_website():
+    print("\n Not yet implemented \n")
     print("COMPLETED:  setup_dns_for_s3_website()")
 
 
 def setup_dns_for_api():
+    print("\n Not yet implemented \n")
     print("COMPLETED:  setup_dns_for_api()")
 
 
 def deploy_api_gateway_api():
+    print("\n Not yet implemented \n")
     print("COMPLETED:  deploy_api_gateway_api()")
 
 
 def publish_config_data_to_system_admin():
+    print("\n Not yet implemented \n")
     print("COMPLETED:  publish_config_data_to_system_admin()")
 
 
@@ -273,18 +280,20 @@ def lambda_handler(event, context):
 
     #deleteme
     #next  use this for testing during development when there the function was not yet in the cloudformation stack
-    cf_outputs['cfoutputtablestudygurubathroomsname'] = "TheBathroomApp22-tablestudygurubathrooms-KCZPH9OJ95X5"  
-    cf_outputs['cfoutputsbathroomappcreatepopulatedynamodblambdafunction'] = "arn:aws:lambda:us-west-2:101845606311:function:TESTbathroomappcreatepopulatedynamodblambdafunction"   
+    # cf_outputs['cfoutputtablestudygurubathroomsname'] = "TheBathroomApp22-tablestudygurubathrooms-KCZPH9OJ95X5"  
+    # cf_outputs['cfoutputsbathroomappcreatepopulatedynamodblambdafunction'] = "arn:aws:lambda:us-west-2:101845606311:function:TESTbathroomappcreatepopulatedynamodblambdafunction"   
 
     update_lambda_functions_code(cf_outputs)
 
     invoke_populate_dynamoDB_lambda_function(context, cf_outputs)
 
-
-
-
-    # add_tags_to_assets()                              #ToDo
     update_api_from_swagger(context, cf_outputs)
+
+    # setting up API with proper Lambda Integration will be done manually for now.  
+    # After authentication is added this will be captured into update_api_from_swagger()
+    # This allows a full deployment and auto configuration 
+
+    add_tags_to_assets()                              
     setup_lambda_trigger_for_config()
     setup_dns_for_s3_website()
     setup_dns_for_api()
