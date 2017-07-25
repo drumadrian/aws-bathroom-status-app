@@ -74,9 +74,9 @@ def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	zip_modules_path = 	"/home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/"
 	zip_code_path = "/home/ec2-user/aws-bathroom-status-app/alexa/skill_service/"
 
-	create_the_zip_file = "cd {} ; zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name)
+	create_the_zip_file = "cd {} ; zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name)
 
-	add_code_to_zip_file = "cd {} ; zip -g {}{} {}".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name, function_file_name)
+	add_code_to_zip_file = "cd {} ; zip -g {}{} {}".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name, function_file_name)
 
 	os.system(create_the_zip_file)
 	os.system(add_code_to_zip_file)		
@@ -92,7 +92,7 @@ def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 
 
 
-def create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDER_d):
+def create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDER_e):
 	if CONFIG_DEBUG:
 		print("STARTING:   create_zip_file_for_populate_dynamoDB_lambda_function() \n")
 
@@ -101,9 +101,9 @@ def create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDE
 	zip_modules_path = 	"/home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/"
 	zip_code_path = "/home/ec2-user/aws-bathroom-status-app/create_and_populate_dynamodb/"
 
-	create_the_zip_file = "cd {} ; zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name)
+	create_the_zip_file = "cd {} ; zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_e, zip_file_name)
 
-	add_code_to_zip_file = "cd {} ; zip -g {}{} {}".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name, function_file_name)
+	add_code_to_zip_file = "cd {} ; zip -g {}{} {}".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_e, zip_file_name, function_file_name)
 	
 	os.system(create_the_zip_file)
 	os.system(add_code_to_zip_file)		
