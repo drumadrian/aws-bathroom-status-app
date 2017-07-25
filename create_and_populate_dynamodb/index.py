@@ -198,7 +198,7 @@ def populate_database(initial_database_PAYLOAD, table_name):
 ##################################################
     # LAMBDA HANDLER FUNCTION 
 ##################################################
-def lambda_handler(event, context):
+def handler(event, context):
     """
     Create the DynamoDB table, load the initial Payload data,
 
@@ -208,7 +208,7 @@ def lambda_handler(event, context):
     :type context: LambdaContext
     """
     # run the program
-    print "BEGIN: lambda_handler()"
+    print "BEGIN: handler()"
 
     #########################   
     # START Refactored Code  
@@ -360,7 +360,7 @@ if __name__ == "__main__":
 
 
     print'\n BEGIN LOCAL (non-Lambda) EXECUTION \n'
-    sys.exit(lambda_handler(event,context))
+    sys.exit(handler(event,context))
 
 
 
