@@ -17,10 +17,9 @@ def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER_a):
 		print("STARTING:   create_zip_file_for_get_status() \n")
 
 	zip_file_name = "get_status.zip"
-	zip_modules_path = 	"/home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/"
 	zip_code_path = "/home/ec2-user/aws-bathroom-status-app/get_status/"
 
-	create_zip_file_for_get_status_command = "cd {} ;zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_a, zip_file_name)
+	create_zip_file_for_get_status_command = "cd {} ; zip -r9 {}{} *".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_a, zip_file_name)
 
 	os.system(create_zip_file_for_get_status_command)
 
