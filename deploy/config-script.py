@@ -199,7 +199,7 @@ def update_api_from_swagger(context_e, cf_outputs_e):
     system_restApiId = cf_outputs_e['cfoutputBathroomAppAPIiD']
 
     with open(LOCAL_SWAGGER_FILE_PATH_FILE_PATH) as local_swagger_file:  
-        local_swagger_file_byte_data = bytes(local_swagger_file,"ascii")
+        # local_swagger_file_byte_data = bytes(local_swagger_file, "ascii")
 
         api_gateway_client = boto3.client('apigateway', region_name='us-west-2')
 
