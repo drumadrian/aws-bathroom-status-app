@@ -23,6 +23,9 @@ def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER_a):
 
 	os.system(create_zip_file_for_get_status_command)
 
+	if CONFIG_DEBUG:
+		print("\n create_zip_file_for_get_status_command={}".format(create_zip_file_for_get_status_command))
+		print("COMPLETED:   create_zip_file_for_get_status() \n")
 
 
 

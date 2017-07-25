@@ -18,6 +18,7 @@ bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aw
 #       http://stackabuse.com/reading-and-writing-json-to-a-file-in-python/
 #       https://boto3.readthedocs.io/en/latest/reference/services/cloudformation.html#CloudFormation.Client.list_exports
 #       http://boto3.readthedocs.io/en/latest/reference/services/lambda.html#Lambda.Client.update_function_code
+#       http://boto3.readthedocs.io/en/latest/reference/services/apigateway.html#APIGateway.Client.put_rest_api
 ################################################################################
 
 
@@ -30,8 +31,12 @@ DRY_RUN_SCRIPT_TEST = False
 DEFAULT_GIT_REPO_URL = "git@github.com:drumadrian/aws-bathroom-status-app.git"
 USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 LOCAL_CONFIG_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/deploy/default-config-data.json"
-# LOCAL_CONFIG_FILE_PATH = "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/default-config-data.json"
+LOCAL_SWAGGER_FILE_PATH_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/swagger/swagger.json"
 PATH_TO_ZIP_FILE_FOLDER = "/home/ec2-user/outputs/"
+
+
+# deleteme
+# LOCAL_CONFIG_FILE_PATH = "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/default-config-data.json"
 
 
 ################################################################################
@@ -189,7 +194,35 @@ def add_tags_to_assets():
     print("COMPLETED:  add_tags_to_assets()")
 
 
-def update_api_from_swagger():
+def update_api_from_swagger(context_e, cf_outputs_e):
+
+    system_restApiId = cf_outputs_e['cfoutputBathroomAppAPIiD']
+
+    with open(LOCAL_SWAGGER_FILE_PATH_FILE_PATH) as local_swagger_file:  
+        local_swagger_file_byte_data = bytes(local_swagger_file,"ascii")
+
+        api_gateway_client = boto3.client('apigateway', region_name='us-west-2')
+
+        response = api_gateway_client.put_rest_api(
+            restApiId=system_restApiId,
+            # mode='merge'|'overwrite',
+            mode='overwrite',
+            failOnWarnings=False,
+            # parameters={
+            #     'string': 'string'
+            # },
+            # body=b'bytes'|file
+            body=local_swagger_file
+        )
+
+
+
+
+    if DEBUG:
+        print("\n LOCAL_SWAGGER_FILE_PATH_FILE_PATH={}".format(LOCAL_SWAGGER_FILE_PATH_FILE_PATH))
+        print("\n system_restApiId={}".format(system_restApiId))
+        print("\n response={}".format(response))
+    
     print("COMPLETED:  update_api_from_swagger()")
 
 
@@ -240,6 +273,7 @@ def lambda_handler(event, context):
     
     put_zip_files_in_S3_bucket(cf_outputs, context)
 
+    #deleteme
     #next  use this for testing during development when there the function was not yet in the cloudformation stack
     cf_outputs['cfoutputtablestudygurubathroomsname'] = "TheBathroomApp22-tablestudygurubathrooms-KCZPH9OJ95X5"  
     cf_outputs['cfoutputsbathroomappcreatepopulatedynamodblambdafunction'] = "arn:aws:lambda:us-west-2:101845606311:function:TESTbathroomappcreatepopulatedynamodblambdafunction"   
@@ -252,7 +286,7 @@ def lambda_handler(event, context):
 
 
     # add_tags_to_assets()                              #ToDo
-    update_api_from_swagger()
+    update_api_from_swagger(context, cf_outputs)
     setup_lambda_trigger_for_config()
     setup_dns_for_s3_website()
     setup_dns_for_api()

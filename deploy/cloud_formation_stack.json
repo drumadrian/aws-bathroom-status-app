@@ -730,14 +730,14 @@
     "BathroomAppAPI": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "Greeting API",
-        "Description": "API used for Greeting requests",
+        "Name": "BathroomAppAPI",
+        "Description": "API used for the Bathroom App System",
         "FailOnWarnings": true,
         "Body": {
           "swagger": "2.0",
           "info": {
             "version": "2016-08-17T18:08:34Z",
-            "title": "Greeting API"
+            "title": "BathroomAppAPI"
           },
           "basePath": "/LATEST",
           "schemes": ["https"],
@@ -863,7 +863,7 @@
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {"Ref": "BathroomAppAPI"},
-        "StageName": "DummyStage"
+        "StageName": "ProductionStage"
       }
     }
 
