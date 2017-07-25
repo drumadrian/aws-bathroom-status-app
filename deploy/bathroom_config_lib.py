@@ -17,8 +17,17 @@ def create_zip_file_for_get_status(PATH_TO_ZIP_FILE_FOLDER_a):
 		print("STARTING:   create_zip_file_for_get_status() \n")
 
 	zip_file_name = "get_status.zip"
-	create_zip_file_for_get_status_command = "zip -r9 {}{} /home/ec2-user/aws-bathroom-status-app/get_status/*".format(PATH_TO_ZIP_FILE_FOLDER_a, zip_file_name)
+	zip_modules_path = 	"/home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/"
+	zip_code_path = "/home/ec2-user/aws-bathroom-status-app/get_status/"
+
+	create_zip_file_for_get_status_command = "cd {} ;zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_a, zip_file_name)
+
 	os.system(create_zip_file_for_get_status_command)
+
+
+
+
+
 
 
 def create_zip_file_for_set_status(PATH_TO_ZIP_FILE_FOLDER_b):
@@ -62,9 +71,13 @@ def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 
 	zip_file_name = "alexa.zip"
 	function_file_name = "index.py"
-	create_the_zip_file = "zip -r9 {}{} /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name)
-	add_code_to_zip_file = "zip -g {}{} /home/ec2-user/aws-bathroom-status-app/alexa/skill_service/{}".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name, function_file_name)
+	zip_modules_path = 	"/home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/"
+	zip_code_path = "/home/ec2-user/aws-bathroom-status-app/alexa/skill_service/"
 
+	create_the_zip_file = "cd {} ; zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name)
+
+	add_code_to_zip_file = "cd {} ; zip -g {}{} {}".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name, function_file_name)
+`
 	os.system(create_the_zip_file)
 	os.system(add_code_to_zip_file)		
 
@@ -73,6 +86,8 @@ def create_zip_file_for_alexa_function(PATH_TO_ZIP_FILE_FOLDER_d):
 	# out, err = process.communicate()
 	# print(out)
 	if CONFIG_DEBUG:
+		print("\n create_the_zip_file={}".format(create_the_zip_file))
+		print("\n add_code_to_zip_file={}".format(add_code_to_zip_file))
 		print("COMPLETED:   create_zip_file_for_alexa_function() \n")
 
 
@@ -83,9 +98,13 @@ def create_zip_file_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FILE_FOLDE
 
 	zip_file_name = "populatedynamo.zip"
 	function_file_name = "index.py"
-	create_the_zip_file = "zip -r9 {}{} /home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/*".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name)
-	add_code_to_zip_file = "zip -g {}{} /home/ec2-user/aws-bathroom-status-app/create_and_populate_dynamodb/{}".format(PATH_TO_ZIP_FILE_FOLDER_d, zip_file_name, function_file_name)
+	zip_modules_path = 	"/home/ec2-user/environments/venvironmentforconfig/lib/python3.4/site-packages/"
+	zip_code_path = "/home/ec2-user/aws-bathroom-status-app/create_and_populate_dynamodb/"
 
+	create_the_zip_file = "cd {} ; zip -r9 {}{} *".format(zip_modules_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name)
+
+	add_code_to_zip_file = "cd {} ; zip -g {}{} {}".format(zip_code_path, PATH_TO_ZIP_FILE_FOLDER_b, zip_file_name, function_file_name)
+	
 	os.system(create_the_zip_file)
 	os.system(add_code_to_zip_file)		
 
