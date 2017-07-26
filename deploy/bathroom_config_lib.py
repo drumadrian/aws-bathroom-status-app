@@ -204,6 +204,49 @@ def update_lambda_function_for_get_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_c)
 		print("\nresponse={}".format(response))
 
 
+	#Now, we need to update the environment data with the correct dynamoDB table name
+	dynamodbTableName = cf_outputs_c['cfoutputtablestudygurubathroomsname']
+
+	response = client.update_function_configuration(
+	    FunctionName=function_arn,
+	    # Role='string',
+	    # Handler='string',
+	    # Description='string',
+	    # Timeout=123,
+	    # MemorySize=123,
+	    # VpcConfig={
+	    #     'SubnetIds': [
+	    #         'string',
+	    #     ],
+	    #     'SecurityGroupIds': [
+	    #         'string',
+	    #     ]
+	    # },
+	    Environment={
+	        'Variables': {
+	            'dynamodb_table_name': dynamodbTableName
+	        }
+	    }
+	    # Runtime='nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+	    # DeadLetterConfig={
+	    #     'TargetArn': 'string'
+	    # },
+	    # KMSKeyArn='string',
+	    # TracingConfig={
+	    #     'Mode': 'Active'|'PassThrough'
+	    # }
+	)
+
+	if CONFIG_DEBUG:
+		print("\nfunction_arn={}".format(function_arn))
+		print("\ndynamodbTableName={}".format(dynamodbTableName))
+		print("\nresponse={}".format(response))
+		print("COMPLETED:   update_lambda_function_for_get_status() \n")
+
+
+
+
+
 
 def update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_e):
 	function_arn = cf_outputs_e['cfoutputbathroomappsetstatuslambdafunctionarn']
@@ -230,6 +273,48 @@ def update_lambda_function_for_set_status(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_e)
 		# print("\npath_to_zip_file={}".format(path_to_zip_file))
 		print("\nS3_config_bucket={}".format(S3_config_bucket))
 		print("\nresponse={}".format(response))
+
+
+	#Now, we need to update the environment data with the correct dynamoDB table name
+	dynamodbTableName = cf_outputs_e['cfoutputtablestudygurubathroomsname']
+
+	response = client.update_function_configuration(
+	    FunctionName=function_arn,
+	    # Role='string',
+	    # Handler='string',
+	    # Description='string',
+	    # Timeout=123,
+	    # MemorySize=123,
+	    # VpcConfig={
+	    #     'SubnetIds': [
+	    #         'string',
+	    #     ],
+	    #     'SecurityGroupIds': [
+	    #         'string',
+	    #     ]
+	    # },
+	    Environment={
+	        'Variables': {
+	            'dynamodb_table_name': dynamodbTableName
+	        }
+	    }
+	    # Runtime='nodejs'|'nodejs4.3'|'nodejs6.10'|'java8'|'python2.7'|'python3.6'|'dotnetcore1.0'|'nodejs4.3-edge',
+	    # DeadLetterConfig={
+	    #     'TargetArn': 'string'
+	    # },
+	    # KMSKeyArn='string',
+	    # TracingConfig={
+	    #     'Mode': 'Active'|'PassThrough'
+	    # }
+	)
+
+	if CONFIG_DEBUG:
+		print("\nfunction_arn={}".format(function_arn))
+		print("\ndynamodbTableName={}".format(dynamodbTableName))
+		print("\nresponse={}".format(response))
+		print("COMPLETED:   update_lambda_function_for_set_status() \n")
+
+
 
 
 def update_lambda_function_for_sync_dyanomo_and_s3(PATH_TO_ZIP_FILE_FOLDER, cf_outputs_f):

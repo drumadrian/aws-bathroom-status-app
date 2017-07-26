@@ -1,12 +1,16 @@
 import boto3
 import logging
 import json
+import os
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('bathroom-app')
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('study-guru-bathrooms')
+# table = dynamodb.Table('study-guru-bathrooms')
+dynamodb_table_name = os.environ['dynamodb_table_name']
+table = dynamodb.Table(dynamodb_table_name)
+
 
 
 def set_occupied(unique_id):
@@ -25,7 +29,7 @@ def set_occupied(unique_id):
         logger.info("UpdateItem succeeded:")
         logger.info(json.dumps(response, indent=4))
     except Exception as e:
-        raise Exception('set_occupied error yo: {0}'.format(e))
+        raise Exception('set_occupied error: {0}'.format(e))
 
 
 def set_vacant(unique_id):
@@ -50,10 +54,10 @@ def set_vacant(unique_id):
         logger.info("UpdateItem succeeded:")
         logger.info(json.dumps(response, indent=4))
     except Exception as e:
-        raise Exception('set_vacant error yo: {0}'.format(e))
+        raise Exception('set_vacant error: {0}'.format(e))
 
 
-def lambda_handler(event, context):
+def handler(event, context):
     """
     Create the DynamoDB table, load the initial Payload data,
 
@@ -89,9 +93,10 @@ def lambda_handler(event, context):
     # return "Setting bathroom status {0} complete".format(user_request)
 
 
-    print "event[bstatus]={}".format(event['bstatus'])
-    print "event type={}".format(type(event['bstatus']))
-
+    print("event[bstatus]={}".format(event['bstatus']) )
+    print( "event type={}".format(type(event['bstatus'])) )
+    print("event={}".format(event))
+    print("table={}".format(table))
 
     requested_status = int(event['bstatus'])
 
@@ -131,7 +136,7 @@ if __name__ == "__main__":
 
 
     context = ""
-    lambda_handler(event, context)
+    handler(event, context)
  
 
 
