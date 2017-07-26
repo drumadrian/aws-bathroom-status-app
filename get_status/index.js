@@ -12,14 +12,14 @@ AWS.config.update({
 
 var docClient = new AWS.DynamoDB.DocumentClient()
 
-var table = "study-guru-bathrooms";
+var table = process.env.dynamodb_table_name;
 var gender = "F";
 var stall = 10;
 var bathroom = 2;
 // var unique_id = gender+stall+bathroom;
 
 var unique_id = event.unique_id;
-var unique_id2 = event["unique-id"];
+// var unique_id2 = event["unique-id"];
 
 console.log("Printing unique_id");
 console.log(event.unique_id);
