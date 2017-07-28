@@ -57,32 +57,90 @@ data = {
 
   "bathrooms": [    
 
-      {
-        "gender" : "M",
-        "building": "",
-        "name":"",
-        "stalls":[
-          {
-            "stall_id":"not_set"
-          },
-          {
-            "stall_id":"not_set"
-          }
-        ]
-      },
-      {
-        "gender" : "F",
-        "building": "",
-        "name":"",
-        "stalls":[
-          {
-            "stall_id":"not_set"
-          },
-          {
-            "stall_id":"not_set"
-          }
-        ]
-      }
+        {
+            "stall": 1,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678930'
+        },
+        {
+            "stall": 2,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678920'
+        },
+        {
+            "stall": 3,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678910'
+        },
+        {
+            "stall": 4,
+            "gender": 'M',
+            "bstatus": 0,
+            "bathroom": 2,
+            "timestamp": '1245678909'
+        },
+        {
+            "stall": 5,
+            "gender": 'M',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678908'
+        },
+        {
+            "stall": 6,
+            "gender": 'M',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678907'
+        },
+        {
+            "stall": 7,
+            "gender": 'F',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678906'
+        },
+        {
+            "stall": 8,
+            "gender": 'F',
+            "bstatus": 1,
+            "bathroom": 1,
+            "timestamp": '1245678905'
+        },
+        {
+            "stall": 9,
+            "gender": 'F',
+            "bstatus": 0,
+            "bathroom": 1,
+            "timestamp": '1245678904'
+        },
+        {
+            "stall": 10,
+            "gender": 'F',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678903'
+        },
+        {
+            "stall": 11,
+            "gender": 'F',
+            "bstatus": 0,
+            "bathroom": 2,
+            "timestamp": '1245678902'
+        },
+        {
+            "stall": 12,
+            "gender": 'F',
+            "bstatus": 1,
+            "bathroom": 2,
+            "timestamp": '1245678901'
+        }
   
   ]
 }

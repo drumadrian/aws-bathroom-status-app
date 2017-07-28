@@ -168,7 +168,7 @@ def update_lambda_functions_code(cf_outputs_b):
     print("COMPLETED:  update_lambda_functions_code()")
 
 
-def invoke_populate_dynamoDB_lambda_function(context_c, cf_outputs_d):
+def invoke_populate_dynamoDB_lambda_function(context_d, cf_outputs_d, system_config_d):
     function_arn = cf_outputs_d['cfoutputsbathroomappcreatepopulatedynamodblambdafunction']
     lambda_client = boto3.client('lambda', region_name='us-west-2')
 
@@ -177,7 +177,7 @@ def invoke_populate_dynamoDB_lambda_function(context_c, cf_outputs_d):
         InvocationType='RequestResponse',
         LogType='None',
         # ClientContext='string',
-        Payload=''
+        Payload=system_config_d
         # Qualifier='string'
     )
 
@@ -225,7 +225,35 @@ def update_api_from_swagger(context_e, cf_outputs_e):
     print("COMPLETED:  update_api_from_swagger()")
 
 
-def setup_lambda_trigger_for_config():
+
+
+
+def update_api_lambda_integrations(context_e, cf_outputs_e):
+    system_restApiId_b = cf_outputs_e['cfoutputBathroomAppAPIiD']
+
+
+    update_get_status_api_gateway_integration(context_e, cf_outputs_e, system_restApiId_b)
+
+    update_set_status_api_gateway_integration(context_e, cf_outputs_e, system_restApiId_b)
+    
+    print("COMPLETED:  update_api_lambda_integrations()")
+
+
+
+
+
+
+
+
+
+
+def setup_lambda_trigger_for_config(context_j, cf_outputs_j):
+
+
+    aws_s3_client = boto3.client('s3', region_name='us-west-2')
+
+    #add trigger on config s3 bucket 
+
     print("\n Not yet implemented \n")
     print("COMPLETED:  setup_lambda_trigger_for_config()")
 
@@ -285,16 +313,20 @@ def lambda_handler(event, context):
 
     update_lambda_functions_code(cf_outputs)
 
-    invoke_populate_dynamoDB_lambda_function(context, cf_outputs)
+    invoke_populate_dynamoDB_lambda_function(context, cf_outputs, system_config)
 
-    update_api_from_swagger(context, cf_outputs)
+    update_api_from_swagger(context, cf_outputs, system_config)
 
+    #Todo deleteme if update_api_lambda_integrations() works
     # setting up API with proper Lambda Integration will be done manually for now.  
     # After authentication is added this will be captured into update_api_from_swagger()
     # This allows a full deployment and auto configuration 
+    update_api_lambda_integrations(context, cf_outputs)
+
+
 
     add_tags_to_assets()                              
-    setup_lambda_trigger_for_config()
+    setup_lambda_trigger_for_config(context, cf_outputs)
     setup_dns_for_s3_website()
     setup_dns_for_api()
     deploy_api_gateway_api() 
