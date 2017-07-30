@@ -778,7 +778,7 @@
       }
     },
 
-    "LambdaPermission": {
+    "getstatusLambdaPermission": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:invokeFunction",
@@ -790,7 +790,7 @@
       }
     },
 
-    "LambdaPermission": {
+    "setstatusLambdaPermission": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "Action": "lambda:invokeFunction",
