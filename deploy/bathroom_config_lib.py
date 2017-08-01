@@ -423,13 +423,63 @@ def update_lambda_function_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FIL
 
 
 def update_get_status_api_gateway_integration(context_g, cf_outputs_g, system_restApiId_g)
-    api_gateway_client = boto3.client('apigateway', region_name='us-west-2')
 
-        response = "INSERT GOOGLED API CALL HERE"
+    # get_status_lambda_function_arn = cf_outputs_g['cfoutputbathroomappgetstatuslambdafunctionarn']
+    # my_restApiId = system_restApiId_g 
+    
+    # api_gateway_client = boto3.client('apigateway', region_name='us-west-2')
 
-    if DEBUG:
-        print("\n system_restApiId_g={}".format(system_restApiId_g))
-        print("\n response={}".format(response))
+    # response1 = api_gateway_client.get_resources(
+    #     restApiId=my_restApiId,
+    #     # position='string',
+    #     # limit=123,
+    #     # embed=[
+    #     #     'string',
+    #     # ]
+    # )
+    # if CONFIG_DEBUG:
+	   #  print("\n\nresponse1={}\n\n".format(response1))
+    
+    
+    # items_list = response1['items']
+    # path_to_be_updated = "/getstatus/{unique_id}"
+    # id_of_path_to_be_updated = ""
+    # httpMethod = ""
+
+
+    # for item in items_list:
+    #     if item['path'] == path_to_be_updated:
+    #         id_of_path_to_be_updated = item['id']
+
+    # if CONFIG_DEBUG:    
+	   #  print("id_of_path_to_be_updated={}".format(id_of_path_to_be_updated))
+    
+    
+    # httpMethod_b = "POST"
+    
+    # response2 = api_gateway_client.update_integration(
+    # restApiId = my_restApiId,
+    # resourceId=id_of_path_to_be_updated,
+    # httpMethod=httpMethod_b,
+    # patchOperations=[
+    #     {
+    #         # 'op': 'add'|'remove'|'replace'|'move'|'copy'|'test',
+    #         'op': 'replace',
+    #         'path': path_to_be_updated,
+    #         'value': '? maybe a long arn for the lambda function like this comment: ',   #                 uri                   = "arn:aws:apigateway:"+region+":lambda:path/"+apiVersion+"/functions/arn:aws:lambda:"+region+":"+accountId+":function:"+functionName+"/invocations",
+    #         # 'from': 'string'						#not implented by AWS at this time
+    #     },
+    # ]
+    # )
+
+    
+    
+    
+
+
+#     if DEBUG:
+#         print("\n system_restApiId_g={}".format(system_restApiId_g))
+#         print("\n response={}".format(response))
 	
 	print("NOT YET IMPLEMENTED  \n")	
 
