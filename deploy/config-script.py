@@ -2,6 +2,7 @@ import boto3
 import json  #I'm sure I'll need it at some point.  :-) 
 import os
 import subprocess
+import datetime
 
 from importlib.machinery import SourceFileLoader
 bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aws-bathroom-status-app/deploy/bathroom_config_lib.py").load_module()
@@ -19,6 +20,7 @@ bathroom_config_lib = SourceFileLoader("bathroom_config_lib", "/home/ec2-user/aw
 #       https://boto3.readthedocs.io/en/latest/reference/services/cloudformation.html#CloudFormation.Client.list_exports
 #       http://boto3.readthedocs.io/en/latest/reference/services/lambda.html#Lambda.Client.update_function_code
 #       http://boto3.readthedocs.io/en/latest/reference/services/apigateway.html#APIGateway.Client.put_rest_api
+#       https://stackoverflow.com/questions/17053099/how-to-print-current-date-on-python3
 ################################################################################
 
 
@@ -33,7 +35,7 @@ USE_AWS_S3_CONFIG_SCRIPT_TO_INITIALIZE = False
 LOCAL_CONFIG_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/deploy/default-config-data.json"
 LOCAL_SWAGGER_FILE_PATH_FILE_PATH = "/home/ec2-user/aws-bathroom-status-app/swagger/swagger.json"
 PATH_TO_ZIP_FILE_FOLDER = "/home/ec2-user/outputs/"
-
+DEFAULT_REGION = "us-west-2"
 
 # deleteme
 # LOCAL_CONFIG_FILE_PATH = "/Users/adrian/Desktop/myhomeforcode/aws-bathroom-status-app/deploy/default-config-data.json"
@@ -56,7 +58,7 @@ PATH_TO_ZIP_FILE_FOLDER = "/home/ec2-user/outputs/"
 
 
 ################################################################################
-#   Outline
+#   Initial Outline
 ################################################################################
 
 # Clone Git repo
@@ -240,15 +242,70 @@ def update_api_lambda_integrations(context_e, cf_outputs_e):
 
 
 
+def save_config_data_to_database(context_k, cf_outputs_k, system_config_k, region_k):    
+    # create list of the keys in the system_config_k
+    # if the key in cf_outputs_k in contained in the list of keys in system_config_k
+        # then, add the value for the key in cf_outputs_k which exists in the list
+
+    # system_config_k_key_list = []
+    # for k, v in system_config_k:
+    #     system_config_k_key_list.append(k)
+
+    # for k1, v2 in cf_outputs_k:
+    #     if k1 in system_config_k_key_list:
+    #         system_config_k[k1] = cf_outputs_k[k1]
+    #     else:
+    #         system_config_k[k1] = cf_outputs_k[k1]
+
+    for key, value in cf_outputs_k:
+        system_config_k[key] = cf_outputs_k[key]
+
+    table_name = cf_outputs_k['cfoutputtablestudygurubathroomsconfigname']
+    current_config_string = json.dumps(system_config_k)
+    now = datetime.datetime.now()
+    now_string = str(now)
+    date_time_list = now_string.split()
+    date_of_put_item = date_time_list[0]
+    time_of_put_item = date_time_list[1]
+
+    dynamodb = boto3.resource('dynamodb', region_name=region_k)
+    table = dynamodb.Table(table_name)
+
+    try:
+        # add the data to the dynamodb
+        response = table.put_item(
+            Item={
+                'current_config': current_config_string,
+                'date': date_of_put_item,
+                'time': time_of_put_item
+            }
+
+        )
+        # print response
+        print("Added {0} \n at date {1} \n at time {2} \n to DynamoDB".format(current_config_string, date_of_put_item, time_of_put_item) )
+
+    except Exception as err:
+        print("Error occurred while adding data to the new DynamoDB table in save_config_data_to_database()")
+        print("Error occurred:", err)
+        sys.exit()
 
 
+    if DEBUG:
+        print("\n cf_outputs_k={}".format(cf_outputs_k))
+        print("\n table_name={}".format(table_name))
+        print("\n current_config_string={}".format(current_config_string))
+        print("\n now_string={}".format(now_string))
+        print("\n date_time_list={}".format(date_time_list))
+        print("\n date_of_put_item={}".format(date_of_put_item))
+        print("\n time_of_put_item={}".format(time_of_put_item))
+        print("\n LOCAL_SWAGGER_FILE_PATH_FILE_PATH={}".format(LOCAL_SWAGGER_FILE_PATH_FILE_PATH))
+        print("\n LOCAL_SWAGGER_FILE_PATH_FILE_PATH={}".format(LOCAL_SWAGGER_FILE_PATH_FILE_PATH))
 
-
+    print("COMPLETED:  setup_lambda_trigger_for_config()")
 
 
 
 def setup_lambda_trigger_for_config(context_j, cf_outputs_j):
-
 
     aws_s3_client = boto3.client('s3', region_name='us-west-2')
 
@@ -296,6 +353,7 @@ def lambda_handler(event, context):
         print("context={}".format(context))
 
 
+    region = DEFAULT_REGION
 
     # clone_git_repo()                                  (ToDo)
     cf_outputs = get_cloudformation_outputs(context)
@@ -322,8 +380,7 @@ def lambda_handler(event, context):
     # After authentication is added this will be captured into update_api_from_swagger()
     # This allows a full deployment and auto configuration 
     update_api_lambda_integrations(context, cf_outputs)
-
-
+    save_config_data_to_database(context, cf_outputs, system_config, region)
 
     add_tags_to_assets()                              
     setup_lambda_trigger_for_config(context, cf_outputs)

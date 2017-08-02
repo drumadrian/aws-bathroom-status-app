@@ -957,11 +957,11 @@
         "Name": "cfoutputtablestudygurubathroomsname"
       }
     },
-    "cfoutputtablestudygurubathroomsconfigarn": {
-      "Description": "ARN of the DynamoDB config database",
+    "cfoutputtablestudygurubathroomsconfigname": {
+      "Description": "Name of the DynamoDB config database",
       "Value": {"Ref": "tablestudygurubathroomsconfig"},
       "Export" : {
-        "Name": "cfoutputtablestudygurubathroomsconfigarn"
+        "Name": "cfoutputtablestudygurubathroomsconfigname"
       }
     },
 
