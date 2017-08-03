@@ -266,6 +266,7 @@ def save_config_data_to_database(context_k, cf_outputs_k, system_config_k, regio
     for key in cf_outputs_k:
         system_config_k[key] = cf_outputs_k[key]
 
+    current_config_value = "yes"
     table_name = cf_outputs_k['cfoutputtablestudygurubathroomsconfigname']
     current_config_string = json.dumps(system_config_k)
     now = datetime.datetime.now()
@@ -281,7 +282,8 @@ def save_config_data_to_database(context_k, cf_outputs_k, system_config_k, regio
         # add the data to the dynamodb
         response = table.put_item(
             Item={
-                'current_config': current_config_string,
+                'current_config': current_config_value,
+                'current_config_json_string': current_config_string,
                 'date': date_of_put_item,
                 'time': time_of_put_item
             }
@@ -293,10 +295,11 @@ def save_config_data_to_database(context_k, cf_outputs_k, system_config_k, regio
     except Exception as err:
         print("Error occurred while adding data to the new DynamoDB table in save_config_data_to_database()")
         print("Error occurred:", err)
-        sys.exit()
+        exit()
 
 
     if DEBUG:
+        print("\n current_config_value={}".format(current_config_value))
         print("\n cf_outputs_k={}".format(cf_outputs_k))
         print("\n table_name={}".format(table_name))
         print("\n current_config_string={}".format(current_config_string))
