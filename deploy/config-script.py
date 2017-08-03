@@ -174,8 +174,8 @@ def invoke_populate_dynamoDB_lambda_function(context_d, cf_outputs_d, system_con
     function_arn = cf_outputs_d['cfoutputsbathroomappcreatepopulatedynamodblambdafunction']
     lambda_client = boto3.client('lambda', region_name='us-west-2')
 
-    system_config_d_json = json.load(system_config_d)
-    system_config_d_string = json.dumps(system_config_d_json)
+    # system_config_d_json = json.load(system_config_d)
+    system_config_d_string = json.dumps(system_config_d)
     system_config_d_byte_data = bytes(system_config_d_string, "utf-8")
 
 
