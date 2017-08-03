@@ -27,7 +27,7 @@
         "tags" : [ "developers" ],
         "summary" : "gets status of a bathroom  or multiple  bathrooms",
         "description" : "By passing nothing, you will get all of the bathrooms and statuses\n",
-        "operationId" : "test-get-status",
+        "operationId" : "bathroomappgetstatuslambdafunction",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "unique_id",
@@ -53,7 +53,7 @@
         "x-amazon-apigateway-integration" : {
           "passthroughBehavior" : "when_no_match",
           "httpMethod" : "POST",
-          "uri" : "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:test-get-status/invocations",
+          "uri" : "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:bathroomappgetstatuslambdafunction/invocations",
           "responses" : {
             "default" : {
               "statusCode" : "200"
@@ -74,7 +74,7 @@
         "tags" : [ "developers" ],
         "summary" : "set the status of a bathroom  or multiple  bathrooms in the future",
         "description" : "By passing nothing you will get a 400 error",
-        "operationId" : "set-status",
+        "operationId" : "bathroomappsetstatuslambdafunction",
         "produces" : [ "application/json" ],
         "parameters" : [ {
           "name" : "unique_id",
@@ -106,7 +106,7 @@
         "x-amazon-apigateway-integration" : {
           "passthroughBehavior" : "when_no_match",
           "httpMethod" : "PUT",
-          "uri" : "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:set-status/invocations",
+          "uri" : "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:101845606311:function:bathroomappsetstatuslambdafunction/invocations",
           "responses" : {
             "default" : {
               "statusCode" : "200"
