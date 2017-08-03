@@ -477,7 +477,7 @@ def update_get_status_api_gateway_integration(context_g, cf_outputs_g, system_re
     
 
 
-#     if DEBUG:
+#     if CONFIG_DEBUG:
 #         print("\n system_restApiId_g={}".format(system_restApiId_g))
 #         print("\n response={}".format(response))
 	
@@ -492,7 +492,7 @@ def update_set_status_api_gateway_integration(context_h, cf_outputs_h, system_re
 
 	# response = "INSERT API CALL HERE"
 
-	if DEBUG:
+	if CONFIG_DEBUG:
 		print("\n system_restApiId_h={}".format(system_restApiId_h))
 		print("\n response={}".format(response))
 
