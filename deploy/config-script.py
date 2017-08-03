@@ -203,7 +203,7 @@ def add_tags_to_assets():
     print("COMPLETED:  add_tags_to_assets()")
 
 
-def update_api_from_swagger(context_e, cf_outputs_e):
+def update_api_from_swagger(context_e, cf_outputs_e, system_config_e):
 
     system_restApiId = cf_outputs_e['cfoutputBathroomAppAPIiD']
 
