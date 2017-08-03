@@ -3,7 +3,7 @@
   "info" : {
     "description" : "This is a simple API to set the status for the bathroom app. A test without Lambda Sync",
     "version" : "1.0.0",
-    "title" : "Simple Bathroom Status Two",
+    "title" : "The Bathroom App API",
     "contact" : {
       "email" : "admin@onedaywillwillownbathroomapp.com"
     },
