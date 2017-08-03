@@ -772,7 +772,41 @@
                   "type": "aws"
                 }
               }
+            },
+            "/greeting2": {
+              "get": {
+                "parameters": [{
+                  "name": "name",
+                  "in": "query",
+                  "required": false,
+                  "type": "string"
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                  "200": {
+                    "description": "200 response"
+                  }
+                },
+                "x-amazon-apigateway-integration": {
+                  "requestTemplates": {
+                    "application/json": "{\"name\": \"$input.params('name')\"}"
+                  },
+                  "uri": {"Fn::Join": ["",
+                    ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, ":lambda:path/2015-03-31/functions/", {"Fn::GetAtt": ["bathroomappsetstatuslambdafunction", "Arn"]}, "/invocations"]
+                  ]},
+                  "responses": {
+                    "default": {
+                      "statusCode": "200"
+                    }
+                  },
+                  "httpMethod": "POST",
+                  "type": "aws"
+                }
+              }
             }
+
+
+
           }
         }
       }
