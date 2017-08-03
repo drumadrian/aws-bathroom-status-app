@@ -263,7 +263,7 @@ def save_config_data_to_database(context_k, cf_outputs_k, system_config_k, regio
     #     else:
     #         system_config_k[k1] = cf_outputs_k[k1]
 
-    for key, value in cf_outputs_k:
+    for key in cf_outputs_k:
         system_config_k[key] = cf_outputs_k[key]
 
     table_name = cf_outputs_k['cfoutputtablestudygurubathroomsconfigname']
