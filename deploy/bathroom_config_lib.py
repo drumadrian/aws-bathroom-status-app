@@ -422,7 +422,7 @@ def update_lambda_function_for_populate_dynamoDB_lambda_function(PATH_TO_ZIP_FIL
 
 
 
-def update_get_status_api_gateway_integration(context_g, cf_outputs_g, system_restApiId_g)
+def update_get_status_api_gateway_integration(context_g, cf_outputs_g, system_restApiId_g):
 
     # get_status_lambda_function_arn = cf_outputs_g['cfoutputbathroomappgetstatuslambdafunctionarn']
     # my_restApiId = system_restApiId_g 
