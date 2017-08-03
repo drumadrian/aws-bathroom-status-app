@@ -240,9 +240,9 @@ def update_api_lambda_integrations(context_e, cf_outputs_e):
     system_restApiId_b = cf_outputs_e['cfoutputBathroomAppAPIiD']
 
 
-    update_get_status_api_gateway_integration(context_e, cf_outputs_e, system_restApiId_b)
+    bathroom_config_lib.update_get_status_api_gateway_integration(context_e, cf_outputs_e, system_restApiId_b)
 
-    update_set_status_api_gateway_integration(context_e, cf_outputs_e, system_restApiId_b)
+    bathroom_config_lib.update_set_status_api_gateway_integration(context_e, cf_outputs_e, system_restApiId_b)
     
     print("COMPLETED:  update_api_lambda_integrations()")
 
