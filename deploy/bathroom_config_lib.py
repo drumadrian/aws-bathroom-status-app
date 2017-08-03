@@ -496,13 +496,6 @@ def update_set_status_api_gateway_integration(context_h, cf_outputs_h, system_re
         print("\n system_restApiId_h={}".format(system_restApiId_h))
         print("\n response={}".format(response))
 
-	print("NOT YET IMPLEMENTED  \n")	
+	print("NOT YET IMPLEMENTED  \n")
 
 	print("COMPLETED:   update_set_status_api_gateway_integration() \n")	
-
-
-
-
-
-
-
