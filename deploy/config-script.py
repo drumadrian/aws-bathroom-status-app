@@ -316,7 +316,8 @@ def save_config_data_to_database(context_k, cf_outputs_k, system_config_k, regio
 
 def setup_lambda_trigger_for_config(context_j, cf_outputs_j):
 
-    aws_s3_client = boto3.client('s3', region_name='us-west-2')
+    # aws_s3_client = boto3.client('s3', region_name='us-west-2')
+    aws_s3_client = boto3.client('s3')
 
     #add trigger on config s3 bucket 
 
