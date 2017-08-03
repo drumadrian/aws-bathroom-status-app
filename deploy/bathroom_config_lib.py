@@ -490,7 +490,7 @@ def update_get_status_api_gateway_integration(context_g, cf_outputs_g, system_re
 def update_set_status_api_gateway_integration(context_h, cf_outputs_h, system_restApiId_h):
     api_gateway_client = boto3.client('apigateway', region_name='us-west-2')
 
-        response = "INSERT API CALL HERE"
+    # response = "INSERT API CALL HERE"
 
     if DEBUG:
         print("\n system_restApiId_h={}".format(system_restApiId_h))
